@@ -1,12 +1,13 @@
-import 'package:flashcard/models/word.dart';
+import '../models/word.dart';
 import 'package:flutter/material.dart';
 
 class FlashCard extends StatelessWidget {
-  const FlashCard({super.key});
+  final Word word;
+
+  const FlashCard({required this.word, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final word = Word(hebrew: "אַבָּא", translation: 'father', attributes: 'ml, s');
     return Card(
       elevation: 2,
       child: Padding(
