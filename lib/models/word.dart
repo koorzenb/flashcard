@@ -2,17 +2,18 @@ import 'dart:math';
 
 class Word {
   final String hebrew;
+  final String pronunciation;
   final String translation;
   final String? attributes;
 
-  Word({required this.hebrew, required this.translation, this.attributes = ''});
+  Word({required this.hebrew, required this.pronunciation, required this.translation, this.attributes = ''});
 
   static Word getWord() {
     final List<Word> words = [
-      Word(hebrew: "אַבָּא", translation: "father", attributes: 'm, sl'),
-      Word(hebrew: "אִמָא", translation: "mother", attributes: 'f, sl'),
-      Word(hebrew: "יוֹנָה", translation: "dove"),
-      Word(hebrew: "לחם", translation: "bread"),
+      Word(hebrew: "אַבָּא", pronunciation: "a-bah", translation: "father", attributes: 'm, sl'),
+      Word(hebrew: "אִמָא", pronunciation: 'i-mah', translation: "mother", attributes: 'f, sl'),
+      Word(hebrew: "יוֹנָה", pronunciation: "joh-nah", translation: "dove"),
+      Word(hebrew: "לחם", pronunciation: "le-khem", translation: "bread"),
     ];
 
     final randomIndex = Random().nextInt(words.length);
@@ -21,6 +22,7 @@ class Word {
 
   Map<String, dynamic> toJson() => {
         'hebrew': hebrew,
+        'pronunciation': pronunciation,
         'translation': translation,
         "attributes": attributes,
       };
@@ -33,6 +35,7 @@ class Word {
 
   factory Word.fromJson(Map<String, dynamic> json) => Word(
         hebrew: json['hebrew'],
+        pronunciation: json['pronunciation'],
         translation: json["translation"],
         attributes: json['attributes'],
       );

@@ -1,6 +1,6 @@
-import '../models/word.dart';
 import 'package:flutter/material.dart';
 
+import '../models/word.dart';
 import '../widgets/flash_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Word word = Word(hebrew: "דָבָר", translation: 'word');
+  Word word = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word');
 
   @override
   Widget build(BuildContext context) {

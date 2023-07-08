@@ -1,5 +1,6 @@
-import '../models/word.dart';
 import 'package:flutter/material.dart';
+
+import '../models/word.dart';
 
 class FlashCard extends StatelessWidget {
   final Word word;
@@ -15,14 +16,17 @@ class FlashCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // const SizedBox(height: 8),
             Text(
               word.hebrew,
-              style: const TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
+            ),
+            Text(
+              word.pronunciation,
+              style: const TextStyle(fontSize: 16),
             ),
             Text(
               word.translation,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
             if (word.attributes != null)
               Text(
