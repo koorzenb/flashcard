@@ -41,7 +41,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   TextFormField(
                     controller: _hebrewTextController,
                     decoration: const InputDecoration(
-                      icon: Icon(Icons.abc),
+                      icon: Icon(Icons.translate),
                       hintText: 'What is the Hebrew word?',
                       labelText: 'Hebrew',
                     ),
@@ -54,7 +54,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   TextFormField(
                     controller: _pronunciationTextController,
                     decoration: const InputDecoration(
-                      icon: Icon(Icons.abc),
+                      icon: Icon(Icons.record_voice_over),
                       hintText: 'How would this word be pronounced phonetically?',
                       labelText: 'Pronunciation',
                     ),
@@ -67,7 +67,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   TextFormField(
                     controller: _translationTextController,
                     decoration: const InputDecoration(
-                      icon: Icon(Icons.abc),
+                      icon: Icon(Icons.abc_rounded),
                       hintText: 'What does this word translate to in English?',
                       labelText: 'English',
                     ),
@@ -80,7 +80,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   TextFormField(
                     controller: _attributesTextController,
                     decoration: const InputDecoration(
-                      icon: Icon(Icons.abc),
+                      icon: Icon(Icons.checklist_rounded),
                       hintText: 'What type of word is this? (hint: gender, grammatical type, etc.)',
                       labelText: 'Attributes',
                     ),
