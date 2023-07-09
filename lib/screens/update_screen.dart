@@ -18,68 +18,91 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Form(
-          key: _form,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                controller: _hebrewTextController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.abc),
-                  hintText: 'What is the Hebrew word?',
-                  labelText: 'Hebrew',
-                ),
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                validator: (String? _) {
-                  return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
-                },
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: const Text(
+          "Flashy", //TODO: import from Main
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: Center(
+        child: Form(
+            key: _form,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: _hebrewTextController,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.abc),
+                      hintText: 'What is the Hebrew word?',
+                      labelText: 'Hebrew',
+                    ),
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    validator: (String? _) {
+                      return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _pronunciationTextController,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.abc),
+                      hintText: 'How would this word be pronounced phonetically?',
+                      labelText: 'Pronunciation',
+                    ),
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    validator: (String? _) {
+                      return _pronunciationTextController.text.trim().isEmpty ? 'Please enter valid pronunciation' : null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _translationTextController,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.abc),
+                      hintText: 'What does this word translate to in English?',
+                      labelText: 'English',
+                    ),
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    validator: (String? _) {
+                      return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _attributesTextController,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.abc),
+                      hintText: 'What type of word is this? (hint: gender, grammatical type, etc.)',
+                      labelText: 'Attributes',
+                    ),
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.done,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Save'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              TextFormField(
-                controller: _pronunciationTextController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.abc),
-                  hintText: 'How would this word phonetically be pronounced?',
-                  labelText: 'Pronunciation',
-                ),
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                validator: (String? _) {
-                  return _pronunciationTextController.text.trim().isEmpty ? 'Please enter valid pronunciation' : null;
-                },
-              ),
-              TextFormField(
-                controller: _translationTextController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.abc),
-                  hintText: 'What does this word translate to in English?',
-                  labelText: 'English',
-                ),
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                validator: (String? _) {
-                  return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
-                },
-              ),
-              TextFormField(
-                controller: _attributesTextController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.abc),
-                  hintText: 'What type of word is this? (hint: gender, grammatical type, etc.)',
-                  labelText: 'Attributes',
-                ),
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.done,
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Save'),
-              ),
-            ],
-          )),
+            )),
+      ),
     );
   }
 }
