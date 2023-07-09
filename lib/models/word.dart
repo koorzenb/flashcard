@@ -10,6 +10,9 @@ class Word {
 
   static Word getWord() {
     final List<Word> words = [
+      //TODO: save to localStorage.
+      // save only on update/new
+      // Save to GoogleDrive
       Word(hebrew: "אַבָּא", pronunciation: "a-bah", translation: "father", attributes: 'm, sl'),
       Word(hebrew: "אִמָא", pronunciation: 'i-mah', translation: "mother", attributes: 'f, sl'),
       Word(hebrew: "יוֹנָה", pronunciation: "joh-nah", translation: "dove"),

@@ -31,9 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
         child: GestureDetector(
           onTap: () => setState(() {
             word = Word.getWord();
-            print(word.translation);
+            debugPrint(word.translation);
           }),
           child: FlashCard(word: word),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        hoverColor: Theme.of(context).colorScheme.inversePrimary,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
     );
