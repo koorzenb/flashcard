@@ -18,7 +18,9 @@ class Flashy extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomeScreen(title: 'Flashy'),
+      home: const HomeScreen(
+        title: 'Flashy',
+      ),
     );
   }
 }
