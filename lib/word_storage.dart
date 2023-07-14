@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'models/word.dart';
 import 'package:get_storage/get_storage.dart';
+
+import 'models/word.dart';
 
 class WordStorage {
   static const _kStorageName = 'WordStorage';
@@ -21,5 +22,5 @@ class WordStorage {
 
   static const String _kWordListJsonKey = 'wordListJson';
   List<Word> get words => Word.listFromJsonList(jsonDecode(_box.read(_kWordListJsonKey) ?? '[]'));
-  set cachedEntries(List<Word> value) => _box.write(_kWordListJsonKey, jsonEncode(value));
+  set words(List<Word> value) => _box.write(_kWordListJsonKey, jsonEncode(value));
 }

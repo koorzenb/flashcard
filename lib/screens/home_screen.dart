@@ -1,4 +1,6 @@
+import 'package:flashcard/screens/update_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../models/word.dart';
 import '../widgets/flash_card.dart';
@@ -37,9 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        hoverColor: Theme.of(context).colorScheme.inversePrimary,
+        onPressed: () => Get.to(const UpdateScreen()), //TODO: rather use Get.dialog with backgground blur
         child: const Icon(
           Icons.add,
           color: Colors.white,

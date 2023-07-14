@@ -1,3 +1,5 @@
+import 'package:flashcard/models/word.dart';
+import 'package:flashcard/word_storage.dart';
 import 'package:flutter/material.dart';
 
 class UpdateScreen extends StatefulWidget {
@@ -15,6 +17,41 @@ class _UpdateScreenState extends State<UpdateScreen> {
   final _pronunciationTextController = TextEditingController();
   final _translationTextController = TextEditingController();
   final _attributesTextController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _hebrewTextController.dispose();
+    _pronunciationTextController.dispose();
+    _translationTextController.dispose();
+    _attributesTextController.dispose();
+  }
+
+  saveWord() {
+    if (!_form.currentState!.validate()) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    List<Word> words = WordStorage.box.words;
+    words.add(Word(
+      hebrew: _hebrewTextController.text,
+      pronunciation: _pronunciationTextController.text,
+      translation: _translationTextController.text,
+      attributes: _attributesTextController.text,
+    ));
+    WordStorage.box.words = words; // TODO: check if you can do all this in on line
+
+    setState(() {
+      _isLoading = false;
+    });
+
+// Get.back();
+  }
 
   @override
   Widget build(BuildContext context) {
