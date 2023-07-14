@@ -16,6 +16,25 @@ class FlashCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            SizedBox(
+              width: 120, // TODO: fix to word width
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 20,
+                    width: 30,
+                    child: IconButton(
+                        onPressed: () {},
+                        iconSize: 10,
+                        icon: const Icon(
+                          Icons.edit,
+                          size: 10,
+                        )),
+                  )
+                ],
+              ),
+            ),
             Text(
               word.hebrew,
               style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
