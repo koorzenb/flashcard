@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flashcard/word_storage.dart';
+
 class Word {
   final String hebrew;
   final String pronunciation;
@@ -21,6 +23,10 @@ class Word {
 
     final randomIndex = Random().nextInt(words.length);
     return words[randomIndex];
+  }
+
+  static saveWord(Word word) {
+    WordStorage.box.words.add(word);
   }
 
   Map<String, dynamic> toJson() => {

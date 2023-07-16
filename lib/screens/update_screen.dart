@@ -1,5 +1,4 @@
 import 'package:flashcard/models/word.dart';
-import 'package:flashcard/word_storage.dart';
 import 'package:flutter/material.dart';
 
 class UpdateScreen extends StatefulWidget {
@@ -28,7 +27,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     _attributesTextController.dispose();
   }
 
-  saveWord() {
+  _saveWord() {
     if (!_form.currentState!.validate()) {
       return;
     }
@@ -37,15 +36,12 @@ class _UpdateScreenState extends State<UpdateScreen> {
       _isLoading = true;
     });
 
-    List<Word> words = WordStorage.box.words;
-    words.add(Word(
+    Word.saveWord(Word(
       hebrew: _hebrewTextController.text,
       pronunciation: _pronunciationTextController.text,
       translation: _translationTextController.text,
       attributes: _attributesTextController.text,
     ));
-    WordStorage.box.words = words; // TODO: check if you can do all this in on line
-
     setState(() {
       _isLoading = false;
     });
@@ -130,7 +126,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: _saveWord,
                           child: const Text('Save'),
                         ),
                       ),
