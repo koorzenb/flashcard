@@ -1,6 +1,7 @@
-import 'package:flashcard/models/word.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../models/word.dart';
 
 class UpdateScreen extends StatefulWidget {
   final Word? word;
@@ -53,17 +54,18 @@ class _UpdateScreenState extends State<UpdateScreen> {
       _isLoading = true;
     });
 
-    Word.saveWord(Word(
+    final word = Word(
       hebrew: _hebrewTextController.text,
       pronunciation: _pronunciationTextController.text,
       translation: _translationTextController.text,
       attributes: _attributesTextController.text,
-    ));
+    );
+    Word.saveWord(word);
     setState(() {
       _isLoading = false;
     });
 
-    Get.back();
+    Get.back(result: word);
   }
 
   @override

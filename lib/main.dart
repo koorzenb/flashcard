@@ -1,7 +1,7 @@
-import 'package:flashcard/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'word_storage.dart';
 import 'screens/home_screen.dart';
 
 void main() {

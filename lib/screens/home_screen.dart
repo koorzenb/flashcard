@@ -1,9 +1,9 @@
-import 'package:flashcard/screens/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/word.dart';
 import '../widgets/flash_card.dart';
+import 'update_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(const UpdateScreen()), //TODO: rather use Get.dialog with backgground blur
+        onPressed: () async => await Get.to(const UpdateScreen()), //TODO: rather use Get.dialog with backgground blur
         child: const Icon(
           Icons.add,
           color: Colors.white,

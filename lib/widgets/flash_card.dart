@@ -4,10 +4,24 @@ import 'package:get/get.dart';
 import '../models/word.dart';
 import '../screens/update_screen.dart';
 
-class FlashCard extends StatelessWidget {
+class FlashCard extends StatefulWidget {
   final Word word;
 
   const FlashCard({required this.word, super.key});
+
+  @override
+  State<FlashCard> createState() => _FlashCardState();
+}
+
+class _FlashCardState extends State<FlashCard> {
+  late Word displayedWord;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    displayedWord = widget.word;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +41,12 @@ class FlashCard extends StatelessWidget {
                     height: 20,
                     width: 30,
                     child: IconButton(
-                        onPressed: () => Get.to(UpdateScreen(word: word)),
+                        onPressed: () async {
+                          final updatedWord = await Get.to(UpdateScreen(word: displayedWord));
+                          setState(() {
+                            displayedWord = updatedWord;
+                          });
+                        },
                         iconSize: 10,
                         icon: const Icon(
                           Icons.edit,
@@ -38,20 +57,20 @@ class FlashCard extends StatelessWidget {
               ),
             ),
             Text(
-              word.hebrew,
+              displayedWord.hebrew,
               style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
             ),
             Text(
-              word.pronunciation,
+              displayedWord.pronunciation,
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              word.translation,
+              displayedWord.translation,
               style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
-            if (word.attributes != null)
+            if (displayedWord.attributes != null)
               Text(
-                word.attributes!,
+                displayedWord.attributes!,
                 style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
               ),
           ],

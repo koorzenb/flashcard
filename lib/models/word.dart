@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flashcard/word_storage.dart';
+import '../word_storage.dart';
 
 class Word {
   final String hebrew;
