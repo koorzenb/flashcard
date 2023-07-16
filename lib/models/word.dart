@@ -7,6 +7,7 @@ class Word {
   final String pronunciation;
   final String translation;
   final String? attributes;
+  static List<int> indexListOfUndisplayedWords = []; // index of words that has not been displayed
 
   Word({required this.hebrew, required this.pronunciation, required this.translation, this.attributes = ''});
 
@@ -40,8 +41,23 @@ class Word {
 
   static Word getWord() {
     final words = WordStorage.box.words;
-    final randomIndex = Random().nextInt(words.length);
-    return words[randomIndex];
+
+    if (indexListOfUndisplayedWords.isEmpty) {
+      _initializeUndisplayedIndexList(indexListOfUndisplayedWords, words);
+    }
+
+    // randomize showing of words and remove previous shown words from list until all words are shown
+    final randomIndex = Random().nextInt(indexListOfUndisplayedWords.length);
+    final wordIndex = indexListOfUndisplayedWords[randomIndex];
+    indexListOfUndisplayedWords.remove(wordIndex);
+
+    return words[wordIndex];
+  }
+
+  static void _initializeUndisplayedIndexList(List<int> undisplayedIndexList, List<Word> words) {
+    for (var i = 0; i < words.length; i++) {
+      undisplayedIndexList.add(i);
+    }
   }
 
   static createWord(Word word) {
