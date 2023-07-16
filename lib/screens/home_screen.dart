@@ -30,16 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Center(
-        child: GestureDetector(
-          onTap: () => setState(() {
-            word = Word.getWord();
-            debugPrint(word.translation);
-          }),
-          child: FlashCard(word: word),
-        ),
+        child: FlashCard(word: word),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Get.to(const UpdateScreen()), //TODO: rather use Get.dialog with backgground blur
+        onPressed: () async => await Get.to(const UpdateScreen()), // TODO: rather use Get.dialog with background blur
         child: const Icon(
           Icons.add,
           color: Colors.white,
