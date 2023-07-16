@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../models/word.dart';
+import '../screens/update_screen.dart';
 
 class FlashCard extends StatelessWidget {
   final Word word;
@@ -25,7 +27,7 @@ class FlashCard extends StatelessWidget {
                     height: 20,
                     width: 30,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () => Get.to(UpdateScreen(word: word)),
                         iconSize: 10,
                         icon: const Icon(
                           Icons.edit,

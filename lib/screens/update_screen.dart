@@ -1,10 +1,11 @@
 import 'package:flashcard/models/word.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class UpdateScreen extends StatefulWidget {
-  //TODO: stateful required?
+  final Word? word;
 
-  const UpdateScreen({super.key});
+  const UpdateScreen({this.word, super.key});
 
   @override
   State<UpdateScreen> createState() => _UpdateScreenState();
@@ -17,6 +18,22 @@ class _UpdateScreenState extends State<UpdateScreen> {
   final _translationTextController = TextEditingController();
   final _attributesTextController = TextEditingController();
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    if (widget.word != null) {
+      setState(() {
+        _hebrewTextController.text = widget.word!.hebrew;
+        _pronunciationTextController.text = widget.word!.pronunciation;
+        _translationTextController.text = widget.word!.translation;
+
+        if (widget.word!.attributes != null) {
+          _attributesTextController.text = widget.word!.attributes!;
+        }
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -46,7 +63,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
       _isLoading = false;
     });
 
-// Get.back();
+    Get.back();
   }
 
   @override
