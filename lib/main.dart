@@ -1,9 +1,11 @@
+import 'package:flashcard/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'screens/home_screen.dart';
 
 void main() {
+  WordStorage.init();
   runApp(const Flashy());
 }
 

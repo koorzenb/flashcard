@@ -26,7 +26,9 @@ class Word {
   }
 
   static saveWord(Word word) {
-    WordStorage.box.words.add(word);
+    final words = WordStorage.box.words;
+    words.add(word);
+    WordStorage.box.words = words;
   }
 
   Map<String, dynamic> toJson() => {
