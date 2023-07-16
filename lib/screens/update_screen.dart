@@ -47,6 +47,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
     _attributesTextController.dispose();
   }
 
+  _deleteWord() {
+    Word.removeWord(widget.word!);
+    Get.back();
+  }
+
   _saveWord() {
     if (!_form.currentState!.validate()) {
       return;
@@ -76,6 +81,16 @@ class _UpdateScreenState extends State<UpdateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          if (widget.word != null)
+            IconButton(
+              onPressed: _deleteWord,
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            )
+        ],
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text(
           "Flashy", //TODO: import from Main

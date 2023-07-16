@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'word_storage.dart';
 import 'screens/home_screen.dart';
+import 'word_storage.dart';
 
 void main() {
   WordStorage.init();
+  // WordStorage.box.erase();
   runApp(const Flashy());
 }
 
@@ -16,6 +17,7 @@ class Flashy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      // debugShowCheckedModeBanner: false,
       title: 'Flashy',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
