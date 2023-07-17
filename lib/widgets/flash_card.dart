@@ -47,11 +47,13 @@ class _FlashCardState extends State<FlashCard> {
                       width: 30,
                       child: IconButton(
                           onPressed: () async {
-                            final updatedWord = await Get.to(UpdateScreen(word: displayedWord));
+                            final updatedWord =
+                                await Get.to(UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
                             setState(() {
                               displayedWord = updatedWord;
                             });
                           },
+                          // test mode: consider how to rate yourself that. How to have a checkmark for correct guess and cross for wrong. Also, correct guesses to be moved to a group of less frequently used words and only practice words that are hard
                           iconSize: 10,
                           icon: const Icon(
                             Icons.edit,
