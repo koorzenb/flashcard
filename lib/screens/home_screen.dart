@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FlashCard(word: word),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Get.to(const UpdateScreen()), // TODO: rather use Get.dialog with background blur
+        onPressed: () async => await Get.to(() => const UpdateScreen()), // TODO: rather use Get.dialog with background blur
         child: const Icon(
           Icons.add,
           color: Colors.white,
