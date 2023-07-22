@@ -71,27 +71,11 @@ class Word {
     }
   }
 
-  static createWord(Word word) {
-    // final words = WordStorage.box.words;
-
-    final List<Word> words = WordStorage.box.words.isEmpty
-        ? [
-            // TODO: Save to GoogleDrive
-            // https://translate.google.com/?sl=en&tl=iw&text=father&op=translate
-            Word(hebrew: "אַבָּא", pronunciation: "a-bah", translation: "father", attributes: 'm, sl'),
-            Word(hebrew: "אִמָא", pronunciation: 'i-mah', translation: "mother", attributes: 'f, sl'),
-            Word(hebrew: "יוֹנָה", pronunciation: "joh-nah", translation: "dove"),
-            Word(hebrew: "לחם", pronunciation: "le-khem", translation: "bread"),
-            Word(hebrew: "יֵשׁוּעַ", pronunciation: "yeshua", translation: "God saves"),
-          ]
-        : WordStorage.box.words;
-    words.add(word);
-    WordStorage.box.words = words;
-  }
-
-  static updateWord(Word originalWord, Word updatedWord) {
+  static updateWord(Word? originalWord, Word updatedWord) {
     final words = WordStorage.box.words;
-    words.remove(originalWord);
+    if (originalWord != null) {
+      words.remove(originalWord);
+    }
     words.add(updatedWord);
     WordStorage.box.words = words;
   }

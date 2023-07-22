@@ -68,7 +68,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
       attributes: _attributesTextController.text,
     );
 
-    originalWord != null ? Word.updateWord(originalWord!, word) : Word.createWord(word);
+    Word.updateWord(originalWord, word);
 
     setState(() {
       _isLoading = false;
