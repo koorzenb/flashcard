@@ -1,3 +1,4 @@
+import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Word word = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word');
+  final flashCardController = FlashCardController.getOrPut;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Center(
-        child: FlashCard(word: word),
+        child: FlashCard(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async => await Get.to(() => const UpdateScreen()), // TODO: rather use Get.dialog with background blur

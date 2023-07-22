@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../word_storage.dart';
+import 'package:flashcard/controllers/flash_card_controller.dart';
 
 class Word {
   final String hebrew;
@@ -8,6 +8,7 @@ class Word {
   final String translation;
   final String? attributes;
   static List<int> indexListOfUndisplayedWords = []; // index of words that has not been displayed
+  static final FlashCardController flashCardController = FlashCardController.getOrPut;
 
   Word({required this.hebrew, required this.pronunciation, required this.translation, this.attributes = ''});
 
@@ -41,20 +42,9 @@ class Word {
 
   static Word getWord() {
     // final words = WordStorage.box.words;
-    final List<Word> words = WordStorage.box.words.isEmpty
-        ? [
-            // TODO: Save to GoogleDrive
-            // https://translate.google.com/?sl=en&tl=iw&text=father&op=translate
-            Word(hebrew: "אַבָּא", pronunciation: "a-bah", translation: "father", attributes: 'm, sl'),
-            Word(hebrew: "אִמָא", pronunciation: 'i-mah', translation: "mother", attributes: 'f, sl'),
-            Word(hebrew: "יוֹנָה", pronunciation: "joh-nah", translation: "dove"),
-            Word(hebrew: "לחם", pronunciation: "le-khem", translation: "bread"),
-            Word(hebrew: "יֵשׁוּעַ", pronunciation: "yeshua", translation: "God saves"),
-          ]
-        : WordStorage.box.words;
 
     if (indexListOfUndisplayedWords.isEmpty) {
-      _initializeUndisplayedIndexList(indexListOfUndisplayedWords, words);
+      _initializeUndisplayedIndexList(indexListOfUndisplayedWords, flashCardController.words);
     }
 
     // randomize showing of words and remove previous shown words from list until all words are shown
@@ -62,7 +52,7 @@ class Word {
     final wordIndex = indexListOfUndisplayedWords[randomIndex];
     indexListOfUndisplayedWords.remove(wordIndex);
 
-    return words[wordIndex];
+    return flashCardController.words[wordIndex];
   }
 
   static void _initializeUndisplayedIndexList(List<int> undisplayedIndexList, List<Word> words) {
@@ -72,17 +62,15 @@ class Word {
   }
 
   static updateWord(Word? originalWord, Word updatedWord) {
-    final words = WordStorage.box.words;
+    final words = flashCardController.words;
     if (originalWord != null) {
       words.remove(originalWord);
     }
     words.add(updatedWord);
-    WordStorage.box.words = words;
+    flashCardController.words = words;
   }
 
   static removeWord(Word word) {
-    final words = WordStorage.box.words;
-    words.remove(word);
-    WordStorage.box.words = words;
+    flashCardController.words.remove(word);
   }
 }
