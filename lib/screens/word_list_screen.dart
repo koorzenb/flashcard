@@ -9,31 +9,31 @@ class WordListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WordStorage.box.words.sort(((firstWord, secondWord) => firstWord.translation.compareTo(secondWord.translation)));
+    final wordList = [...WordStorage.box.words];
+    wordList.sort(((firstWord, secondWord) => firstWord.translation.compareTo(secondWord.translation)));
 
     return Scaffold(
       appBar: AppBar(title: const Text('Flashy')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(children: [
-          ...WordStorage.box.words.map(
-            (word) => GestureDetector(
-              onTap: () async => await Get.to(() => UpdateScreen(word: word)),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text(word.translation),
-                    subtitle: Text(word.hebrew),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                ],
-              ),
+        child: ListView.builder(
+          itemCount: wordList.length,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () async => await Get.to(() => UpdateScreen(word: wordList[index])),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text(wordList[index].translation),
+                  subtitle: Text(wordList[index].hebrew),
+                ),
+                const Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
+              ],
             ),
           ),
-        ]),
+        ),
       ),
     );
   }
