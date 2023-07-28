@@ -5,9 +5,7 @@ import '../models/word.dart';
 import '../screens/update_screen.dart';
 
 class FlashCard extends StatefulWidget {
-  final Word word;
-
-  const FlashCard({required this.word, super.key});
+  const FlashCard({super.key});
 
   @override
   State<FlashCard> createState() => _FlashCardState();
@@ -19,7 +17,7 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   void initState() {
-    displayedWord = widget.word;
+    // displayedWord = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word, thing');
     super.initState();
   }
 

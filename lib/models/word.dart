@@ -80,9 +80,9 @@ class Word {
     WordStorage.box.words = words;
   }
 
-  static removeWord(Word word) {
-    final words = WordStorage.box.words;
-    words.remove(word);
+  static removeWord(Word wordToDelete) {
+    final words = WordStorage.box.words.toList();
+    words.removeWhere((word) => word.hebrew == wordToDelete.hebrew);
     WordStorage.box.words = words;
   }
 }

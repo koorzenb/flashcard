@@ -15,8 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Word word = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: const MainDrawer(),
       body: Center(
-        child: FlashCard(word: word),
+        child: FlashCard(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async => await Get.to(() => const UpdateScreen()), // TODO: rather use Get.dialog with background blur
