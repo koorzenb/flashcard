@@ -22,5 +22,5 @@ class WordStorage {
 
   static const String _kWordListJsonKey = 'wordListJson';
   List<Word> get words => Word.listFromJsonList(jsonDecode(_box.read(_kWordListJsonKey) ?? '[]'));
-  set words(List<Word> value) => _box.write(_kWordListJsonKey, jsonEncode(value));
+  set words(List<Word> value) => _box.write(_kWordListJsonKey, jsonEncode(value)); // TODO: sort after adding
 }

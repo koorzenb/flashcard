@@ -18,12 +18,12 @@ class _UpdateScreenState extends State<UpdateScreen> {
   final _pronunciationTextController = TextEditingController();
   final _translationTextController = TextEditingController();
   final _attributesTextController = TextEditingController();
+
   bool _isLoading = false;
   Word? originalWord;
 
   @override
   void initState() {
-    // TODO: implement initState
     if (widget.word != null) {
       originalWord = widget.word;
       setState(() {
@@ -36,6 +36,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
         }
       });
     }
+    super.initState();
   }
 
   @override
