@@ -17,7 +17,7 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   void initState() {
-    // displayedWord = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word, thing');
+    displayedWord = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word, thing');
     super.initState();
   }
 
