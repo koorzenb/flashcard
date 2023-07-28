@@ -38,49 +38,47 @@ class _FlashCardState extends State<FlashCard> {
         _showBody = false;
         debugPrint(displayedWord.translation);
       }),
-      child: GestureDetector(
-        onLongPress: () async {
-          final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
-          if (updatedWord != null) {
-            setState(
-              () {
-                displayedWord = updatedWord;
-              },
-            );
-          }
-        },
-        child: Card(
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  displayedWord.hebrew,
-                  style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
-                ),
-                AnimatedOpacity(
-                  opacity: _showBody ? 1.0 : 0.0,
-                  duration: _showBody ? const Duration(milliseconds: 500) : Duration.zero,
-                  child: Column(children: [
+      onLongPress: () async {
+        final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
+        if (updatedWord != null) {
+          setState(
+            () {
+              displayedWord = updatedWord;
+            },
+          );
+        }
+      },
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                displayedWord.hebrew,
+                style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
+              ),
+              AnimatedOpacity(
+                opacity: _showBody ? 1.0 : 0.0,
+                duration: _showBody ? const Duration(milliseconds: 500) : Duration.zero,
+                child: Column(children: [
+                  Text(
+                    displayedWord.pronunciation,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    displayedWord.translation,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  if (displayedWord.attributes != null)
                     Text(
-                      displayedWord.pronunciation,
-                      style: const TextStyle(fontSize: 16),
+                      displayedWord.attributes!,
+                      style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
                     ),
-                    Text(
-                      displayedWord.translation,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                    if (displayedWord.attributes != null)
-                      Text(
-                        displayedWord.attributes!,
-                        style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
-                      ),
-                  ]),
-                )
-              ],
-            ),
+                ]),
+              )
+            ],
           ),
         ),
       ),
