@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import '../models/word.dart';
@@ -23,12 +24,10 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   Widget build(BuildContext context) {
-    _delaySnowingTranslation();
-
     return GestureDetector(
       onTap: () => setState(() {
         displayedWord = Word.getWord();
-        _showBody = false;
+        _showBody = true;
       }),
       onLongPress: () async => await _updateWord(),
       child: Card(
@@ -42,9 +41,7 @@ class _FlashCardState extends State<FlashCard> {
                 displayedWord.hebrew,
                 style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
               ),
-              AnimatedOpacity(
-                opacity: _showBody ? 1.0 : 0.0,
-                duration: _showBody ? const Duration(milliseconds: 500) : Duration.zero,
+              Animate(
                 child: Column(children: [
                   Text(
                     displayedWord.pronunciation,
@@ -59,23 +56,13 @@ class _FlashCardState extends State<FlashCard> {
                       displayedWord.attributes!,
                       style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
                     ),
-                ]),
-              )
+                ]).animate().fadeIn(curve: Curves.easeIn, delay: const Duration(seconds: 2)).callback(callback: (_) => _showBody = false),
+              ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _delaySnowingTranslation() {
-    if (!_showBody) {
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          _showBody = true;
-        });
-      });
-    }
   }
 
   Future<void> _updateWord() async {
