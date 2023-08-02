@@ -17,20 +17,35 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   void initState() {
-    displayedWord = Word.getWord();
+    displayedWord = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word, thing');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _delaySnowingTranslation();
-
+    if (!_showBody) {
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() {
+          _showBody = true;
+        });
+      });
+    }
     return GestureDetector(
       onTap: () => setState(() {
         displayedWord = Word.getWord();
         _showBody = false;
+        debugPrint(displayedWord.translation);
       }),
-      onLongPress: () async => await _updateWord(),
+      onLongPress: () async {
+        final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
+        if (updatedWord != null) {
+          setState(
+            () {
+              displayedWord = updatedWord;
+            },
+          );
+        }
+      },
       child: Card(
         elevation: 5,
         child: Padding(
@@ -66,26 +81,5 @@ class _FlashCardState extends State<FlashCard> {
         ),
       ),
     );
-  }
-
-  void _delaySnowingTranslation() {
-    if (!_showBody) {
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          _showBody = true;
-        });
-      });
-    }
-  }
-
-  Future<void> _updateWord() async {
-    final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
-    if (updatedWord != null) {
-      setState(
-        () {
-          displayedWord = updatedWord;
-        },
-      );
-    }
   }
 }
