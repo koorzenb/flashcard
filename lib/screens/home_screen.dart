@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../models/word.dart';
 import '../widgets/flash_card.dart';
 import '../widgets/main_drawer.dart';
 import 'update_screen.dart';
@@ -29,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: const MainDrawer(),
-      body: Center(
+      body: const Center(
         child: FlashCard(),
       ),
       floatingActionButton: FloatingActionButton(
