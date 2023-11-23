@@ -1,5 +1,6 @@
+import 'package:flashcard/controllers/flash_card_controller.dart';
+import 'package:flashcard/logic/word_logic.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import '../models/word.dart';
@@ -18,51 +19,85 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   void initState() {
-    displayedWord = Word.getWord();
+    displayedWord = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _delayShowingTranslation();
+
     return GestureDetector(
-      onTap: () => setState(() {
-        displayedWord = Word.getWord();
-        _showBody = true;
-      }),
-      onLongPress: () async => await _updateWord(),
-      child: Card(
-        elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                displayedWord.hebrew,
-                style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
-              ),
-              Animate(
-                child: Column(children: [
-                  Text(
-                    displayedWord.pronunciation,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    displayedWord.translation,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  if (displayedWord.attributes != null)
+      onTap: _onTap,
+      onLongPress: _onLongPress,
+      child: GetBuilder<FlashCardController>(builder: (flashCardController) {
+        // need controller here to update word list after a deletion
+        return Card(
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  displayedWord.hebrew,
+                  style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
+                ),
+                AnimatedOpacity(
+                  opacity: _showBody ? 1.0 : 0.0,
+                  duration: _showBody ? const Duration(milliseconds: 500) : Duration.zero,
+                  child: Column(children: [
                     Text(
-                      displayedWord.attributes!,
-                      style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
+                      displayedWord.pronunciation,
+                      style: const TextStyle(fontSize: 16),
                     ),
-                ]).animate().fadeIn(curve: Curves.easeIn, delay: const Duration(seconds: 2)).callback(callback: (_) => _showBody = false),
-              ),
-            ],
+                    Text(
+                      displayedWord.translation,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey), // TODO: move to theme
+                    ),
+                    if (displayedWord.attributes != null)
+                      Text(
+                        displayedWord.attributes!,
+                        style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
+                      ),
+                  ]),
+                )
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
+  }
+
+  _onTap() {
+    setState(() {
+      displayedWord = WordLogic(FlashCardController.getOrPut.words).word;
+      _showBody = false;
+      debugPrint(displayedWord.translation);
+    });
+  }
+
+  _onLongPress() async {
+    final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
+    if (updatedWord != null) {
+      FlashCardController.getOrPut.updateDisplayedWord();
+      setState(
+        () {
+          displayedWord = updatedWord;
+        },
+      );
+    }
+  }
+
+  _delayShowingTranslation() {
+    if (!_showBody) {
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() {
+          _showBody = true;
+        });
+      });
+    }
   }
 
   Future<void> _updateWord() async {
