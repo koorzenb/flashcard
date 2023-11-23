@@ -1,4 +1,5 @@
 import 'package:flashcard/controllers/flash_card_controller.dart';
+import 'package:flashcard/logic/word_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -71,7 +72,7 @@ class _FlashCardState extends State<FlashCard> {
 
   _onTap() {
     setState(() {
-      displayedWord = Word.getWord();
+      displayedWord = WordLogic(FlashCardController.getOrPut.words).word;
       _showBody = false;
       debugPrint(displayedWord.translation);
     });

@@ -7,8 +7,6 @@ class Word {
   final String pronunciation;
   final String translation;
   final String? attributes;
-  static List<int> indexListOfUndisplayedWords = []; // index of words that has not been displayed
-  static final FlashCardController flashCardController = FlashCardController.getOrPut;
 
   Word({required this.hebrew, required this.pronunciation, required this.translation, this.attributes = ''});
 
@@ -38,39 +36,5 @@ class Word {
     } catch (_) {
       return [];
     }
-  }
-
-  static Word getWord() {
-    // final words = WordStorage.box.words;
-
-    if (indexListOfUndisplayedWords.isEmpty) {
-      _initializeUndisplayedIndexList(indexListOfUndisplayedWords, flashCardController.words);
-    }
-
-    // randomize showing of words and remove previous shown words from list until all words are shown
-    final randomIndex = Random().nextInt(indexListOfUndisplayedWords.length);
-    final wordIndex = indexListOfUndisplayedWords[randomIndex];
-    indexListOfUndisplayedWords.remove(wordIndex);
-
-    return flashCardController.words[wordIndex];
-  }
-
-  static void _initializeUndisplayedIndexList(List<int> undisplayedIndexList, List<Word> words) {
-    for (var i = 0; i < words.length; i++) {
-      undisplayedIndexList.add(i);
-    }
-  }
-
-  static updateWord(Word? originalWord, Word updatedWord) {
-    final words = flashCardController.words;
-    if (originalWord != null) {
-      words.remove(originalWord);
-    }
-    words.add(updatedWord);
-    flashCardController.words = words;
-  }
-
-  static removeWord(Word word) {
-    flashCardController.words.remove(word);
   }
 }
