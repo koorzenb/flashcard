@@ -27,7 +27,24 @@ class FlashCardController extends GetxController {
     update();
   }
 
-  void updateWords() {}
+  void deleteWord(Word word) {
+    _words.remove(word);
+    WordStorage.box.words = _words;
+    update();
+  }
+
+  void addWord(Word word) {
+    _words.add(word);
+    WordStorage.box.words = _words;
+    update();
+  }
+
+  void updateWord(Word originalWord, Word updatedWord) {
+    final index = _words.indexOf(originalWord);
+    _words[index] = updatedWord;
+    WordStorage.box.words = _words;
+    update();
+  }
 
   void updateDisplayedWord() {}
 }

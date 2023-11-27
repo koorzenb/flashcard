@@ -1,3 +1,4 @@
+import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,7 +50,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   }
 
   _deleteWord() {
-    Word.removeWord(widget.word!);
+    FlashCardController.getOrPut.deleteWord(widget.word!);
     Get.back();
   }
 
@@ -69,13 +70,19 @@ class _UpdateScreenState extends State<UpdateScreen> {
       attributes: _attributesTextController.text,
     );
 
-    Word.updateWord(originalWord, word);
+    final flashCardController = FlashCardController.getOrPut;
+
+    if (originalWord == null) {
+      flashCardController.addWord(word);
+    } else {
+      flashCardController.updateWord(originalWord!, word);
+    }
 
     setState(() {
       _isLoading = false;
     });
 
-    Get.back(result: word);
+    Get.back();
   }
 
   @override
