@@ -55,3 +55,4 @@ windows/flutter/generated_plugins.cmake
 macos/flutter/GeneratedPluginRegistrant.swift
 linux/flutter/generated_plugins.cmake
 linux/Flutter/generated_plugin_registrant.cc
+.env
