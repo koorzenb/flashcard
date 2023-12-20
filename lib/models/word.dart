@@ -1,7 +1,3 @@
-import 'dart:math';
-
-import 'package:flashcard/controllers/flash_card_controller.dart';
-
 class Word {
   final String hebrew;
   final String pronunciation;
