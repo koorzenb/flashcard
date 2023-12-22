@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flashcard/word_storage.dart';
 import 'package:get/get.dart';
 
@@ -27,16 +28,33 @@ class FlashCardController extends GetxController {
     update();
   }
 
-  void deleteWord(Word word) {
-    _words.remove(word);
+  void deleteWord(Word word) async {
+    // _words.remove(word);
     WordStorage.box.words = _words;
     update();
+
+    try {
+      final collectionReference = FirebaseFirestore.instance.collection('words');
+      QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: word.hebrew).get();
+
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        doc.reference.delete();
+      }
+    } catch (e) {
+      print('error: $e');
+    }
   }
 
   void addWord(Word word) {
     _words.add(word);
     WordStorage.box.words = _words;
     update();
+    FirebaseFirestore.instance.collection('words').add({
+      'hebrew': word.hebrew,
+      'pronunciation': word.pronunciation,
+      'translation': word.translation,
+      "attributes": word.attributes,
+    });
   }
 
   void updateWord(Word originalWord, Word updatedWord) {
