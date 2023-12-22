@@ -57,11 +57,30 @@ class FlashCardController extends GetxController {
     });
   }
 
-  void updateWord(Word originalWord, Word updatedWord) {
+  void updateWord(Word originalWord, Word updatedWord) async {
     final index = _words.indexOf(originalWord);
     _words[index] = updatedWord;
     WordStorage.box.words = _words;
     update();
+    // TODO: fix Firebase implementation - add a dev env first so that you do not accidentally delete prod data
+
+    try {
+      final collectionReference = FirebaseFirestore.instance.collection('words');
+      QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: originalWord.hebrew).get();
+
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        doc.reference.update(
+          {
+            'hebrew': updatedWord.hebrew,
+            'pronunciation': updatedWord.pronunciation,
+            'translation': updatedWord.translation,
+            "attributes": updatedWord.attributes,
+          },
+        );
+      }
+    } catch (e) {
+      print('error: $e');
+    }
   }
 
   void updateDisplayedWord() {}
