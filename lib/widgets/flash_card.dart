@@ -19,7 +19,7 @@ class _FlashCardState extends State<FlashCard> {
 
   @override
   void initState() {
-    displayedWord = Word(hebrew: "דָבָר", pronunciation: 'de-var', translation: 'word');
+    displayedWord = Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
     super.initState();
   }
 
@@ -41,7 +41,7 @@ class _FlashCardState extends State<FlashCard> {
               children: [
                 Text(
                   displayedWord.hebrew,
-                  style: const TextStyle(fontSize: 45, fontFamily: "Frank Ruhl Libre"),
+                  style: const TextStyle(fontSize: 45, fontFamily: 'Frank Ruhl Libre'),
                 ),
                 AnimatedOpacity(
                   opacity: _showBody ? 1.0 : 0.0,

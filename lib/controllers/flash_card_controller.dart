@@ -53,7 +53,7 @@ class FlashCardController extends GetxController {
       'hebrew': word.hebrew,
       'pronunciation': word.pronunciation,
       'translation': word.translation,
-      "attributes": word.attributes,
+      'attributes': word.attributes,
     });
   }
 
@@ -62,19 +62,20 @@ class FlashCardController extends GetxController {
     _words[index] = updatedWord;
     WordStorage.box.words = _words;
     update();
-    // TODO: fix Firebase implementation - add a dev env first so that you do not accidentally delete prod data
+
+    // TODO: on launch, if storage is empty, get latest list of words from firestore
 
     try {
       final collectionReference = FirebaseFirestore.instance.collection('words');
       QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: originalWord.hebrew).get();
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        doc.reference.update(
+        await doc.reference.update(
           {
             'hebrew': updatedWord.hebrew,
             'pronunciation': updatedWord.pronunciation,
             'translation': updatedWord.translation,
-            "attributes": updatedWord.attributes,
+            'attributes': updatedWord.attributes,
           },
         );
       }

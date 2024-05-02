@@ -10,7 +10,7 @@ class Word {
         'hebrew': hebrew,
         'pronunciation': pronunciation,
         'translation': translation,
-        "attributes": attributes,
+        'attributes': attributes,
       };
 
   static List<dynamic> arrayToJsonList(List<Word> words) {
@@ -22,7 +22,7 @@ class Word {
   factory Word.fromJson(Map<String, dynamic> json) => Word(
         hebrew: json['hebrew'],
         pronunciation: json['pronunciation'],
-        translation: json["translation"],
+        translation: json['translation'],
         attributes: json['attributes'],
       );
 

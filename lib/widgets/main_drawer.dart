@@ -27,7 +27,7 @@ class MainDrawer extends StatelessWidget {
           ),
           const ListTile(),
           DrawerItem(
-            title: "Word List",
+            title: 'Word List',
             onTap: () => Get.to(() => const WordListScreen()),
           )
         ],
