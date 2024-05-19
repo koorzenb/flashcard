@@ -21,6 +21,7 @@ class WordStorage {
   Future<void> erase() async => await _box.erase();
 
   static const String _kWordListJsonKey = 'wordListJson';
-  List<Word> get words => Word.listFromJsonList(jsonDecode(_box.read(_kWordListJsonKey) ?? '[]'));
-  set words(List<Word> value) => _box.write(_kWordListJsonKey, jsonEncode(value)); // TODO: sort after adding
+  List<Word> get words =>
+      Word.listFromJsonList(jsonDecode(_box.read(_kWordListJsonKey) ?? '[{"hebrew":"דָבָר","pronunciation":"de-var","translation":"word","attributes":""}]'));
+  set words(List<Word> value) => _box.write(_kWordListJsonKey, jsonEncode(value));
 }

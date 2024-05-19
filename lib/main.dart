@@ -11,7 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  WordStorage.init();
+  await WordStorage.init();
   // WordStorage.box.erase();
   runApp(const Flashy());
 }
