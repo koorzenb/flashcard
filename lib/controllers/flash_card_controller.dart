@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcard/services/flashcard_api_service.dart';
 import 'package:flashcard/word_storage.dart';
 import 'package:get/get.dart';
 
@@ -49,12 +50,7 @@ class FlashCardController extends GetxController {
     _words.add(word);
     WordStorage.box.words = _words;
     update();
-    FirebaseFirestore.instance.collection('words').add({
-      'hebrew': word.hebrew,
-      'pronunciation': word.pronunciation,
-      'translation': word.translation,
-      'attributes': word.attributes,
-    });
+    FlashCardApiService.addWord(word);
   }
 
   void updateWord(Word originalWord, Word updatedWord) async {

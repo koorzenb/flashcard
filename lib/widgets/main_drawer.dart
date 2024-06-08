@@ -1,6 +1,8 @@
 import 'package:flashcard/screens/word_list_screen.dart';
+import 'package:flashcard/services/flashcard_api_service.dart';
 import 'package:flashcard/widgets/drawer_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -22,6 +24,11 @@ class MainDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white),
             ),
           ),
+
+          // gradle fix requires removal of flutter fire entries. I've done a flutter clean already and still the fix is required. Might as well start a new flutter project. Make an old directory of this, then create new project, copy git , install dependencies from scratch, then copy lib folder.
+
+          // create a TODO - 'when done with this, ask ChatGPT to give Flutter implementation of design patterns'
+
           const SizedBox(
             height: 20,
           ),
@@ -29,7 +36,8 @@ class MainDrawer extends StatelessWidget {
           DrawerItem(
             title: 'Word List',
             onTap: () => Get.to(() => const WordListScreen()),
-          )
+          ),
+          const DrawerItem(title: 'Import words', onTap: FlashCardApiService.importWords),
         ],
       ),
     );

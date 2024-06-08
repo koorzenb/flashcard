@@ -1,27 +1,31 @@
 import 'dart:convert';
 
-import 'package:get_storage/get_storage.dart';
-
-import 'models/word.dart';
+import 'package:flashcard/models/word.dart';
+import 'package:hive/hive.dart';
 
 class WordStorage {
   static const _kStorageName = 'WordStorage';
-  static WordStorage? _wordBox;
+  static WordStorage? _wordStorage;
+  static late Box _staticBox;
 
-  static Future<void> init() async => await GetStorage.init(_kStorageName);
+  static Future<void> init() async => _staticBox = await Hive.openBox(_kStorageName);
+
+  static Future<void> close() async => await _staticBox.close();
 
   static WordStorage get box {
-    _wordBox ??= WordStorage._(GetStorage(_kStorageName));
-    return _wordBox!;
+    _wordStorage ??= WordStorage._(_staticBox);
+    return _wordStorage!;
   }
 
-  final GetStorage _box;
+  final Box _box;
   WordStorage._(this._box);
 
-  Future<void> erase() async => await _box.erase();
+  Future<void> erase() async {
+    await _box.deleteAll(_box.keys);
+  }
 
   static const String _kWordListJsonKey = 'wordListJson';
   List<Word> get words =>
-      Word.listFromJsonList(jsonDecode(_box.read(_kWordListJsonKey) ?? '[{"hebrew":"דָבָר","pronunciation":"de-var","translation":"word","attributes":""}]'));
-  set words(List<Word> value) => _box.write(_kWordListJsonKey, jsonEncode(value));
+      Word.listFromJsonList(jsonDecode(_box.get(_kWordListJsonKey) ?? '[{"hebrew":"דָבָר","pronunciation":"de-var","translation":"word","attributes":""}]'));
+  set words(List<Word> value) => _box.put(_kWordListJsonKey, jsonEncode(value));
 }
