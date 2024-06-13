@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flashcard/models/word.dart';
 
 class WordLogic {
-  List<Word> _allWords = [];
-  List<Word> _unReadWords = [];
+  late List<Word> _allWords;
+  static List<Word> _unReadWords = [];
 
   WordLogic(List<Word> words) {
-    _allWords = words;
+    _allWords = words.toList();
   }
 
   Word get word {

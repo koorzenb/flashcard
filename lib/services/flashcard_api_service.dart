@@ -12,8 +12,8 @@ class FlashCardApiService {
     // to implement
   }
 
-  static void addWord(Word word) {
-    FirebaseFirestore.instance.collection('words').add({
+  static void addWord(Word word) async {
+    await FirebaseFirestore.instance.collection('words').add({
       'hebrew': word.hebrew,
       'pronunciation': word.pronunciation,
       'translation': word.translation,
