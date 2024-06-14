@@ -60,3 +60,6 @@ linux/Flutter/generated_plugin_registrant.cc
 # FVM Version Cache
 .fvm/
 .fvmrc
+
+# release builds
+/release/
