@@ -1,10 +1,6 @@
 import 'package:flashcard/controllers/flash_card_controller.dart';
-import 'package:flashcard/logic/word_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../models/word.dart';
-import '../screens/update_screen.dart';
 
 class FlashCard extends StatefulWidget {
   const FlashCard({super.key});
@@ -14,25 +10,23 @@ class FlashCard extends StatefulWidget {
 }
 
 class _FlashCardState extends State<FlashCard> {
-  late Word displayedWord;
   bool _showBody = false;
-
-  @override
-  void initState() {
-    displayedWord = Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     _delayShowingTranslation();
 
-    return GestureDetector(
-      onTap: _onTap,
-      onLongPress: _onLongPress,
-      child: GetBuilder<FlashCardController>(builder: (flashCardController) {
+    return GetBuilder<FlashCardController>(builder: (flashCardController) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            _showBody = false;
+            flashCardController.onTap();
+          });
+        },
+        onLongPress: flashCardController.onLongPress,
         // need controller here to update word list after a deletion
-        return Card(
+        child: Card(
           elevation: 5,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -40,7 +34,7 @@ class _FlashCardState extends State<FlashCard> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  displayedWord.hebrew,
+                  flashCardController.displayedWord.hebrew,
                   style: const TextStyle(fontSize: 45, fontFamily: 'Frank Ruhl Libre'),
                 ),
                 AnimatedOpacity(
@@ -48,16 +42,16 @@ class _FlashCardState extends State<FlashCard> {
                   duration: _showBody ? const Duration(milliseconds: 500) : Duration.zero,
                   child: Column(children: [
                     Text(
-                      displayedWord.pronunciation,
+                      flashCardController.displayedWord.pronunciation,
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      displayedWord.translation,
+                      flashCardController.displayedWord.translation,
                       style: const TextStyle(fontSize: 12, color: Colors.grey), // TODO: move to theme
                     ),
-                    if (displayedWord.attributes != null)
+                    if (flashCardController.displayedWord.attributes != null)
                       Text(
-                        displayedWord.attributes!,
+                        flashCardController.displayedWord.attributes!,
                         style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
                       ),
                   ]),
@@ -65,29 +59,9 @@ class _FlashCardState extends State<FlashCard> {
               ],
             ),
           ),
-        );
-      }),
-    );
-  }
-
-  _onTap() {
-    setState(() {
-      displayedWord = WordLogic(FlashCardController.getOrPut.words).word;
-      _showBody = false;
-      debugPrint(displayedWord.translation);
-    });
-  }
-
-  _onLongPress() async {
-    final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
-    if (updatedWord != null) {
-      FlashCardController.getOrPut.updateDisplayedWord();
-      setState(
-        () {
-          displayedWord = updatedWord;
-        },
+        ),
       );
-    }
+    });
   }
 
   _delayShowingTranslation() {
@@ -97,17 +71,6 @@ class _FlashCardState extends State<FlashCard> {
           _showBody = true;
         });
       });
-    }
-  }
-
-  Future<void> _updateWord() async {
-    final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
-    if (updatedWord != null) {
-      setState(
-        () {
-          displayedWord = updatedWord;
-        },
-      );
     }
   }
 }

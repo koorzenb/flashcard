@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flashcard/services/flashcard_api_service.dart';
 import 'package:flashcard/word_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
+import '../logic/word_logic.dart';
 import '../models/word.dart';
+import '../screens/update_screen.dart';
 
 class FlashCardController extends GetxController {
   late List<Word> _words;
+  Word displayedWord = Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
 
   static FlashCardController get getOrPut {
     try {
@@ -80,5 +84,16 @@ class FlashCardController extends GetxController {
     }
   }
 
-  void updateDisplayedWord() {}
+  void onTap() {
+    displayedWord = WordLogic(FlashCardController.getOrPut.words).word;
+    debugPrint(displayedWord.translation);
+  }
+
+  void onLongPress() async {
+    final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
+    if (updatedWord != null) {
+      displayedWord = updatedWord;
+      update();
+    }
+  }
 }
