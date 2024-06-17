@@ -85,7 +85,7 @@ class FlashCardController extends GetxController {
   }
 
   void onTap() {
-    displayedWord = WordLogic(FlashCardController.getOrPut.words).word;
+    displayedWord = WordLogic(FlashCardController.getOrPut.words).getWord();
     debugPrint(displayedWord.translation);
   }
 
