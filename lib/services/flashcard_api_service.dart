@@ -10,6 +10,7 @@ class FlashCardApiService {
     // add Drawer item
   }
 
+// consider prependng with 'factory' and  moving to Word class
   static List<Map<String, dynamic>> _toJson(QuerySnapshot querySnapshot) {
     final List<Map<String, dynamic>> json = [];
 
