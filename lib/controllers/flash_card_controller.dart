@@ -48,6 +48,8 @@ class FlashCardController extends GetxController {
     } catch (e) {
       print('error: $e');
     }
+
+    Get.back();
   }
 
   void addWord(Word word) {
@@ -58,10 +60,7 @@ class FlashCardController extends GetxController {
   }
 
   void updateWord(Word originalWord, Word updatedWord) async {
-    final index = _words.indexOf(originalWord);
-    _words[index] = updatedWord;
-    WordStorage.box.words = _words;
-    update();
+    _words[_words.indexWhere((element) => element.hebrew == originalWord.hebrew && element.pronunciation == originalWord.pronunciation)] = updatedWord;
 
     // TODO: on launch, if storage is empty, get latest list of words from firestore
 
@@ -82,6 +81,7 @@ class FlashCardController extends GetxController {
     } catch (e) {
       print('error: $e');
     }
+    update();
   }
 
   void onTap() {
