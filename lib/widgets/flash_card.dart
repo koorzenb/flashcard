@@ -49,11 +49,12 @@ class _FlashCardState extends State<FlashCard> {
                       flashCardController.displayedWord.translation,
                       style: const TextStyle(fontSize: 12, color: Colors.grey), // TODO: move to theme
                     ),
-                    if (flashCardController.displayedWord.attributes != null)
-                      Text(
-                        flashCardController.displayedWord.attributes!,
-                        style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
-                      ),
+                    flashCardController.displayedWord.attributes.isNotEmpty
+                        ? Text(
+                            flashCardController.displayedWord.attributes,
+                            style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
+                          )
+                        : SizedBox(),
                   ]),
                 )
               ],

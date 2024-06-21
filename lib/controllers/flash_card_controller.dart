@@ -22,6 +22,19 @@ class FlashCardController extends GetxController {
 
   FlashCardController._() {
     _words = WordStorage.box.words;
+
+    if (_words.isEmpty) {
+      FlashCardApiService.getWords().then((words) {
+        if (words.isEmpty) {
+          // {"id":"id","hebrew":"דָבָר","pronunciation":"de-var","translation":"word","attributes":""};
+          words = [Word(id: 'id', hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word', attributes: '')];
+        }
+
+        _words = words;
+        WordStorage.box.words = _words;
+        update();
+      });
+    }
   }
 
   List<Word> get words {
@@ -60,9 +73,7 @@ class FlashCardController extends GetxController {
   }
 
   void updateWord(Word originalWord, Word updatedWord) async {
-    _words[_words.indexWhere((element) => element.hebrew == originalWord.hebrew && element.pronunciation == originalWord.pronunciation)] = updatedWord;
-
-    // TODO: on launch, if storage is empty, get latest list of words from firestore
+    _words[_words.indexWhere((element) => element.id == originalWord.id)] = updatedWord;
 
     try {
       final collectionReference = FirebaseFirestore.instance.collection('words');

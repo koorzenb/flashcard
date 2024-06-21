@@ -31,10 +31,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
         _hebrewTextController.text = widget.word!.hebrew;
         _pronunciationTextController.text = widget.word!.pronunciation;
         _translationTextController.text = widget.word!.translation;
-
-        if (widget.word!.attributes != null) {
-          _attributesTextController.text = widget.word!.attributes!;
-        }
+        _attributesTextController.text = widget.word!.attributes;
       });
     }
     super.initState();

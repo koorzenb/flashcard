@@ -1,4 +1,4 @@
-import 'package:flashcard/word_storage.dart';
+import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +9,7 @@ class WordListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wordList = [...WordStorage.box.words];
+    final wordList = [...FlashCardController.getOrPut.words];
     wordList.sort(((firstWord, secondWord) => firstWord.translation.compareTo(secondWord.translation)));
 
     return Scaffold(

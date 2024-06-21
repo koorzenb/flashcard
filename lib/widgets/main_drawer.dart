@@ -2,7 +2,6 @@ import 'package:flashcard/screens/word_list_screen.dart';
 import 'package:flashcard/services/flashcard_api_service.dart';
 import 'package:flashcard/widgets/drawer_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 class MainDrawer extends StatelessWidget {

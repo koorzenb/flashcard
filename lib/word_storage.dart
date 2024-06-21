@@ -25,7 +25,6 @@ class WordStorage {
   }
 
   static const String _kWordListJsonKey = 'wordListJson';
-  List<Word> get words =>
-      Word.listFromJsonList(jsonDecode(_box.get(_kWordListJsonKey) ?? '[{"hebrew":"דָבָר","pronunciation":"de-var","translation":"word","attributes":""}]'));
+  List<Word> get words => Word.listFromJsonList(jsonDecode(_box.get(_kWordListJsonKey) ?? '[]'));
   set words(List<Word> value) => _box.put(_kWordListJsonKey, jsonEncode(value));
 }

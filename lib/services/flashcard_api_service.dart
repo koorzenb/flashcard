@@ -20,4 +20,22 @@ class FlashCardApiService {
       'attributes': word.attributes,
     });
   }
+
+  static Future<List<Word>> getWords() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('words').get();
+
+    List<Word> words = [];
+
+    snapshot.docs.forEach((doc) {
+      words.add(Word(
+        id: doc.id,
+        hebrew: doc['hebrew'],
+        pronunciation: doc['pronunciation'],
+        translation: doc['translation'],
+        attributes: doc['attributes'],
+      ));
+    });
+
+    return words;
+  }
 }
