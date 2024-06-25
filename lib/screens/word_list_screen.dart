@@ -2,7 +2,7 @@ import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'update_screen.dart';
+import 'word_details_screen.dart';
 
 class WordListScreen extends StatelessWidget {
   const WordListScreen({super.key});
@@ -19,7 +19,7 @@ class WordListScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: wordList.length,
           itemBuilder: (context, index) => GestureDetector(
-            onTap: () async => await Get.to(() => UpdateScreen(word: wordList[index])),
+            onTap: () async => await Get.to(() => WordDetailsScreen(word: wordList[index])),
             child: Column(
               children: [
                 ListTile(

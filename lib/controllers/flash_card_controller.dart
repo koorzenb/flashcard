@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 import '../logic/word_logic.dart';
 import '../models/word.dart';
-import '../screens/update_screen.dart';
+import '../screens/word_details_screen.dart';
 
 class FlashCardController extends GetxController {
   late List<Word> _words;
@@ -72,26 +72,10 @@ class FlashCardController extends GetxController {
     FlashCardApiService.addWord(word);
   }
 
-  void updateWord(Word originalWord, Word updatedWord) async {
-    _words[_words.indexWhere((element) => element.id == originalWord.id)] = updatedWord;
-
-    try {
-      final collectionReference = FirebaseFirestore.instance.collection('words');
-      QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: originalWord.hebrew).get();
-
-      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        await doc.reference.update(
-          {
-            'hebrew': updatedWord.hebrew,
-            'pronunciation': updatedWord.pronunciation,
-            'translation': updatedWord.translation,
-            'attributes': updatedWord.attributes,
-          },
-        );
-      }
-    } catch (e) {
-      print('error: $e');
-    }
+  void updateWord(Word updatedWord) async {
+    _words[_words.indexWhere((element) => element.id == updatedWord.id)] = updatedWord;
+    WordStorage.box.words = _words;
+    FlashCardApiService.updateWord(updatedWord);
     update();
   }
 
@@ -101,7 +85,7 @@ class FlashCardController extends GetxController {
   }
 
   void onLongPress() async {
-    final updatedWord = await Get.to(() => UpdateScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
+    final updatedWord = await Get.to(() => WordDetailsScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
     if (updatedWord != null) {
       displayedWord = updatedWord;
       update();

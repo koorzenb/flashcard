@@ -4,16 +4,16 @@ import 'package:get/get.dart';
 
 import '../models/word.dart';
 
-class UpdateScreen extends StatefulWidget {
-  final Word? word;
+class WordDetailsScreen extends StatefulWidget {
+  final Word word;
 
-  const UpdateScreen({this.word, super.key});
+  const WordDetailsScreen({this.word, super.key}); rather have an "AddScreen" and an "UpdateScreen". You can generalise the page content
 
   @override
-  State<UpdateScreen> createState() => _UpdateScreenState();
+  State<WordDetailsScreen> createState() => _WordDetailsScreenState();
 }
 
-class _UpdateScreenState extends State<UpdateScreen> {
+class _WordDetailsScreenState extends State<WordDetailsScreen> {
   final _form = GlobalKey<FormState>();
   final _hebrewTextController = TextEditingController();
   final _pronunciationTextController = TextEditingController();
@@ -25,16 +25,14 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
   @override
   void initState() {
-    if (widget.word != null) {
-      originalWord = widget.word;
-      setState(() {
-        _hebrewTextController.text = widget.word!.hebrew;
-        _pronunciationTextController.text = widget.word!.pronunciation;
-        _translationTextController.text = widget.word!.translation;
-        _attributesTextController.text = widget.word!.attributes;
-      });
-    }
-    super.initState();
+    originalWord = widget.word;
+    setState(() {
+      _hebrewTextController.text = widget.word.hebrew;
+      _pronunciationTextController.text = widget.word.pronunciation;
+      _translationTextController.text = widget.word.translation;
+      _attributesTextController.text = widget.word.attributes;
+    });
+      super.initState();
   }
 
   @override
@@ -82,9 +80,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          if (widget.word != null)
+          how can you have an update screen wihtout a word being passed in? Make Word non
             IconButton(
-              onPressed: () => FlashCardController.getOrPut.deleteWord(widget.word!),
+              onPressed: () => FlashCardController.getOrPut.deleteWord(widget.word),
               icon: const Icon(
                 Icons.delete,
                 color: Colors.white,
