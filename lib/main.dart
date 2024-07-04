@@ -14,7 +14,7 @@ void main() async {
   );
   await Hive.initFlutter();
   await WordStorage.init();
-  // WordStorage.box.erase();
+  // await WordStorage.box.erase();
   runApp(const Flashy());
 }
 

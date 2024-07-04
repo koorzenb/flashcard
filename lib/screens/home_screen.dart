@@ -2,6 +2,7 @@ import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../models/word.dart';
 import '../widgets/flash_card.dart';
 import '../widgets/main_drawer.dart';
 import 'word_details_screen.dart';
@@ -35,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FlashCard(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Get.to(() => WordDetailsScreen()), // TODO: rather use Get.dialog with background blur
+        onPressed: () async => await Get.to(() => WordDetailsScreen(
+            Word(hebrew: '', pronunciation: '', translation: '', attributes: '', isNew: true))), // TODO: rather use Get.dialog with background blur
         child: const Icon(
           Icons.add,
           color: Colors.white,

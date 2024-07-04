@@ -7,33 +7,34 @@ import 'word_details_screen.dart';
 class WordListScreen extends StatelessWidget {
   const WordListScreen({super.key});
 
+// get controller to correct reflect words - add a test word, delete and check for update
+
   @override
   Widget build(BuildContext context) {
-    final wordList = [...FlashCardController.getOrPut.words];
-    wordList.sort(((firstWord, secondWord) => firstWord.translation.compareTo(secondWord.translation)));
-
     return Scaffold(
       appBar: AppBar(title: const Text('Flashy')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: wordList.length,
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () async => await Get.to(() => WordDetailsScreen(word: wordList[index])),
-            child: Column(
-              children: [
-                ListTile(
-                  title: Text(wordList[index].translation),
-                  subtitle: Text(wordList[index].hebrew),
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
-              ],
+        child: GetBuilder<FlashCardController>(builder: (flashCardController) {
+          return ListView.builder(
+            itemCount: flashCardController.words.length,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () async => await Get.to(() => WordDetailsScreen(flashCardController.words[index])),
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Text(flashCardController.words[index].translation),
+                    subtitle: Text(flashCardController.words[index].hebrew),
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

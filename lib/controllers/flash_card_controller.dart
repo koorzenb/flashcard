@@ -26,7 +26,6 @@ class FlashCardController extends GetxController {
     if (_words.isEmpty) {
       FlashCardApiService.getWords().then((words) {
         if (words.isEmpty) {
-          // {"id":"id","hebrew":"דָבָר","pronunciation":"de-var","translation":"word","attributes":""};
           words = [Word(id: 'id', hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word', attributes: '')];
         }
 
@@ -38,7 +37,7 @@ class FlashCardController extends GetxController {
   }
 
   List<Word> get words {
-    return _words;
+    return WordStorage.box.words;
   }
 
   set words(List<Word> words) {
@@ -47,8 +46,8 @@ class FlashCardController extends GetxController {
   }
 
   void deleteWord(Word word) async {
-    // _words.remove(word);
-    WordStorage.box.words = _words;
+    _words.removeWhere((element) => element.hebrew == word.hebrew && element.translation == word.translation);
+    WordStorage.box.words = _words.toList();
     update();
 
     try {
@@ -56,7 +55,7 @@ class FlashCardController extends GetxController {
       QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: word.hebrew).get();
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        doc.reference.delete();
+        await doc.reference.delete();
       }
     } catch (e) {
       print('error: $e');
@@ -65,17 +64,21 @@ class FlashCardController extends GetxController {
     Get.back();
   }
 
-  void addWord(Word word) {
-    _words.add(word);
-    WordStorage.box.words = _words;
-    update();
-    FlashCardApiService.addWord(word);
+  void addWord(Word word) async {
+    final updatedWord = await FlashCardApiService.addWord(word);
+
+    if (updatedWord != null) {
+      _words.add(updatedWord);
+      _words.sort(((firstWord, secondWord) => firstWord.translation.compareTo(secondWord.translation)));
+      WordStorage.box.words = _words.toList();
+      update();
+    }
   }
 
-  void updateWord(Word updatedWord) async {
-    _words[_words.indexWhere((element) => element.id == updatedWord.id)] = updatedWord;
-    WordStorage.box.words = _words;
-    FlashCardApiService.updateWord(updatedWord);
+  void updateWord(Word word) async {
+    FlashCardApiService.updateWord(word);
+    _words[_words.indexWhere((element) => element.id == word.id)] = word;
+    WordStorage.box.words = _words.toList();
     update();
   }
 
@@ -85,7 +88,7 @@ class FlashCardController extends GetxController {
   }
 
   void onLongPress() async {
-    final updatedWord = await Get.to(() => WordDetailsScreen(word: displayedWord)); // TODO: consider having an setup mode - then hide update and add button
+    final updatedWord = await Get.to(() => WordDetailsScreen(displayedWord)); // TODO: consider having an setup mode - then hide update and add button
     if (updatedWord != null) {
       displayedWord = updatedWord;
       update();

@@ -12,13 +12,24 @@ class FlashCardApiService {
     // to implement
   }
 
-  static void addWord(Word word) async {
-    await FirebaseFirestore.instance.collection('words').add({
-      'hebrew': word.hebrew,
-      'pronunciation': word.pronunciation,
-      'translation': word.translation,
-      'attributes': word.attributes,
-    });
+  static Future<Word?> addWord(Word word) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance.collection('words').add({
+        'hebrew': word.hebrew,
+        'pronunciation': word.pronunciation,
+        'translation': word.translation,
+        'attributes': word.attributes,
+      });
+      return Word(
+        id: snapshot.id,
+        hebrew: word.hebrew,
+        pronunciation: word.pronunciation,
+        translation: word.translation,
+        attributes: word.attributes,
+      );
+    } catch (e) {
+      return null;
+    }
   }
 
   static Future<List<Word>> getWords() async {
@@ -37,5 +48,14 @@ class FlashCardApiService {
     });
 
     return words;
+  }
+
+  static void updateWord(Word word) {
+    FirebaseFirestore.instance.collection('words').doc(word.id).update({
+      'hebrew': word.hebrew,
+      'pronunciation': word.pronunciation,
+      'translation': word.translation,
+      'attributes': word.attributes,
+    });
   }
 }

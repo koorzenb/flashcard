@@ -7,7 +7,7 @@ import '../models/word.dart';
 class WordDetailsScreen extends StatefulWidget {
   final Word word;
 
-  const WordDetailsScreen({this.word, super.key}); rather have an "AddScreen" and an "UpdateScreen". You can generalise the page content
+  const WordDetailsScreen(this.word, {super.key});
 
   @override
   State<WordDetailsScreen> createState() => _WordDetailsScreenState();
@@ -32,7 +32,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
       _translationTextController.text = widget.word.translation;
       _attributesTextController.text = widget.word.attributes;
     });
-      super.initState();
+    super.initState();
   }
 
   @override
@@ -44,50 +44,18 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     _attributesTextController.dispose();
   }
 
-  _saveWord() {
-    if (!_form.currentState!.validate()) {
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    final word = Word(
-      hebrew: _hebrewTextController.text,
-      pronunciation: _pronunciationTextController.text,
-      translation: _translationTextController.text,
-      attributes: _attributesTextController.text,
-    );
-
-    final flashCardController = FlashCardController.getOrPut;
-
-    if (originalWord == null) {
-      flashCardController.addWord(word);
-    } else {
-      flashCardController.updateWord(originalWord!, word);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    Get.back();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          how can you have an update screen wihtout a word being passed in? Make Word non
-            IconButton(
-              onPressed: () => FlashCardController.getOrPut.deleteWord(widget.word),
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            )
+          IconButton(
+            onPressed: () => FlashCardController.getOrPut.deleteWord(widget.word),
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+          )
         ],
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text(
@@ -105,77 +73,111 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
                 child: GetBuilder<FlashCardController>(builder: (flashCardController) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: _hebrewTextController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.translate),
-                          hintText: 'What is the Hebrew word?',
-                          labelText: 'Hebrew',
-                        ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        validator: (String? _) {
-                          return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _pronunciationTextController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.record_voice_over),
-                          hintText: 'How would this word be pronounced phonetically?',
-                          labelText: 'Pronunciation',
-                        ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        validator: (String? _) {
-                          return _pronunciationTextController.text.trim().isEmpty ? 'Please enter valid pronunciation' : null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _translationTextController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.abc_rounded),
-                          hintText: 'What does this word translate to in English?',
-                          labelText: 'English',
-                        ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        validator: (String? _) {
-                          return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _attributesTextController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.checklist_rounded),
-                          hintText: 'What type of word is this? (hint: gender, grammatical type, etc.)',
-                          labelText: 'Attributes',
-                        ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.done,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: _saveWord,
-                              child: const Text('Save'),
+                  return _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              controller: _hebrewTextController,
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.translate),
+                                hintText: 'What is the Hebrew word?',
+                                labelText: 'Hebrew',
+                              ),
+                              keyboardType: TextInputType.name,
+                              textInputAction: TextInputAction.next,
+                              validator: (String? _) {
+                                return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
+                              },
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
+                            TextFormField(
+                              controller: _pronunciationTextController,
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.record_voice_over),
+                                hintText: 'How would this word be pronounced phonetically?',
+                                labelText: 'Pronunciation',
+                              ),
+                              keyboardType: TextInputType.name,
+                              textInputAction: TextInputAction.next,
+                              validator: (String? _) {
+                                return _pronunciationTextController.text.trim().isEmpty ? 'Please enter valid pronunciation' : null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: _translationTextController,
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.abc_rounded),
+                                hintText: 'What does this word translate to in English?',
+                                labelText: 'English',
+                              ),
+                              keyboardType: TextInputType.name,
+                              textInputAction: TextInputAction.next,
+                              validator: (String? _) {
+                                return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: _attributesTextController,
+                              decoration: const InputDecoration(
+                                icon: Icon(Icons.checklist_rounded),
+                                hintText: 'What type of word is this? (hint: gender, grammatical type, etc.)',
+                                labelText: 'Attributes',
+                              ),
+                              keyboardType: TextInputType.name,
+                              textInputAction: TextInputAction.done,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                    onPressed: _saveWord,
+                                    child: const Text('Save'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
                 }),
               ),
             )),
       ),
     );
+  }
+
+  _saveWord() {
+    if (!_form.currentState!.validate()) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final word = Word(
+      hebrew: _hebrewTextController.text,
+      pronunciation: _pronunciationTextController.text,
+      translation: _translationTextController.text,
+      attributes: _attributesTextController.text,
+      isNew: false,
+    );
+
+    if (widget.word.isNew) {
+      FlashCardController.getOrPut.addWord(word);
+    } else {
+      FlashCardController.getOrPut.updateWord(widget.word);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    Get.back();
   }
 }
