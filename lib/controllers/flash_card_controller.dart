@@ -67,6 +67,7 @@ class FlashCardController extends GetxController {
   void addWord(Word word) async {
     final updatedWord = await FlashCardApiService.addWord(word);
 
+    // TODO: check if you can access Firebase (fIREBASE api?). If not, send alert that you are offline
     if (updatedWord != null) {
       _words.add(updatedWord);
       _words.sort(((firstWord, secondWord) => firstWord.translation.compareTo(secondWord.translation)));
