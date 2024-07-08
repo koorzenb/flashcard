@@ -29,6 +29,7 @@ class FlashCardController extends GetxController {
           words = [Word(id: 'id', hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word', attributes: '')];
         }
 
+        words.sort((a, b) => a.translation.compareTo(b.translation));
         _words = words;
         WordStorage.box.words = _words;
         update();
@@ -67,11 +68,9 @@ class FlashCardController extends GetxController {
   void addWord(Word word) async {
     final updatedWord = await FlashCardApiService.addWord(word);
 
-    // TODO: check if you can access Firebase (fIREBASE api?). If not, send alert that you are offline
+    // TODO: check if you can access Firebase (fIREBASE api?). If not, set a tempId and update once you receive updated response from server
     if (updatedWord != null) {
-      _words.add(updatedWord);
-      _words.sort(((firstWord, secondWord) => firstWord.translation.compareTo(secondWord.translation)));
-      WordStorage.box.words = _words.toList();
+      WordLogic(words).addWord(word);
       update();
     }
   }
