@@ -1,7 +1,7 @@
 [√] Flutter (Channel stable, 3.22.1, on Microsoft Windows [Version 10.0.22631.3737], locale en-US)
     • Flutter version 3.22.1 on channel stable at C:\Users\koorz\fvm\versions\3.22.1
     • Upstream repository https://github.com/flutter/flutter.git
-    • Framework revision a14f74ff3a (6 weeks ago), 2024-05-22 11:08:21 -0500
+    • Framework revision a14f74ff3a (7 weeks ago), 2024-05-22 11:08:21 -0500
     • Engine revision 55eae6864b
     • Dart version 3.4.1
     • DevTools version 2.34.3
@@ -35,10 +35,11 @@
     • VS Code at C:\Users\koorz\AppData\Local\Programs\Microsoft VS Code
     • Flutter extension version 3.92.0
 
-[√] Connected device (3 available)
-    • Windows (desktop) • windows • windows-x64    • Microsoft Windows [Version 10.0.22631.3737]
-    • Chrome (web)      • chrome  • web-javascript • Google Chrome 126.0.6478.127
-    • Edge (web)        • edge    • web-javascript • Microsoft Edge 126.0.2592.87
+[√] Connected device (4 available)
+    • sdk gphone64 x86 64 (mobile) • emulator-5554 • android-x64    • Android 14 (API 34) (emulator)
+    • Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.22631.3737]
+    • Chrome (web)                 • chrome        • web-javascript • Google Chrome 126.0.6478.127
+    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 126.0.2592.87
 
 [√] Network resources
     • All expected network resources are available.
