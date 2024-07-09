@@ -77,9 +77,9 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   fonts:
-    - family: Frank Ruhl Libre
+    - family: Noto Sans Hebrew
       fonts:
-        - asset: fonts/FrankRuhlLibre-Regular.ttf
+        - asset: fonts/NotoSansHebrew-Regular.ttf
   # example:
   # fonts:
   #   - family: Schyler
