@@ -59,7 +59,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
         ],
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text(
-          'Flashy', //TODO: import from Main
+          'FlashCard', //TODO: import from Main
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

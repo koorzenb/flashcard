@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: const MainDrawer(),
       body: const Center(
-        child: FlashCard(),
+        child: FlashCardWidget(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async => await Get.to(() => WordDetailsScreen(

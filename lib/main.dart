@@ -15,24 +15,24 @@ void main() async {
   await Hive.initFlutter();
   await WordStorage.init();
   // await WordStorage.box.erase();
-  runApp(const Flashy());
+  runApp(const FlashCard());
 }
 
-class Flashy extends StatelessWidget {
-  const Flashy({super.key});
+class FlashCard extends StatelessWidget {
+  const FlashCard({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // debugShowCheckedModeBanner: false,
-      title: 'Flashy',
+      title: 'FlashCard',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       home: const HomeScreen(
-        title: 'Flashy',
+        title: 'FlashCard',
       ),
     );
   }

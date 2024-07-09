@@ -2,14 +2,14 @@ import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class FlashCard extends StatefulWidget {
-  const FlashCard({super.key});
+class FlashCardWidget extends StatefulWidget {
+  const FlashCardWidget({super.key});
 
   @override
-  State<FlashCard> createState() => _FlashCardState();
+  State<FlashCardWidget> createState() => _FlashCardWidgetState();
 }
 
-class _FlashCardState extends State<FlashCard> {
+class _FlashCardWidgetState extends State<FlashCardWidget> {
   bool _showBody = false;
 
   @override
@@ -35,7 +35,7 @@ class _FlashCardState extends State<FlashCard> {
               children: [
                 Text(
                   flashCardController.displayedWord.hebrew,
-                  style: const TextStyle(fontSize: 45, fontFamily: 'Frank Ruhl Libre'),
+                  style: const TextStyle(fontSize: 45, fontFamily: 'Noto Sans Hebrew'),
                 ),
                 AnimatedOpacity(
                   opacity: _showBody ? 1.0 : 0.0,
