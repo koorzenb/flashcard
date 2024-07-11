@@ -1,4 +1,5 @@
 import 'package:flashcard/controllers/flash_card_controller.dart';
+import 'package:flashcard/widgets/version_code_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,12 +24,19 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(
-          widget.title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              widget.title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 10.0),
+            VersionCodeText(),
+          ],
         ),
       ),
       drawer: const MainDrawer(),
