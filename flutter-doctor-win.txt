@@ -51,8 +51,8 @@ Showing outdated packages.
 Package Name     Current  Upgradable  Resolvable  Latest  
 
 direct dependencies:
-cloud_firestore  *4.17.5  *4.17.5     5.0.2       5.0.2   
-firebase_core    *2.32.0  *2.32.0     3.1.1       3.1.1   
+cloud_firestore  *4.17.5  *4.17.5     5.1.0       5.1.0   
+firebase_core    *2.32.0  *2.32.0     3.2.0       3.2.0   
 
 2  dependencies are constrained to versions that are older than a resolvable version.
 To update these dependencies, edit pubspec.yaml, or run `flutter pub upgrade --major-versions`.

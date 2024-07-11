@@ -1,20 +1,20 @@
 # CHANGELOG
 
-## 1.0.0 (2023-07-01)
+## 0.0.0 (2023-07-01)
 
 - Initial release
 
-## 1.0.1 (2023-07-02)
+## 0.0.1 (2023-07-02)
 
 -
 
-## 1.0.2 (2024-07-04)
+## 0.0.2 (2024-07-04)
 
 ### Bugfix
 
 - Fixed updating of words
 
-## 1.1.0 (2024-07-09)
+## 0.1.0 (2024-07-09)
 
 ### Feature
 
@@ -22,3 +22,13 @@
 - Changed main font
 - Updated Readme
 - Changed app logo
+
+## 0.1.1 (2024-07-11)
+
+### Feature
+
+- Added version identifier
+
+### Fix
+
+- Closing Drawer immediately on tap
