@@ -10,7 +10,10 @@ class DrawerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(title),
-      onTap: onTap,
+      onTap: () {
+        Navigator.of(context).pop();
+        onTap();
+      },
     );
   }
 }
