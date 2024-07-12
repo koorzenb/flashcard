@@ -14,6 +14,7 @@ class WordLogic {
 
     if (_unReadWords.isEmpty) {
       _unReadWords = words.toList();
+      // TODO: improve unread words - show words that you are having probelms with
     }
   }
 

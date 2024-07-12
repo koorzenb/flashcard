@@ -32,6 +32,8 @@ class FlashCardApiService {
     }
   }
 
+  // TODO: setup flavor for dev/prod data in Firebase
+
   static Future<List<Word>> getWords() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('words').get();
 

@@ -9,6 +9,8 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      // TODO: make drawer button white
+      // TODO: align drawer appbar with main app bar
       child: Column(
         children: [
           Container(

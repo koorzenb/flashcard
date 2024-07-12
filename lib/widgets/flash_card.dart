@@ -1,3 +1,4 @@
+import 'package:flashcard/constants.dart';
 import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,7 +40,9 @@ class _FlashCardWidgetState extends State<FlashCardWidget> {
                 ),
                 AnimatedOpacity(
                   opacity: _showBody ? 1.0 : 0.0,
-                  duration: _showBody ? const Duration(milliseconds: 500) : Duration.zero,
+                  duration: _showBody
+                      ? const Duration(milliseconds: Constants.hideDuration)
+                      : Duration.zero, // TODO: display circular countdown timer before showing pronounciation/meaning
                   child: Column(children: [
                     Text(
                       flashCardController.displayedWord.pronunciation,

@@ -68,7 +68,7 @@ class FlashCardController extends GetxController {
   void addWord(Word word) async {
     final updatedWord = await FlashCardApiService.addWord(word);
 
-    // TODO: check if you can access Firebase (fIREBASE api?). If not, set a tempId and update once you receive updated response from server
+    // TODO: check if you can access Firebase (Firebase API?). If not, set a tempId and update once you receive updated response from server
     if (updatedWord != null) {
       WordLogic(words).addWord(word);
       update();
