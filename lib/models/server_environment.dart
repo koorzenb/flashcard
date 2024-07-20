@@ -1,0 +1,1 @@
+enum ServerEnvironment { dev, prod }

@@ -3,22 +3,13 @@
     "platforms": {
       "android": {
         "default": {
-          "projectId": "flashcard-d3772",
-          "appId": "1:575131324994:android:ade2c848c88201bc38d3db",
+          "projectId": "flashcard-dev-88a9a",
+          "appId": "1:580452959981:android:bc706f14070b83fc466ee4",
           "fileOutput": "android/app/google-services.json"
         }
       },
       "dart": {
-        "lib/firebase_options.dart": {
-          "projectId": "flashcard-d3772",
-          "configurations": {
-            "android": "1:575131324994:android:ade2c848c88201bc38d3db",
-            "ios": "1:575131324994:ios:ba9ad236da033e5838d3db",
-            "macos": "1:575131324994:ios:ba9ad236da033e5838d3db",
-            "web": "1:575131324994:web:6a17be93e6f525d038d3db",
-            "windows": "1:575131324994:web:ecf22c6f1751b1a838d3db"
-          }
-        }
+        "lib/firebase_options.dart": { "projectId": "flashcard-dev-88a9a", "configurations": { "android": "1:580452959981:android:bc706f14070b83fc466ee4" } }
       }
     }
   }

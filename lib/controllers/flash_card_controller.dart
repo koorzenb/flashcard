@@ -24,7 +24,7 @@ class FlashCardController extends GetxController {
     _words = WordStorage.box.words;
 
     if (_words.isEmpty) {
-      FlashCardApiService.getWords().then((words) {
+      FlashCardApiService().getWords().then((words) {
         if (words.isEmpty) {
           words = [Word(id: 'id', hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word', attributes: '')];
         }
@@ -66,7 +66,7 @@ class FlashCardController extends GetxController {
   }
 
   void addWord(Word word) async {
-    final updatedWord = await FlashCardApiService.addWord(word);
+    final updatedWord = await FlashCardApiService().addWord(word);
 
     // TODO: check if you can access Firebase (Firebase API?). If not, set a tempId and update once you receive updated response from server
     if (updatedWord != null) {
@@ -76,7 +76,9 @@ class FlashCardController extends GetxController {
   }
 
   void updateWord(Word word) async {
-    FlashCardApiService.updateWord(word);
+//  fix updating of words. first get dev env to work - do not write to prod data. push once done
+
+    FlashCardApiService().updateWord(word);
     _words[_words.indexWhere((element) => element.id == word.id)] = word;
     WordStorage.box.words = _words.toList();
     update();

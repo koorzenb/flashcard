@@ -63,3 +63,7 @@ linux/Flutter/generated_plugin_registrant.cc
 
 # release builds
 /release/
+.env.dev
+
+#API keys
+android/app/google-services.json
