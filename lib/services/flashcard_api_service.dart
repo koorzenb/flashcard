@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flashcard/models/server_environment.dart';
 import 'package:flashcard/models/word.dart';
@@ -26,11 +24,6 @@ class FlashCardApiService {
   }
 
   Future<Word?> addWord(Word word) async {
-    if (serverEnvironment == ServerEnvironment.dev) {
-      return Word(
-          id: '${Random().nextInt(100)}', hebrew: word.hebrew, pronunciation: word.pronunciation, translation: word.translation, attributes: word.attributes);
-    }
-
     try {
       final snapshot = await FirebaseFirestore.instance.collection('words').add({
         'hebrew': word.hebrew,

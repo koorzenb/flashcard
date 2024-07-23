@@ -41,7 +41,7 @@ if not exist "%OUTPUT_FOLDER%" mkdir "%OUTPUT_FOLDER%"
 call flutter doctor -v > flutter-doctor-win.txt 
 call flutter pub outdated >> flutter-doctor-win.txt
 
-for /F "usebackq delims=" %%A in (`define_env -f .env.prod --no-generate ^| sed -r "s/--dart-define=/--dart-define /g"`) do call flutter build apk --release -v -t lib/main.dart --obfuscate --split-debug-info=./debug-info %%A
+for /F "usebackq delims=" %%A in (`define_env -f .env.prod --no-generate ^| sed -r "s/--dart-define=/--dart-define /g"`) do call flutter build apk --release -v -t lib/main_prod.dart --obfuscate --split-debug-info=./debug-info %%A
 
 echo.
 
