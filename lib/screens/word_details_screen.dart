@@ -161,6 +161,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     });
 
     final word = Word(
+      id: widget.word.id,
       hebrew: _hebrewTextController.text,
       pronunciation: _pronunciationTextController.text,
       translation: _translationTextController.text,
@@ -171,7 +172,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     if (widget.word.isNew) {
       FlashCardController.getOrPut.addWord(word);
     } else {
-      FlashCardController.getOrPut.updateWord(widget.word);
+      FlashCardController.getOrPut.updateWord(word);
     }
 
     setState(() {

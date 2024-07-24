@@ -70,7 +70,7 @@ class FlashCardController extends GetxController {
 
     // TODO: check if you can access Firebase (Firebase API?). If not, set a tempId and update once you receive updated response from server
     if (updatedWord != null) {
-      WordLogic(words).addWord(word);
+      WordLogic(words).addWord(updatedWord);
       update();
     }
   }

@@ -20,18 +20,20 @@ class WordListScreen extends StatelessWidget {
             itemCount: flashCardController.words.length,
             itemBuilder: (context, index) => GestureDetector(
               onTap: () async => await Get.to(() => WordDetailsScreen(flashCardController.words[index])),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text(flashCardController.words[index].translation),
-                    subtitle: Text(flashCardController.words[index].hebrew),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    color: Colors.grey,
-                  ),
-                ],
-              ),
+              child: flashCardController.words.isEmpty
+                  ? Center(child: const Text('No words here. Add some words!')) // TODO: this is not working
+                  : Column(
+                      children: [
+                        ListTile(
+                          title: Text(flashCardController.words[index].translation),
+                          subtitle: Text(flashCardController.words[index].hebrew),
+                        ),
+                        const Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
             ),
           );
         }),

@@ -68,10 +68,6 @@ class FlashCardApiService {
   }
 
   void updateWord(Word word) {
-    if (serverEnvironment == ServerEnvironment.dev) {
-      return;
-    }
-
     FirebaseFirestore.instance.collection('words').doc(word.id).update({
       'hebrew': word.hebrew,
       'pronunciation': word.pronunciation,
