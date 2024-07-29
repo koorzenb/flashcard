@@ -8,7 +8,7 @@
       "name": "dev",
       "request": "launch",
       "type": "dart",
-      "args": ["-v", "--dart-define-from-file", "${workspaceFolder}/.env.dev"],
+      "args": ["--dart-define-from-file", "${workspaceFolder}/.env.dev"],
       "program": "lib/main_dev.dart"
     },
     {

@@ -32,3 +32,9 @@
 ### Fix
 
 - Closing Drawer immediately on tap
+
+## 0.1.2 (2024-07-24)
+
+### Fix
+
+- Fixed updating of words
