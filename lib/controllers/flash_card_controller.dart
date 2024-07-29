@@ -90,7 +90,7 @@ class FlashCardController extends GetxController {
   }
 
   void onLongPress() async {
-    final updatedWord = await Get.to(() => WordDetailsScreen(displayedWord)); // TODO: consider having an setup mode - then hide update and add button
+    final updatedWord = await Get.to(() => WordDetailsScreen(title: 'Update Word', word: displayedWord));
     if (updatedWord != null) {
       displayedWord = updatedWord;
       update();

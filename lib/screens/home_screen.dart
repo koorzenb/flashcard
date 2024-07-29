@@ -45,7 +45,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async => await Get.to(() => WordDetailsScreen(
-            Word(hebrew: '', pronunciation: '', translation: '', attributes: '', isNew: true))), // TODO: rather use Get.dialog with background blur
+              title: 'Add Word',
+              word: Word(
+                hebrew: '',
+                pronunciation: '',
+                translation: '',
+                attributes: '',
+                isNew: true,
+              ),
+            )),
         child: const Icon(
           Icons.add,
           color: Colors.white,

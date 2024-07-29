@@ -19,7 +19,7 @@ class WordListScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: flashCardController.words.length,
             itemBuilder: (context, index) => GestureDetector(
-              onTap: () async => await Get.to(() => WordDetailsScreen(flashCardController.words[index])),
+              onTap: () async => await Get.to(() => WordDetailsScreen(title: 'Update Word', word: flashCardController.words[index])),
               child: flashCardController.words.isEmpty
                   ? Center(child: const Text('No words here. Add some words!')) // TODO: this is not working
                   : Column(

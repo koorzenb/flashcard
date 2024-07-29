@@ -6,8 +6,9 @@ import '../models/word.dart';
 
 class WordDetailsScreen extends StatefulWidget {
   final Word word;
+  final String title;
 
-  const WordDetailsScreen(this.word, {super.key});
+  const WordDetailsScreen({required this.title, required this.word, super.key});
 
   @override
   State<WordDetailsScreen> createState() => _WordDetailsScreenState();
@@ -58,8 +59,8 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
           )
         ],
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text(
-          'FlashCard', //TODO: import from Main
+        title: Text(
+          widget.title,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
