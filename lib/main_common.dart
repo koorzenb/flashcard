@@ -31,11 +31,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO:  use TutorialCoachMark to show tutorial
     return GetMaterialApp(
       // debugShowCheckedModeBanner: false,
       title: 'FlashCard',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 86, 207, 255)),
+        textTheme: TextTheme(
+            headlineLarge: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontFamily: 'Noto Sans Hebrew',
+            )),
         useMaterial3: true,
       ),
       home: const HomeScreen(

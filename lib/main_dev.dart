@@ -1,6 +1,7 @@
 import 'package:flashcard/app_config.dart';
 import 'package:flashcard/firebase_options_dev.dart';
 import 'package:flutter/material.dart';
+
 import 'main_common.dart';
 
 void main() async {
