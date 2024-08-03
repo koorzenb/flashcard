@@ -8,12 +8,15 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      onTap: () {
-        Navigator.of(context).pop();
-        onTap();
-      },
+    return Padding(
+      padding: const EdgeInsets.only(left: 2.0),
+      child: ListTile(
+        title: Text(title),
+        onTap: () {
+          Navigator.of(context).pop();
+          onTap();
+        },
+      ),
     );
   }
 }

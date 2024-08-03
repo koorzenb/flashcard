@@ -23,23 +23,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
               widget.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
             SizedBox(width: 10.0),
             VersionCodeText(),
           ],
         ),
       ),
-      drawer: const MainDrawer(),
+      drawer: MainDrawer(),
       body: const Center(
         child: FlashCardWidget(),
       ),
