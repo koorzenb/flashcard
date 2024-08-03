@@ -1,5 +1,5 @@
+import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flashcard/models/constants.dart';
-import 'package:flashcard/controllers/flash_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +17,7 @@ class _FlashCardWidgetState extends State<FlashCardWidget> {
   Widget build(BuildContext context) {
     _delayShowingTranslation();
 
-    return GetBuilder<FlashCardController>(builder: (flashCardController) {
+    return GetBuilder<WordController>(builder: (flashCardController) {
       return GestureDetector(
         onTap: () {
           setState(() {

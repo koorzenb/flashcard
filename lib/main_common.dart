@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flashcard/controllers/flash_card_controller.dart';
+import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flashcard/screens/home_screen.dart';
 import 'package:flashcard/word_storage.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ Future<void> commonInit(FirebaseOptions currentPlatform) async {
 }
 
 void _initializeControllers() {
-  FlashCardController.getOrPut;
+  WordController.getOrPut;
 }
 
 Future<void> _initializeFirebase(FirebaseOptions currentPlatform) async {

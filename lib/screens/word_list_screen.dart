@@ -1,4 +1,4 @@
-import 'package:flashcard/controllers/flash_card_controller.dart';
+import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +15,7 @@ class WordListScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('FlashCard')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GetBuilder<FlashCardController>(builder: (flashCardController) {
+        child: GetBuilder<WordController>(builder: (flashCardController) {
           return ListView.builder(
             itemCount: flashCardController.words.length,
             itemBuilder: (context, index) => GestureDetector(

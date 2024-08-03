@@ -8,19 +8,19 @@ import '../logic/word_logic.dart';
 import '../models/word.dart';
 import '../screens/word_details_screen.dart';
 
-class FlashCardController extends GetxController {
+class WordController extends GetxController {
   late List<Word> _words;
   Word displayedWord = Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
 
-  static FlashCardController get getOrPut {
+  static WordController get getOrPut {
     try {
-      return Get.find<FlashCardController>();
+      return Get.find<WordController>();
     } catch (e) {
-      return Get.put(FlashCardController._());
+      return Get.put(WordController._());
     }
   }
 
-  FlashCardController._() {
+  WordController._() {
     _words = WordStorage.box.words;
 
     if (_words.isEmpty) {
@@ -85,7 +85,7 @@ class FlashCardController extends GetxController {
   }
 
   void onTap() {
-    displayedWord = WordLogic(FlashCardController.getOrPut.words).getWord();
+    displayedWord = WordLogic(WordController.getOrPut.words).getWord();
     debugPrint(displayedWord.translation);
   }
 

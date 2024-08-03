@@ -1,4 +1,4 @@
-import 'package:flashcard/controllers/flash_card_controller.dart';
+import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,7 +51,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () => FlashCardController.getOrPut.deleteWord(widget.word),
+            onPressed: () => WordController.getOrPut.deleteWord(widget.word),
             icon: const Icon(
               Icons.delete,
               color: Colors.white,
@@ -73,7 +73,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
-                child: GetBuilder<FlashCardController>(builder: (flashCardController) {
+                child: GetBuilder<WordController>(builder: (flashCardController) {
                   return _isLoading
                       ? const Center(
                           child: CircularProgressIndicator(),
@@ -171,9 +171,9 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     );
 
     if (widget.word.isNew) {
-      FlashCardController.getOrPut.addWord(word);
+      WordController.getOrPut.addWord(word);
     } else {
-      FlashCardController.getOrPut.updateWord(word);
+      WordController.getOrPut.updateWord(word);
     }
 
     setState(() {

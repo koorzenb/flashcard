@@ -1,4 +1,4 @@
-import 'package:flashcard/controllers/flash_card_controller.dart';
+import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flashcard/widgets/version_code_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final flashCardController = FlashCardController.getOrPut;
+  final flashCardController = WordController.getOrPut;
 
   @override
   Widget build(BuildContext context) {
