@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/word.dart';
+import '../widgets/custom_dialog.dart';
 import '../widgets/flash_card.dart';
 import '../widgets/main_drawer.dart';
 import 'word_details_screen.dart';
@@ -17,6 +18,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        CustomDialog.showWelcomeMessage(
+          content: Column(
+            children: [
+              Hero(
+                tag: 'image',
+                child: Image.asset('assets/images/hero_welcome.jpeg'),
+              ),
+              Text('Welcome to FlashLearn!'),
+              Text('Ready for a fun and interactive language, learning experience? '),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text("Let's go!"),
+              ),
+            ],
+          ),
+        );
+      }
+    });
+    super.initState();
+  }
+
   final flashCardController = WordController.getOrPut;
 
   @override
