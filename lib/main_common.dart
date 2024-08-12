@@ -36,17 +36,30 @@ class MyApp extends StatelessWidget {
       // debugShowCheckedModeBanner: false,
       title: 'FlashCard',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 86, 207, 255)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue.shade300),
         textTheme: TextTheme(
-            headlineLarge: TextStyle(
+            titleLarge: TextStyle(
               color: Colors.white,
+              fontFamily: 'Segeo UI',
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
+            headlineLarge: TextStyle(
+              fontSize: 48,
+              color: Colors.black,
+              fontFamily: 'Noto Sans Hebrew',
+            ),
+            headlineMedium: TextStyle(
+              fontSize: 20,
+              fontFamily: 'Segeo UI',
               fontWeight: FontWeight.bold,
             ),
             bodyLarge: TextStyle(
               fontSize: 16,
               color: Colors.black,
-              fontFamily: 'Noto Sans Hebrew',
-            )),
+              fontFamily: 'Segeo UI',
+            ),
+            bodySmall: TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Segeo UI')),
         useMaterial3: true,
       ),
       home: const HomeScreen(

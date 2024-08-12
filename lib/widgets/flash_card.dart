@@ -36,7 +36,7 @@ class _FlashCardWidgetState extends State<FlashCardWidget> {
               children: [
                 Text(
                   flashCardController.displayedWord.hebrew,
-                  style: const TextStyle(fontSize: 45, fontFamily: 'Noto Sans Hebrew'),
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 AnimatedOpacity(
                   opacity: _showBody ? 1.0 : 0.0,
