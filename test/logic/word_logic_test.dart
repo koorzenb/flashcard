@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flashcard/logic/word_logic.dart';
 import 'package:flashcard/models/word.dart';
-import 'package:flashcard/word_storage.dart';
+import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

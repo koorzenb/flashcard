@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flashcard/controllers/flash_card_app_controller.dart';
 import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flashcard/screens/home_screen.dart';
-import 'package:flashcard/word_storage.dart';
+import 'package:flashcard/storage/main_app_storage.dart';
+import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,6 +16,7 @@ Future<void> commonInit(FirebaseOptions currentPlatform) async {
 
 void _initializeControllers() {
   WordController.getOrPut;
+  FlashCardAppController.getOrPut;
 }
 
 Future<void> _initializeFirebase(FirebaseOptions currentPlatform) async {
@@ -24,6 +27,7 @@ Future<void> _initializeStorage() async {
   await Hive.initFlutter();
   await WordStorage.init();
   // await WordStorage.box.erase();
+  await MainAppStorage.init();
 }
 
 class MyApp extends StatelessWidget {

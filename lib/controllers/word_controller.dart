@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flashcard/services/flashcard_api_service.dart';
-import 'package:flashcard/word_storage.dart';
+import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
