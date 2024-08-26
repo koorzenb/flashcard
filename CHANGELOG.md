@@ -45,4 +45,8 @@
 
 - Added Welcome Screen
 
+## 0.1.4
 
+### Fix
+
+- Fixed Storage url
