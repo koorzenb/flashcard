@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flashcard/models/word.dart';
 import 'package:flutter/foundation.dart';
 
-import '../word_storage.dart';
+import '../storage/word_storage.dart';
 
 class WordLogic {
   static List<Word> _unReadWords = [];
