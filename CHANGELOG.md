@@ -38,3 +38,11 @@
 ### Fix
 
 - Fixed updating of words
+
+## 0.1.3 (2024-08-25)
+
+### Feature
+
+- Added Welcome Screen
+
+
