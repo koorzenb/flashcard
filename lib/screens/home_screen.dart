@@ -10,8 +10,12 @@ import '../widgets/main_drawer.dart';
 import 'word_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
   final String title;
+
+  const HomeScreen({
+    required this.title,
+    super.key,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

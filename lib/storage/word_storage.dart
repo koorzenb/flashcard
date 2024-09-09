@@ -27,4 +27,8 @@ class WordStorage {
   static const String _kWordListJsonKey = 'wordListJson';
   List<Word> get words => Word.listFromJsonList(jsonDecode(_box.get(_kWordListJsonKey) ?? '[]'));
   set words(List<Word> value) => _box.put(_kWordListJsonKey, jsonEncode(value));
+
+  static const String _kDisplayedWelcomeScreen = 'displayedWelcomeScreen';
+  bool get displayedWelcomeScreen => _box.get(_kDisplayedWelcomeScreen) ?? false;
+  set displayedWelcomeScreen(bool value) => _box.put(_kDisplayedWelcomeScreen, value);
 }
