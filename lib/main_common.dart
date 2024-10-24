@@ -1,12 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flashcard/controllers/flash_card_app_controller.dart';
-import 'package:flashcard/controllers/word_controller.dart';
-import 'package:flashcard/screens/home_screen.dart';
-import 'package:flashcard/storage/main_app_storage.dart';
-import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'controllers/flash_card_app_controller.dart';
+import 'controllers/word_controller.dart';
+import 'screens/home_screen.dart';
+import 'storage/main_app_storage.dart';
+import 'storage/word_storage.dart';
 
 Future<void> commonInit(FirebaseOptions currentPlatform) async {
   await _initializeStorage();

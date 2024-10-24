@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:flashcard/models/word.dart';
 import 'package:flutter/foundation.dart';
 
+import '../models/word.dart';
 import '../storage/word_storage.dart';
 
 class WordLogic {

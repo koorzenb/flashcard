@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:flashcard/models/word.dart';
 import 'package:hive/hive.dart';
+
+import '../models/word.dart';
 
 class WordStorage {
   static const _kStorageName = 'WordStorage';

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flashcard/services/flashcard_api_service.dart';
-import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../logic/word_logic.dart';
 import '../models/word.dart';
 import '../screens/word_details_screen.dart';
+import '../services/flashcard_api_service.dart';
+import '../storage/word_storage.dart';
 
 class WordController extends GetxController {
   late List<Word> _words;

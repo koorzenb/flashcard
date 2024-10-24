@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flashcard/models/server_environment.dart';
-import 'package:flashcard/models/word.dart';
+
+import '../models/server_environment.dart';
+import '../models/word.dart';
 
 class FlashCardApiService {
   ServerEnvironment serverEnvironment = ServerEnvironment.prod;
