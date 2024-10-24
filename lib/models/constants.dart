@@ -1,3 +1,3 @@
 class Constants {
-  static const int hideDuration = 500;
+  static const int unhideDuration = 500;
 }

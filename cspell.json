@@ -1,0 +1,23 @@
+{
+  "words": [
+    "abisoft",
+    "lsncontest",
+    "Pasti",
+    "repost",
+    "Schyler",
+    "Timeslot",
+    "unhide"
+  ],
+  "ignoreWords": [
+    "ARGB",
+    "autocorrect",
+    "Getx",
+    "instanceof",
+    "LTRB",
+    "unawaited",
+    "unfocus",
+    "unsubmitted",
+    "vsync",
+    "webp"
+  ]
+}

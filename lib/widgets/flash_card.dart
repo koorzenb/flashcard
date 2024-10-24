@@ -1,5 +1,4 @@
 import 'package:flashcard/controllers/word_controller.dart';
-import 'package:flashcard/models/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,23 +9,39 @@ class FlashCardWidget extends StatefulWidget {
   State<FlashCardWidget> createState() => _FlashCardWidgetState();
 }
 
-class _FlashCardWidgetState extends State<FlashCardWidget> {
-  bool _showBody = false;
+class _FlashCardWidgetState extends State<FlashCardWidget> with SingleTickerProviderStateMixin {
+  bool isVisible = false;
+  late AnimationController animationController;
+  late Animation<double> animation;
+  AnimationStatus animationStatus = AnimationStatus.dismissed;
+
+  @override
+  void initState() {
+    _initAnimationController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    _delayShowingTranslation();
-
     return GetBuilder<WordController>(builder: (flashCardController) {
       return GestureDetector(
-        onTap: () {
-          setState(() {
-            _showBody = false;
-            flashCardController.onTap();
-          });
-        },
+        onTap: animationStatus == AnimationStatus.forward
+            ? () {}
+            : () {
+                setState(() {
+                  flashCardController.onTap();
+                  animationController.reset();
+                  animationController.forward();
+                });
+              },
         onLongPress: flashCardController.onLongPress,
-        // need controller here to update word list after a deletion
+        // TODO: need controller here to update word list after a deletion
         child: Card(
           elevation: 5,
           child: Padding(
@@ -38,28 +53,40 @@ class _FlashCardWidgetState extends State<FlashCardWidget> {
                   flashCardController.displayedWord.hebrew,
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
-                AnimatedOpacity(
-                  opacity: _showBody ? 1.0 : 0.0,
-                  duration: _showBody
-                      ? const Duration(milliseconds: Constants.hideDuration)
-                      : Duration.zero, // TODO: display circular countdown timer before showing pronounciation/meaning
-                  child: Column(children: [
-                    Text(
-                      flashCardController.displayedWord.pronunciation,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      flashCardController.displayedWord.translation,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey), // TODO: move to theme
-                    ),
-                    flashCardController.displayedWord.attributes.isNotEmpty
-                        ? Text(
-                            flashCardController.displayedWord.attributes,
-                            style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Colors.grey),
-                          )
-                        : SizedBox(),
-                  ]),
-                )
+                animationStatus == AnimationStatus.forward
+                    // TODO: feature: scale by screenSize/cardSize
+                    ? SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: Center(
+                          child: SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              value: animation.value,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue.shade300),
+                              strokeWidth: 1,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Column(children: [
+                        // TODO: feature: fade in translation instead of showing immediately
+                        Text(
+                          flashCardController.displayedWord.pronunciation,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        Text(
+                          flashCardController.displayedWord.translation,
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
+                        ),
+                        flashCardController.displayedWord.attributes.isNotEmpty
+                            ? Text(
+                                flashCardController.displayedWord.attributes,
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
+                              )
+                            : SizedBox(height: 12),
+                      ])
               ],
             ),
           ),
@@ -68,13 +95,14 @@ class _FlashCardWidgetState extends State<FlashCardWidget> {
     });
   }
 
-  _delayShowingTranslation() {
-    if (!_showBody) {
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() {
-          _showBody = true;
-        });
-      });
-    }
+  void _initAnimationController() {
+    animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    animation = Tween<double>(begin: 0, end: 1).animate(animationController)..addListener(() => setState(() {}));
+    animationController.addStatusListener((status) => animationStatus = status);
+    animationController.forward();
   }
 }

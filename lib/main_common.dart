@@ -63,7 +63,12 @@ class MyApp extends StatelessWidget {
               color: Colors.black,
               fontFamily: 'Segeo UI',
             ),
-            bodySmall: TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Segeo UI')),
+            bodyMedium: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontFamily: 'Segeo UI',
+            ),
+            bodySmall: TextStyle(fontSize: 12, color: Colors.black, fontFamily: 'Segeo UI')),
         useMaterial3: true,
       ),
       home: const HomeScreen(
