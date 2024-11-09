@@ -10,11 +10,15 @@ class FlashCardWidget extends StatefulWidget {
   State<FlashCardWidget> createState() => _FlashCardWidgetState();
 }
 
-class _FlashCardWidgetState extends State<FlashCardWidget> with SingleTickerProviderStateMixin {
-  bool isVisible = false;
+class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
   AnimationStatus animationStatus = AnimationStatus.dismissed;
+  static const progressIndicatorDuration = 4;
+  static const opacityAnimationDuration = 2;
+  bool showTranslation = false;
+  bool enabledOnTap = true;
+  bool startedOpacityAnimation = false;
 
   @override
   void initState() {
@@ -30,18 +34,29 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<WordController>(builder: (flashCardController) {
+    final showProgressIndicator = animationStatus == AnimationStatus.forward;
+
+    if (!showProgressIndicator) {
+      _delayShowingTranslation();
+    }
+
+    return GetBuilder<WordController>(builder: (wordController) {
       return GestureDetector(
-        onTap: animationStatus == AnimationStatus.forward
-            ? () {}
-            : () {
+        onTap: () {
+          if (animationStatus == AnimationStatus.forward || !enabledOnTap) {
+            return;
+          }
+
                 setState(() {
-                  flashCardController.onTap();
+            wordController.onTap();
                   animationController.reset();
                   animationController.forward();
+            showTranslation = false;
+            enabledOnTap = false;
+            debugPrint('disabled');
                 });
               },
-        onLongPress: flashCardController.onLongPress,
+        onLongPress: wordController.onLongPress,
         // TODO: need controller here to update word list after a deletion
         child: Card(
           elevation: 5,
@@ -51,18 +66,19 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with SingleTickerProv
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  flashCardController.displayedWord.hebrew,
+                  wordController.displayedWord.hebrew,
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
-                animationStatus == AnimationStatus.forward
-                    // TODO: feature: scale by screenSize/cardSize
-                    ? SizedBox(
+                Stack(children: [
+                  Opacity(
+                    opacity: showProgressIndicator ? 1 : 0.0,
+                    child: SizedBox(
                         height: 48,
                         width: 48,
                         child: Center(
                           child: SizedBox(
-                            height: 20,
-                            width: 20,
+                          height: 26,
+                          width: 26,
                             child: CircularProgressIndicator(
                               value: animation.value,
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue.shade300),
@@ -70,24 +86,29 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with SingleTickerProv
                             ),
                           ),
                         ),
-                      )
-                    : Column(children: [
-                        // TODO: feature: fade in translation instead of showing immediately
+                    ),
+                  ),
+                  if (!showProgressIndicator)
+                    AnimatedOpacity(
+                        duration: showTranslation ? Duration(seconds: opacityAnimationDuration) : Duration.zero,
+                        opacity: showTranslation ? 1.0 : 0.0,
+                        child: Column(children: [
                         Text(
-                          flashCardController.displayedWord.pronunciation,
+                            wordController.displayedWord.pronunciation,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
-                          flashCardController.displayedWord.translation,
+                            wordController.displayedWord.translation,
                           style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
                         ),
-                        flashCardController.displayedWord.attributes.isNotEmpty
+                          wordController.displayedWord.attributes.isNotEmpty
                             ? Text(
-                                flashCardController.displayedWord.attributes,
+                                  wordController.displayedWord.attributes,
                                 style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
                               )
                             : SizedBox(height: 12),
-                      ])
+                        ])),
+                ]),
               ],
             ),
           ),
@@ -98,12 +119,29 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with SingleTickerProv
 
   void _initAnimationController() {
     animationController = AnimationController(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: progressIndicatorDuration),
       vsync: this,
     );
 
+    animationController.addStatusListener((status) => setState(() => animationStatus = status));
     animation = Tween<double>(begin: 0, end: 1).animate(animationController)..addListener(() => setState(() {}));
-    animationController.addStatusListener((status) => animationStatus = status);
     animationController.forward();
+  }
+
+  _delayShowingTranslation() {
+    if (!showTranslation) {
+      const startOpacityAnimationDelayMs = 100;
+
+      Future.delayed(const Duration(milliseconds: startOpacityAnimationDelayMs), () {
+        setState(() {
+          showTranslation = true;
+        });
+      });
+
+      Future.delayed(Duration(milliseconds: startOpacityAnimationDelayMs + (opacityAnimationDuration * 1000)), () {
+        debugPrint('enabled');
+        setState(() => enabledOnTap = true);
+      });
+    }
   }
 }

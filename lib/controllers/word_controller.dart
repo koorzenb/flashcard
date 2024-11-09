@@ -87,6 +87,7 @@ class WordController extends GetxController {
   void onTap() {
     displayedWord = WordLogic(WordController.getOrPut.words).getWord();
     debugPrint(displayedWord.translation);
+    update();
   }
 
   void onLongPress() async {
