@@ -10,6 +10,7 @@ import '../storage/word_storage.dart';
 
 class WordController extends GetxController {
   late List<Word> _words;
+  late List<Word> _filteredWords;
   Word displayedWord = Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
 
   static WordController get getOrPut {
@@ -21,7 +22,7 @@ class WordController extends GetxController {
   }
 
   WordController._() {
-    _words = WordStorage.box.words;
+    _filteredWords = _words = WordStorage.box.words;
 
     if (_words.isEmpty) {
       FlashCardApiService().getWords().then((words) {
@@ -37,9 +38,8 @@ class WordController extends GetxController {
     }
   }
 
-  List<Word> get words {
-    return WordStorage.box.words;
-  }
+  List<Word> get words => _words;
+  List<Word> get filteredWords => _filteredWords;
 
   set words(List<Word> words) {
     _words = words;
@@ -75,11 +75,12 @@ class WordController extends GetxController {
     }
   }
 
-  void updateWord(Word word) async {
+  void updateWord(Word value) async {
 //  fix updating of words. first get dev env to work - do not write to prod data. push once done
 
-    FlashCardApiService().updateWord(word);
-    _words[_words.indexWhere((element) => element.id == word.id)] = word;
+    FlashCardApiService().updateWord(value);
+    final index = _words.indexWhere((element) => element.id == value.id);
+    _words[index] = value;
     WordStorage.box.words = _words.toList();
     update();
   }
@@ -96,5 +97,10 @@ class WordController extends GetxController {
       displayedWord = updatedWord;
       update();
     }
+  }
+
+  void onSearchChange(String text) {
+    _filteredWords = _words.where((word) => word.translation.contains(text) || word.translation.startsWith(text)).toList();
+    update();
   }
 }

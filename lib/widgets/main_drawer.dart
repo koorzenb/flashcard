@@ -31,7 +31,7 @@ class MainDrawer extends StatelessWidget {
           ),
           DrawerItem(
             title: 'Word List',
-            onTap: () => Get.to(() => const WordListScreen()),
+            onTap: () => Get.to(() => WordListScreen()),
           ),
         ],
       ),
