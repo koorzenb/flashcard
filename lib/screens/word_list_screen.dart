@@ -14,7 +14,7 @@ class WordListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('FlashCard')),
+      appBar: AppBar(title: const Text('Word List')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

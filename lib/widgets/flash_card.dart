@@ -47,15 +47,15 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
             return;
           }
 
-                setState(() {
+          setState(() {
             wordController.onTap();
-                  animationController.reset();
-                  animationController.forward();
+            animationController.reset();
+            animationController.forward();
             showTranslation = false;
             enabledOnTap = false;
             debugPrint('disabled');
-                });
-              },
+          });
+        },
         onLongPress: wordController.onLongPress,
         // TODO: need controller here to update word list after a deletion
         child: Card(
@@ -70,22 +70,23 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Stack(children: [
+                  // TODO: feature: scale by screenSize/cardSize -a Card doesn't have constrainst, so LayoutBuilder doesn't work here. At least check with GPT how a can get a sizebox to be a percentage of the current layout
                   Opacity(
                     opacity: showProgressIndicator ? 1 : 0.0,
                     child: SizedBox(
-                        height: 48,
-                        width: 48,
-                        child: Center(
-                          child: SizedBox(
+                      height: 48,
+                      width: 48,
+                      child: Center(
+                        child: SizedBox(
                           height: 26,
                           width: 26,
-                            child: CircularProgressIndicator(
-                              value: animation.value,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue.shade300),
-                              strokeWidth: 1,
-                            ),
+                          child: CircularProgressIndicator(
+                            value: animation.value,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue.shade300),
+                            strokeWidth: 1,
                           ),
                         ),
+                      ),
                     ),
                   ),
                   if (!showProgressIndicator)
@@ -93,20 +94,20 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                         duration: showTranslation ? Duration(seconds: opacityAnimationDuration) : Duration.zero,
                         opacity: showTranslation ? 1.0 : 0.0,
                         child: Column(children: [
-                        Text(
+                          Text(
                             wordController.displayedWord.pronunciation,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        Text(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          Text(
                             wordController.displayedWord.translation,
-                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
-                        ),
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
+                          ),
                           wordController.displayedWord.attributes.isNotEmpty
-                            ? Text(
+                              ? Text(
                                   wordController.displayedWord.attributes,
-                                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
-                              )
-                            : SizedBox(height: 12),
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
+                                )
+                              : SizedBox(height: 12),
                         ])),
                 ]),
               ],
@@ -145,3 +146,6 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
     }
   }
 }
+
+// TODO: change attributes to checkboxes: gender, plural, etc. Then color code the word. Will have to persist attribute settings too
+// add searching to WordList. Also, add ability to swop translation with hebrew word
