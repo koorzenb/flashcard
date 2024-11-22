@@ -1,7 +1,7 @@
-[√] Flutter (Channel stable, 3.22.3, on Microsoft Windows [Version 10.0.22631.4037], locale en-CA)
+[√] Flutter (Channel stable, 3.22.3, on Microsoft Windows [Version 10.0.22631.4317], locale en-CA)
     • Flutter version 3.22.3 on channel stable at C:\Users\koorz\fvm\versions\3.22.3
     • Upstream repository https://github.com/flutter/flutter.git
-    • Framework revision b0850beeb2 (6 weeks ago), 2024-07-16 21:43:41 -0700
+    • Framework revision b0850beeb2 (4 months ago), 2024-07-16 21:43:41 -0700
     • Engine revision 235db911ba
     • Dart version 3.4.4
     • DevTools version 2.34.3
@@ -31,15 +31,15 @@
        https://plugins.jetbrains.com/plugin/6351-dart
     • Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
 
-[√] VS Code (version 1.92.2)
+[√] VS Code (version 1.95.2)
     • VS Code at C:\Users\koorz\AppData\Local\Programs\Microsoft VS Code
-    • Flutter extension version 3.94.0
+    • Flutter extension version 3.100.0
 
 [√] Connected device (4 available)
     • sdk gphone64 x86 64 (mobile) • emulator-5554 • android-x64    • Android 14 (API 34) (emulator)
-    • Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.22631.4037]
-    • Chrome (web)                 • chrome        • web-javascript • Google Chrome 127.0.6533.120
-    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 128.0.2739.42
+    • Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.22631.4317]
+    • Chrome (web)                 • chrome        • web-javascript • Google Chrome 130.0.6723.117
+    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 130.0.2849.80
 
 [√] Network resources
     • All expected network resources are available.
@@ -48,16 +48,18 @@
 Showing outdated packages.
 [*] indicates versions that are not the latest available.
 
-Package Name       Current  Upgradable  Resolvable  Latest  
+Package Name            Current  Upgradable  Resolvable  Latest  
 
-direct dependencies:
-cloud_firestore    *4.17.5  *4.17.5     5.2.1       5.2.1   
-firebase_auth      *4.20.0  *4.20.0     5.1.4       5.1.4   
-firebase_core      *2.32.0  *2.32.0     3.3.0       3.3.0   
-package_info_plus  *8.0.0   8.0.2       8.0.2       8.0.2   
+direct dependencies:   
+cloud_firestore         *4.17.5  *4.17.5     5.4.5       5.4.5   
+firebase_auth           *4.20.0  *4.20.0     5.3.2       5.3.2   
+firebase_core           *2.32.0  *2.32.0     3.7.0       3.7.0   
+flutter_launcher_icons  *0.13.1  *0.13.1     0.14.1      0.14.1  
+google_sign_in          *6.2.1   6.2.2       6.2.2       6.2.2   
+package_info_plus       *8.0.0   8.1.1       8.1.1       8.1.1   
 
-1 upgradable dependency is locked (in pubspec.lock) to an older version.
-To update it, use `flutter pub upgrade`.
+2 upgradable dependencies are locked (in pubspec.lock) to older versions.
+To update these dependencies, use `flutter pub upgrade`.
 
-3  dependencies are constrained to versions that are older than a resolvable version.
+4  dependencies are constrained to versions that are older than a resolvable version.
 To update these dependencies, edit pubspec.yaml, or run `flutter pub upgrade --major-versions`.

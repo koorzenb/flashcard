@@ -50,3 +50,11 @@
 ### Fix
 
 - Fixed Storage url
+
+## 0.1.5
+
+### Feature
+
+- Added search functionality in WordList Screen
+- Added circularProgressIndicator to show time left to guess word
+
