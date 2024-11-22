@@ -58,3 +58,11 @@
 - Added search functionality in WordList Screen
 - Added circularProgressIndicator to show time left to guess word
 
+## 0.1.6
+
+### Fix
+
+- Fix splash screen to have background match splash image background
+
+
+
