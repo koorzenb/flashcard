@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcard/models/server_environment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,9 @@ import '../storage/word_storage.dart';
 class WordController extends GetxController {
   late List<Word> _words;
   late List<Word> _filteredWords;
-  Word displayedWord = Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
+  Word displayedWord = FlashCardApiService().serverEnvironment == ServerEnvironment.dev
+      ? Word(hebrew: 'דָבָר', pronunciation: 'pronunciation', translation: 'translation')
+      : Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
 
   static WordController get getOrPut {
     try {
