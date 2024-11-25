@@ -4,15 +4,13 @@ import '../models/server_environment.dart';
 import '../models/word.dart';
 
 class FlashCardApiService {
-  ServerEnvironment serverEnvironment = ServerEnvironment.prod;
+  static ServerEnvironment _serverEnvironment = ServerEnvironment.prod;
 
-  FlashCardApiService() {
-    final flavor = String.fromEnvironment('FLAVOR', defaultValue: 'prod');
-
-    if (flavor != 'prod') {
-      serverEnvironment = ServerEnvironment.dev;
-    }
+  static void init(ServerEnvironment serverEnvironment) {
+    _serverEnvironment = serverEnvironment;
   }
+
+  ServerEnvironment get serverEnvironment => _serverEnvironment;
 
   static void importWords() {
     // fetch words from firebase
@@ -47,7 +45,7 @@ class FlashCardApiService {
   // TODO: setup flavor for dev/prod data in Firebase
 
   Future<List<Word>> getWords() async {
-    if (serverEnvironment == ServerEnvironment.dev) {
+    if (_serverEnvironment == ServerEnvironment.dev) {
       return [Word(id: 'id', hebrew: 'בְּדִיקָה', pronunciation: "b'dee-QAH", translation: 'test', attributes: '')];
     }
 

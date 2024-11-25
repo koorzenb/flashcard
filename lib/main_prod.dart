@@ -1,3 +1,4 @@
+import 'package:flashcard/models/server_environment.dart';
 import 'package:flutter/material.dart';
 
 import 'app_config.dart';
@@ -6,18 +7,19 @@ import 'main_common.dart';
 
 void main() async {
   try {
-    await commonInit(DefaultFirebaseOptions.currentPlatform);
+    await commonInit(DefaultFirebaseOptions.currentPlatform, ServerEnvironment.prod);
+    final displayName = 'FlashCard';
 
     final configuredApp = AppConfig(
-      appDisplayName: 'FlashCard',
+      appDisplayName: displayName,
       appInternalId: 1,
-      child: MyApp(),
+      child: MyApp(
+        displayName: displayName,
+      ),
     );
 
     runApp(configuredApp);
   } catch (e) {
-    debugPrint('main::exception - $e');
+    debugPrint('prod::exception - $e');
   }
-
-  runApp(const MyApp());
 }

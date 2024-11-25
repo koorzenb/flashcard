@@ -6,15 +6,21 @@
   "configurations": [
     {
       "name": "dev",
-      "request": "launch",
       "type": "dart",
-      "args": ["--dart-define-from-file", "${workspaceFolder}/.env.dev"],
-      "program": "lib/main_dev.dart"
+      "request": "launch",
+      "program": "lib/main_dev.dart",
+      "args": [
+        "--dart-define-from-file",
+        "${workspaceFolder}/.env.dev"
+      ],
+      "flutterMode": "debug",
+      "cwd": "${workspaceFolder}"
     },
     {
       "name": "flashcard (profile mode)",
-      "request": "launch",
       "type": "dart",
+      "request": "launch",
+      "program": "lib/main_prod.dart",
       "flutterMode": "profile"
     },
     {
