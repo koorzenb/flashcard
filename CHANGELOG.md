@@ -64,5 +64,12 @@
 
 - Fix splash screen to have background match splash image background
 
+## 0.1.7
 
+### SDK
 
+- Upgraded to Flutter 3.27.1
+
+### Fix
+
+- Fixed environments
