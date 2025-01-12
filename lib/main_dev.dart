@@ -1,23 +1,22 @@
-import 'package:flashcard/app_config.dart';
-import 'package:flashcard/firebase_options_dev.dart';
-import 'package:flutter/material.dart';
+// import 'package:flashcard/app_config.dart';
+// import 'package:flutter/material.dart';
 
-import 'main_common.dart';
+// import 'main_common.dart';
 
-void main() async {
-  try {
-    await commonInit(DefaultFirebaseOptions.currentPlatform);
+// void main() async {
+//   try {
+//     await commonInit(DefaultFirebaseOptions.currentPlatform);
 
-    final configuredApp = AppConfig(
-      appDisplayName: 'FlashDev',
-      appInternalId: 2,
-      child: MyApp(),
-    );
+//     final configuredApp = AppConfig(
+//       appDisplayName: 'FlashDev',
+//       appInternalId: 2,
+//       child: MyApp(),
+//     );
 
-    runApp(configuredApp);
-  } catch (e) {
-    debugPrint('dev::exception - $e');
-  }
+//     runApp(configuredApp);
+//   } catch (e) {
+//     debugPrint('dev::exception - $e');
+//   }
 
-  runApp(const MyApp());
-}
+//   runApp(const MyApp());
+// }

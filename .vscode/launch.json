@@ -5,11 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "dev",
+      "name": "prod",
       "request": "launch",
       "type": "dart",
-      "args": ["--dart-define-from-file", "${workspaceFolder}/.env.dev"],
-      "program": "lib/main_dev.dart"
+      "args": [
+        "--dart-define-from-file",
+        "${workspaceFolder}/.env.prod"
+      ],
+      "program": "lib/main_prod.dart"
     },
     {
       "name": "flashcard (profile mode)",

@@ -15,7 +15,7 @@ class FlashCardAppController extends GetxController {
 
   FlashCardAppController._() {}
 
-  void showWelcomeScreen() async {
+  Future<void> showWelcomeScreen() async {
     if (!MainAppStorage.box.displayedWelcomeScreen) {
       await _showWelcomeScreen();
       MainAppStorage.box.displayedWelcomeScreen = true;

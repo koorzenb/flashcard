@@ -3,13 +3,18 @@
     "platforms": {
       "android": {
         "default": {
-          "projectId": "flashcard-dev-88a9a",
-          "appId": "1:580452959981:android:bc706f14070b83fc466ee4",
+          "projectId": "flashcard-d3772",
+          "appId": "1:575131324994:android:ade2c848c88201bc38d3db",
           "fileOutput": "android/app/google-services.json"
         }
       },
       "dart": {
-        "lib/firebase_options.dart": { "projectId": "flashcard-dev-88a9a", "configurations": { "android": "1:580452959981:android:bc706f14070b83fc466ee4" } }
+        "lib/firebase_options.dart": {
+          "projectId": "flashcard-d3772",
+          "configurations": {
+            "android": "1:575131324994:android:ade2c848c88201bc38d3db"
+          }
+        }
       }
     }
   }

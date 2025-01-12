@@ -1,14 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flashcard/controllers/flash_card_app_controller.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flashcard/controllers/word_controller.dart';
-import 'package:flashcard/screens/home_screen.dart';
-import 'package:flashcard/storage/main_app_storage.dart';
-import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'controllers/flash_card_app_controller.dart';
+import 'screens/home_screen.dart';
+import 'storage/main_app_storage.dart';
+import 'storage/word_storage.dart';
+
 Future<void> commonInit(FirebaseOptions currentPlatform) async {
+  WidgetsFlutterBinding.ensureInitialized();
   await _initializeStorage();
   await _initializeFirebase(currentPlatform);
   _initializeControllers();
@@ -20,8 +23,11 @@ void _initializeControllers() {
 }
 
 Future<void> _initializeFirebase(FirebaseOptions currentPlatform) async {
-  await Firebase.initializeApp(name: 'dev', options: currentPlatform);
+  await Firebase.initializeApp(options: currentPlatform);
+  FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 }
+// got this working
+//  continue at "Using Screen" at https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/providers/email.md
 
 Future<void> _initializeStorage() async {
   await Hive.initFlutter();
@@ -66,9 +72,23 @@ class MyApp extends StatelessWidget {
             bodySmall: TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Segeo UI')),
         useMaterial3: true,
       ),
-      home: const HomeScreen(
-        title: String.fromEnvironment('FLAVOR') == 'dev' ? 'FlashDev' : 'FlashCard',
+      home: SignInScreen(
+        actions: [
+          AuthStateChangeAction<SignedIn>((context, state) async {
+            print(state);
+            print(state.user!);
+            print(state.user!.emailVerified);
+            if (!state.user!.emailVerified) {
+              await Get.to(() => const RegisterScreen());
+            } else {
+              await Get.to(() => const HomeScreen(
+                    title: 'FlashCard',
+                  ));
+            }
+          }),
+        ],
       ),
+      // title: String.fromEnvironment('FLAVOR') == 'dev' ? 'FlashDev' : 'FlashCard',
     );
   }
 }
