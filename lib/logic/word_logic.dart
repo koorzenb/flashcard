@@ -14,7 +14,14 @@ class WordLogic {
 
     if (_unReadWords.isEmpty) {
       _unReadWords = words.toList();
-      // TODO: improve unread words - show words that you are having probelms with
+
+      // start new branch - word wieght
+
+      // add weight to words - 1 to 5: 1 == 2secs, 2 == 4 secs, 3 == 6 secs, 4 == 8 secs, 5 == 10 secs
+      // add CircularProgressIndicator below word to show time
+
+      // logic
+      // - if tapped before time, decrease weight by 1. alternatively, if not tapped, increase weight by 1
     }
   }
 

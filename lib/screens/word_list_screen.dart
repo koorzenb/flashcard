@@ -12,7 +12,7 @@ class WordListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('FlashCard')),
+      appBar: AppBar(title: const Text('Card list')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GetBuilder<WordController>(builder: (flashCardController) {
@@ -21,7 +21,7 @@ class WordListScreen extends StatelessWidget {
             itemBuilder: (context, index) => GestureDetector(
               onTap: () async => await Get.to(() => WordDetailsScreen(title: 'Update Word', word: flashCardController.words[index])),
               child: flashCardController.words.isEmpty
-                  ? Center(child: const Text('No words here. Add some words!')) // TODO: this is not working
+                  ? Center(child: const Text('No words here. Add some words!')) // FIXME: this is not working
                   : Column(
                       children: [
                         ListTile(

@@ -4,16 +4,16 @@ import 'package:get/get.dart';
 
 import '../widgets/custom_dialog.dart';
 
-class FlashCardAppController extends GetxController {
-  static FlashCardAppController get getOrPut {
+class KardsAppController extends GetxController {
+  static KardsAppController get getOrPut {
     try {
-      return Get.find<FlashCardAppController>();
+      return Get.find<KardsAppController>();
     } catch (e) {
-      return Get.put(FlashCardAppController._());
+      return Get.put(KardsAppController._());
     }
   }
 
-  FlashCardAppController._() {}
+  KardsAppController._() {}
 
   Future<void> showWelcomeScreen() async {
     if (!MainAppStorage.box.displayedWelcomeScreen) {
@@ -24,6 +24,7 @@ class FlashCardAppController extends GetxController {
   }
 
   Future<void> _showWelcomeScreen() async {
+    // TODO: move to WelcomeMessageContent
     final dividerHeight = 50.0; // TODO: percentage of screen
     final context = Get.context!;
 
@@ -40,7 +41,7 @@ class FlashCardAppController extends GetxController {
           SizedBox(height: dividerHeight),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Welcome to FlashLearn!', style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Theme.of(context).colorScheme.secondary)),
+            child: Text('Welcome to Kards!', style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Theme.of(context).colorScheme.secondary)),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

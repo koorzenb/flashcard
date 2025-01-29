@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcard/models/server_environment.dart';
 import 'package:flashcard/models/word.dart';
 
-class FlashCardApiService {
-  ServerEnvironment serverEnvironment = ServerEnvironment.prod;
+class KardsApiService {
+  static ServerEnvironment serverEnvironment = ServerEnvironment.prod;
+  late String _userId;
 
-  FlashCardApiService() {
+  KardsApiService() {
     final flavor = String.fromEnvironment('FLAVOR', defaultValue: 'prod');
 
     if (flavor != 'prod') {
       serverEnvironment = ServerEnvironment.dev;
     }
+
+    _userId = FirebaseAuth.instance.currentUser!.uid;
   }
 
   static void importWords() {
@@ -25,12 +29,13 @@ class FlashCardApiService {
 
   Future<Word?> addWord(Word word) async {
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('words').add({
+      final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').add({
         'hebrew': word.hebrew,
         'pronunciation': word.pronunciation,
         'translation': word.translation,
         'attributes': word.attributes,
       });
+
       return Word(
         id: snapshot.id,
         hebrew: word.hebrew,
@@ -43,16 +48,14 @@ class FlashCardApiService {
     }
   }
 
-  // TODO: setup flavor for dev/prod data in Firebase
-
   Future<List<Word>> getWords() async {
     if (serverEnvironment == ServerEnvironment.dev) {
       return [Word(id: 'id', hebrew: 'בְּדִיקָה', pronunciation: "b'dee-QAH", translation: 'test', attributes: '')];
     }
 
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('words').get();
-
     List<Word> words = [];
+
+    final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
 
     snapshot.docs.forEach((doc) {
       words.add(Word(
@@ -68,7 +71,7 @@ class FlashCardApiService {
   }
 
   void updateWord(Word word) {
-    FirebaseFirestore.instance.collection('words').doc(word.id).update({
+    FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').doc(word.id).update({
       'hebrew': word.hebrew,
       'pronunciation': word.pronunciation,
       'translation': word.translation,

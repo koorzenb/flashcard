@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -18,16 +18,13 @@ Future<void> commonInit(FirebaseOptions currentPlatform) async {
 }
 
 void _initializeControllers() {
-  WordController.getOrPut;
-  FlashCardAppController.getOrPut;
+  KardsAppController.getOrPut;
 }
 
 Future<void> _initializeFirebase(FirebaseOptions currentPlatform) async {
   await Firebase.initializeApp(options: currentPlatform);
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 }
-// got this working
-//  continue at "Using Screen" at https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/providers/email.md
 
 Future<void> _initializeStorage() async {
   await Hive.initFlutter();
@@ -44,7 +41,7 @@ class MyApp extends StatelessWidget {
     // TODO:  use TutorialCoachMark to show tutorial
     return GetMaterialApp(
       // debugShowCheckedModeBanner: false,
-      title: 'FlashCard',
+      title: 'Kards',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue.shade300),
         textTheme: TextTheme(
@@ -72,16 +69,54 @@ class MyApp extends StatelessWidget {
             bodySmall: TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Segeo UI')),
         useMaterial3: true,
       ),
-      home: SignInScreen(
-        actions: [
-          AuthStateChangeAction<SignedIn>((context, state) async {
-            await Get.to(() => const HomeScreen(
-                  title: 'FlashCard',
-                ));
-          }),
-        ],
-      ),
+      home: _signInHandler(context),
       // title: String.fromEnvironment('FLAVOR') == 'dev' ? 'FlashDev' : 'FlashCard',
     );
+  }
+
+  Widget _signInHandler(BuildContext context) {
+    return firebase_auth.FirebaseAuth.instance.currentUser != null
+        ? const HomeScreen(
+            title: 'Kards',
+          )
+        : SignInScreen(
+            // see documentation for more info
+            // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/providers/email.md
+            // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/README.md
+
+            actions: [
+              AuthStateChangeAction<SignedIn>((context, state) async {
+                print('Signed in');
+
+                await Get.to(() => const HomeScreen(
+                      title: 'Kards',
+                    ));
+              }),
+              AuthStateChangeAction<Uninitialized>((context, state) async {
+                print('Uninitialized');
+              }),
+              AuthStateChangeAction<AuthFailed>((context, state) async {
+                print('Auth failed');
+              }),
+              AuthStateChangeAction<AuthState>((context, state) async {
+                print('Auth state');
+              }),
+              AuthStateChangeAction<SigningIn>((context, state) async {
+                print('Signing in');
+              }),
+              AuthStateChangeAction<CredentialReceived>((context, state) async {
+                print('Credential received');
+              }),
+              AuthStateChangeAction<CredentialLinked>((context, state) async {
+                print('Credential linked');
+              }),
+              AuthStateChangeAction<UserCreated>((context, state) async {
+                print('User created');
+              }),
+              AuthStateChangeAction<FetchingProvidersForEmail>((context, state) async {
+                print('Fetching providers for email');
+              }),
+            ],
+          );
   }
 }

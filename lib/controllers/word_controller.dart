@@ -24,7 +24,7 @@ class WordController extends GetxController {
     _words = WordStorage.box.words;
 
     if (_words.isEmpty) {
-      FlashCardApiService().getWords().then((words) {
+      KardsApiService().getWords().then((words) {
         if (words.isEmpty) {
           words = [Word(id: 'id', hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word', attributes: '')];
         }
@@ -46,7 +46,7 @@ class WordController extends GetxController {
     update();
   }
 
-  void deleteWord(Word word) async {
+  Future<void> deleteWord(Word word) async {
     _words.removeWhere((element) => element.hebrew == word.hebrew && element.translation == word.translation);
     WordStorage.box.words = _words.toList();
     update();
@@ -65,20 +65,16 @@ class WordController extends GetxController {
     Get.back();
   }
 
-  void addWord(Word word) async {
-    final updatedWord = await FlashCardApiService().addWord(word);
-
-    // TODO: check if you can access Firebase (Firebase API?). If not, set a tempId and update once you receive updated response from server
+  Future<void> addWord(Word word) async {
+    final updatedWord = await KardsApiService().addWord(word);
     if (updatedWord != null) {
       WordLogic(words).addWord(updatedWord);
       update();
     }
   }
 
-  void updateWord(Word word) async {
-//  fix updating of words. first get dev env to work - do not write to prod data. push once done
-
-    FlashCardApiService().updateWord(word);
+  Future<void> updateWord(Word word) async {
+    KardsApiService().updateWord(word);
     _words[_words.indexWhere((element) => element.id == word.id)] = word;
     WordStorage.box.words = _words.toList();
     update();
@@ -89,7 +85,7 @@ class WordController extends GetxController {
     debugPrint(displayedWord.translation);
   }
 
-  void onLongPress() async {
+  Future<void> onLongPress() async {
     final updatedWord = await Get.to(() => WordDetailsScreen(title: 'Update Word', word: displayedWord));
     if (updatedWord != null) {
       displayedWord = updatedWord;

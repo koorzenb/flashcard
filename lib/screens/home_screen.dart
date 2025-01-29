@@ -24,15 +24,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    WordController.getOrPut;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        FlashCardAppController.getOrPut.showWelcomeScreen();
+        KardsAppController.getOrPut.showWelcomeScreen();
       }
     });
     super.initState();
   }
-
-  final flashCardController = WordController.getOrPut;
 
   @override
   Widget build(BuildContext context) {
