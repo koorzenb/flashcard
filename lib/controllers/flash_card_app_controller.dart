@@ -1,7 +1,7 @@
-import 'package:flashcard/storage/main_app_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../storage/main_app_storage.dart';
 import '../widgets/custom_dialog.dart';
 
 class KardsAppController extends GetxController {

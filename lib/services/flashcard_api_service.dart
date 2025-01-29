@@ -1,21 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flashcard/models/server_environment.dart';
-import 'package:flashcard/models/word.dart';
+
+import '../models/server_environment.dart';
+import '../models/word.dart';
 
 class KardsApiService {
-  static ServerEnvironment serverEnvironment = ServerEnvironment.prod;
-  late String _userId;
+  static ServerEnvironment _serverEnvironment = ServerEnvironment.prod;
+  static String _userId = FirebaseAuth.instance.currentUser!.uid;
 
-  KardsApiService() {
-    final flavor = String.fromEnvironment('FLAVOR', defaultValue: 'prod');
-
-    if (flavor != 'prod') {
-      serverEnvironment = ServerEnvironment.dev;
-    }
-
-    _userId = FirebaseAuth.instance.currentUser!.uid;
+  static void init(ServerEnvironment serverEnvironment) {
+    _serverEnvironment = serverEnvironment;
   }
+
+  ServerEnvironment get serverEnvironment => _serverEnvironment;
 
   static void importWords() {
     // fetch words from firebase
@@ -49,7 +46,7 @@ class KardsApiService {
   }
 
   Future<List<Word>> getWords() async {
-    if (serverEnvironment == ServerEnvironment.dev) {
+    if (_serverEnvironment == ServerEnvironment.dev) {
       return [Word(id: 'id', hebrew: 'בְּדִיקָה', pronunciation: "b'dee-QAH", translation: 'test', attributes: '')];
     }
 

@@ -17,6 +17,11 @@ void main() {
     await WordStorage.init();
   });
 
+  tearDownAll(() {
+    Hive.close();
+    TestsHelper.deleteTestDataFolder(kTestDataFolder);
+  });
+
   group('getWord', () {
     late WordLogic wordLogic;
     late List<Word> words;

@@ -50,3 +50,26 @@
 ### Fix
 
 - Fixed Storage url
+
+## 0.1.5
+
+### Feature
+
+- Added search functionality in WordList Screen
+- Added circularProgressIndicator to show time left to guess word
+
+## 0.1.6
+
+### Fix
+
+- Fix splash screen to have background match splash image background
+
+## 0.1.7
+
+### SDK
+
+- Upgraded to Flutter 3.27.1
+
+### Fix
+
+- Fixed environments

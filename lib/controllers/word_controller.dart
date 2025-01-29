@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flashcard/services/flashcard_api_service.dart';
-import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../logic/word_logic.dart';
+import '../models/server_environment.dart';
 import '../models/word.dart';
 import '../screens/word_details_screen.dart';
+import '../services/flashcard_api_service.dart';
+import '../storage/word_storage.dart';
 
 class WordController extends GetxController {
   late List<Word> _words;
-  Word displayedWord = Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
+  late List<Word> _filteredWords;
+  Word displayedWord = KardsApiService().serverEnvironment == ServerEnvironment.dev
+      ? Word(hebrew: 'דָבָר', pronunciation: 'pronunciation', translation: 'translation')
+      : Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
 
   static WordController get getOrPut {
     try {
@@ -21,7 +25,7 @@ class WordController extends GetxController {
   }
 
   WordController._() {
-    _words = WordStorage.box.words;
+    _filteredWords = _words = WordStorage.box.words;
 
     if (_words.isEmpty) {
       KardsApiService().getWords().then((words) {
@@ -37,9 +41,8 @@ class WordController extends GetxController {
     }
   }
 
-  List<Word> get words {
-    return WordStorage.box.words;
-  }
+  List<Word> get words => _words;
+  List<Word> get filteredWords => _filteredWords;
 
   set words(List<Word> words) {
     _words = words;
@@ -73,9 +76,10 @@ class WordController extends GetxController {
     }
   }
 
-  Future<void> updateWord(Word word) async {
-    KardsApiService().updateWord(word);
-    _words[_words.indexWhere((element) => element.id == word.id)] = word;
+  Future<void> updateWord(Word value) async {
+    KardsApiService().updateWord(value);
+    final index = _words.indexWhere((element) => element.id == value.id);
+    _words[index] = value;
     WordStorage.box.words = _words.toList();
     update();
   }
@@ -83,6 +87,7 @@ class WordController extends GetxController {
   void onTap() {
     displayedWord = WordLogic(WordController.getOrPut.words).getWord();
     debugPrint(displayedWord.translation);
+    update();
   }
 
   Future<void> onLongPress() async {
@@ -91,5 +96,10 @@ class WordController extends GetxController {
       displayedWord = updatedWord;
       update();
     }
+  }
+
+  void onSearchChange(String text) {
+    _filteredWords = _words.where((word) => word.translation.contains(text) || word.translation.startsWith(text)).toList();
+    update();
   }
 }

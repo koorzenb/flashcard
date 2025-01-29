@@ -6,14 +6,17 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'controllers/flash_card_app_controller.dart';
+import 'models/server_environment.dart';
 import 'screens/home_screen.dart';
+import 'services/flashcard_api_service.dart';
 import 'storage/main_app_storage.dart';
 import 'storage/word_storage.dart';
+import 'styles/themes.dart';
 
-Future<void> commonInit(FirebaseOptions currentPlatform) async {
+Future<void> commonInit(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeStorage();
-  await _initializeFirebase(currentPlatform);
+  await _initializeFirebase(currentPlatform, serverEnvironment);
   _initializeControllers();
 }
 
@@ -21,7 +24,8 @@ void _initializeControllers() {
   KardsAppController.getOrPut;
 }
 
-Future<void> _initializeFirebase(FirebaseOptions currentPlatform) async {
+Future<void> _initializeFirebase(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
+  KardsApiService.init(serverEnvironment);
   await Firebase.initializeApp(options: currentPlatform);
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 }
@@ -34,51 +38,24 @@ Future<void> _initializeStorage() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String displayName;
+
+  MyApp({required this.displayName, super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO:  use TutorialCoachMark to show tutorial
     return GetMaterialApp(
-      // debugShowCheckedModeBanner: false,
-      title: 'Kards',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue.shade300),
-        textTheme: TextTheme(
-            titleLarge: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Segeo UI',
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-            headlineLarge: TextStyle(
-              fontSize: 48,
-              color: Colors.black,
-              fontFamily: 'Noto Sans Hebrew',
-            ),
-            headlineMedium: TextStyle(
-              fontSize: 20,
-              fontFamily: 'Segeo UI',
-              fontWeight: FontWeight.bold,
-            ),
-            bodyLarge: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-              fontFamily: 'Segeo UI',
-            ),
-            bodySmall: TextStyle(fontSize: 16, color: Colors.black, fontFamily: 'Segeo UI')),
-        useMaterial3: true,
-      ),
-      home: _signInHandler(context),
-      // title: String.fromEnvironment('FLAVOR') == 'dev' ? 'FlashDev' : 'FlashCard',
-    );
+        // debugShowCheckedModeBanner: false,
+        title: 'Kards',
+        theme: Themes.primary,
+        home: _signInHandler(context, displayName));
   }
 
-  Widget _signInHandler(BuildContext context) {
+  Widget _signInHandler(BuildContext context, String displayName) {
+    final homeScreen = HomeScreen(title: displayName);
+
     return firebase_auth.FirebaseAuth.instance.currentUser != null
-        ? const HomeScreen(
-            title: 'Kards',
-          )
+        ? homeScreen
         : SignInScreen(
             // see documentation for more info
             // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/providers/email.md
@@ -88,9 +65,7 @@ class MyApp extends StatelessWidget {
               AuthStateChangeAction<SignedIn>((context, state) async {
                 print('Signed in');
 
-                await Get.to(() => const HomeScreen(
-                      title: 'Kards',
-                    ));
+                await Get.to(() => homeScreen);
               }),
               AuthStateChangeAction<Uninitialized>((context, state) async {
                 print('Uninitialized');

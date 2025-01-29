@@ -1,12 +1,12 @@
-import 'package:flashcard/controllers/flash_card_app_controller.dart';
-import 'package:flashcard/controllers/word_controller.dart';
-import 'package:flashcard/widgets/version_code_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/flash_card_app_controller.dart';
+import '../controllers/word_controller.dart';
 import '../models/word.dart';
 import '../widgets/flash_card.dart';
 import '../widgets/main_drawer.dart';
+import '../widgets/version_code_text.dart';
 import 'word_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {

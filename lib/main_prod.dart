@@ -1,23 +1,25 @@
-import 'package:flashcard/app_config.dart';
-import 'package:flashcard/firebase_options_prod.dart';
 import 'package:flutter/material.dart';
 
+import 'app_config.dart';
+import 'firebase_options_prod.dart';
 import 'main_common.dart';
+import 'models/server_environment.dart';
 
 void main() async {
   try {
-    await commonInit(DefaultFirebaseOptions.currentPlatform);
+    await commonInit(DefaultFirebaseOptions.currentPlatform, ServerEnvironment.prod);
+    final displayName = 'Kards';
 
     final configuredApp = AppConfig(
-      appDisplayName: 'Kards',
+      appDisplayName: displayName,
       appInternalId: 1,
-      child: MyApp(),
+      child: MyApp(
+        displayName: displayName,
+      ),
     );
 
     runApp(configuredApp);
   } catch (e) {
-    debugPrint('main::exception - $e');
+    debugPrint('prod::exception - $e');
   }
-
-  runApp(const MyApp());
 }

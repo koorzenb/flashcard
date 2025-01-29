@@ -1,7 +1,7 @@
-import 'package:flashcard/controllers/word_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/word_controller.dart';
 import '../models/word.dart';
 
 class WordDetailsScreen extends StatefulWidget {

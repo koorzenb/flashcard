@@ -1,7 +1,8 @@
-import 'package:flashcard/screens/word_list_screen.dart';
-import 'package:flashcard/widgets/drawer_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../screens/word_list_screen.dart';
+import 'drawer_item.dart';
 
 class MainDrawer extends StatelessWidget {
   MainDrawer({super.key});
@@ -30,7 +31,7 @@ class MainDrawer extends StatelessWidget {
           ),
           DrawerItem(
             title: 'Word List',
-            onTap: () => Get.to(() => const WordListScreen()),
+            onTap: () => Get.to(() => WordListScreen()),
           ),
         ],
       ),

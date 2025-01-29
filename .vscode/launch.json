@@ -16,8 +16,9 @@
     },
     {
       "name": "flashcard (profile mode)",
-      "request": "launch",
       "type": "dart",
+      "request": "launch",
+      "program": "lib/main_prod.dart",
       "flutterMode": "profile"
     },
     {
