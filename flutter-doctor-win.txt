@@ -1,50 +1,15 @@
-[√] Flutter (Channel stable, 3.27.1, on Microsoft Windows [Version 10.0.22631.4602], locale en-CA)
-    • Flutter version 3.27.1 on channel stable at C:\Users\koorz\fvm\versions\3.27.1
+[!] Flutter (Channel stable, 3.27.1, on Microsoft Windows [Version 10.0.22631.4602], locale en-CA)
+    • Flutter version 3.27.1 on channel stable at C:\Users\koorz\fvm\default
+    ! Warning: `flutter` on your path resolves to C:\Users\koorz\fvm\versions\3.27.1\bin\flutter, which is not inside your current Flutter SDK checkout at C:\Users\koorz\fvm\default. Consider adding C:\Users\koorz\fvm\default\bin to the front of your path.
+    ! Warning: `dart` on your path resolves to C:\Users\koorz\fvm\versions\3.27.1\bin\dart, which is not inside your current Flutter SDK checkout at C:\Users\koorz\fvm\default. Consider adding C:\Users\koorz\fvm\default\bin to the front of your path.
     • Upstream repository https://github.com/flutter/flutter.git
     • Framework revision 17025dd882 (4 weeks ago), 2024-12-17 03:23:09 +0900
     • Engine revision cb4b5fff73
     • Dart version 3.6.0
     • DevTools version 2.40.2
+    • If those were intentional, you can disregard the above warnings; however it is recommended to use "git" directly to perform update checks and upgrades.
 
-[√] Windows Version (Installed version of Windows is version 10 or higher)
-
-[√] Android toolchain - develop for Android devices (Android SDK version 34.0.0)
-    • Android SDK at C:\Users\koorz\AppData\Local\Android\sdk
-    • Platform android-35, build-tools 34.0.0
-    • Java binary at: C:\Program Files\Android\Android Studio\jbr\bin\java
-    • Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
-    • All Android licenses accepted.
-
-[√] Chrome - develop for the web
-    • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
-
-[√] Visual Studio - develop Windows apps (Visual Studio Community 2022 17.9.0)
-    • Visual Studio at C:\Program Files\Microsoft Visual Studio\2022\Community
-    • Visual Studio Community 2022 version 17.9.34607.119
-    • Windows 10 SDK version 10.0.22621.0
-
-[√] Android Studio (version 2023.1)
-    • Android Studio at C:\Program Files\Android\Android Studio
-    • Flutter plugin can be installed from:
-       https://plugins.jetbrains.com/plugin/9212-flutter
-    • Dart plugin can be installed from:
-       https://plugins.jetbrains.com/plugin/6351-dart
-    • Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
-
-[√] VS Code (version 1.96.2)
-    • VS Code at C:\Users\koorz\AppData\Local\Programs\Microsoft VS Code
-    • Flutter extension version 3.102.0
-
-[√] Connected device (4 available)
-    • sdk gphone64 x86 64 (mobile) • emulator-5554 • android-x64    • Android 14 (API 34) (emulator)
-    • Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.22631.4602]
-    • Chrome (web)                 • chrome        • web-javascript • Google Chrome 131.0.6778.265
-    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 131.0.2903.146
-
-[√] Network resources
-    • All expected network resources are available.
-
-• No issues found!
+Terminate batch job (Y/N)? 
 Showing outdated packages.
 [*] indicates versions that are not the latest available.
 

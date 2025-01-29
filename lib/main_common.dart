@@ -75,16 +75,9 @@ class MyApp extends StatelessWidget {
       home: SignInScreen(
         actions: [
           AuthStateChangeAction<SignedIn>((context, state) async {
-            print(state);
-            print(state.user!);
-            print(state.user!.emailVerified);
-            if (!state.user!.emailVerified) {
-              await Get.to(() => const RegisterScreen());
-            } else {
-              await Get.to(() => const HomeScreen(
-                    title: 'FlashCard',
-                  ));
-            }
+            await Get.to(() => const HomeScreen(
+                  title: 'FlashCard',
+                ));
           }),
         ],
       ),
