@@ -17,8 +17,8 @@ void main() {
     await WordStorage.init();
   });
 
-  tearDownAll(() {
-    Hive.close();
+  tearDownAll(() async {
+    await Hive.close();
     TestsHelper.deleteTestDataFolder(kTestDataFolder);
   });
 
