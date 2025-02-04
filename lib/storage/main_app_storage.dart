@@ -5,7 +5,8 @@ class MainAppStorage {
   static MainAppStorage? _wordStorage;
   static late Box _staticBox;
 
-  static Future<void> init() async => _staticBox = await Hive.openBox(_kStorageName);
+  static Future<void> init() async =>
+      _staticBox = await Hive.openBox(_kStorageName);
 
   static Future<void> close() async => await _staticBox.close();
 
@@ -22,6 +23,8 @@ class MainAppStorage {
   }
 
   static const String _kDisplayedWelcomeScreen = 'displayedWelcomeScreen';
-  bool get displayedWelcomeScreen => _box.get(_kDisplayedWelcomeScreen) ?? false;
-  set displayedWelcomeScreen(bool value) => _box.put(_kDisplayedWelcomeScreen, value);
+  bool get displayedWelcomeScreen =>
+      _box.get(_kDisplayedWelcomeScreen) ?? false;
+  set displayedWelcomeScreen(bool value) =>
+      _box.put(_kDisplayedWelcomeScreen, value);
 }

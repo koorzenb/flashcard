@@ -27,7 +27,8 @@ class WordLogic {
 
   List<Word> addWord(Word word) {
     _words.add(word);
-    _words.sort((firstWords, secondWord) => firstWords.translation.compareTo(secondWord.translation));
+    _words.sort((firstWords, secondWord) =>
+        firstWords.translation.compareTo(secondWord.translation));
     WordStorage.box.words = _words.toList();
     return _words;
   }

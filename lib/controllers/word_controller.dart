@@ -12,9 +12,13 @@ import '../storage/word_storage.dart';
 class WordController extends GetxController {
   late List<Word> _words;
   late List<Word> _filteredWords;
-  Word displayedWord = KardsApiService().serverEnvironment == ServerEnvironment.dev
-      ? Word(hebrew: 'דָבָר', pronunciation: 'pronunciation', translation: 'translation')
-      : Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
+  Word displayedWord =
+      KardsApiService().serverEnvironment == ServerEnvironment.dev
+          ? Word(
+              hebrew: 'דָבָר',
+              pronunciation: 'pronunciation',
+              translation: 'translation')
+          : Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
 
   static WordController get getOrPut {
     try {
@@ -30,7 +34,14 @@ class WordController extends GetxController {
     if (_words.isEmpty) {
       KardsApiService().getWords().then((words) {
         if (words.isEmpty) {
-          words = [Word(id: 'id', hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word', attributes: '')];
+          words = [
+            Word(
+                id: 'id',
+                hebrew: 'דָבָר',
+                pronunciation: 'de-var',
+                translation: 'word',
+                attributes: '')
+          ];
         }
 
         words.sort((a, b) => a.translation.compareTo(b.translation));
@@ -50,13 +61,18 @@ class WordController extends GetxController {
   }
 
   Future<void> deleteWord(Word word) async {
-    _words.removeWhere((element) => element.hebrew == word.hebrew && element.translation == word.translation);
+    _words.removeWhere((element) =>
+        element.hebrew == word.hebrew &&
+        element.translation == word.translation);
     WordStorage.box.words = _words.toList();
     update();
 
     try {
-      final collectionReference = FirebaseFirestore.instance.collection('words');
-      QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: word.hebrew).get();
+      final collectionReference =
+          FirebaseFirestore.instance.collection('words');
+      QuerySnapshot querySnapshot = await collectionReference
+          .where('hebrew', isEqualTo: word.hebrew)
+          .get();
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         await doc.reference.delete();
@@ -91,7 +107,8 @@ class WordController extends GetxController {
   }
 
   Future<void> onLongPress() async {
-    final updatedWord = await Get.to(() => WordDetailsScreen(title: 'Update Word', word: displayedWord));
+    final updatedWord = await Get.to(
+        () => WordDetailsScreen(title: 'Update Word', word: displayedWord));
     if (updatedWord != null) {
       displayedWord = updatedWord;
       update();
@@ -99,7 +116,11 @@ class WordController extends GetxController {
   }
 
   void onSearchChange(String text) {
-    _filteredWords = _words.where((word) => word.translation.contains(text) || word.translation.startsWith(text)).toList();
+    _filteredWords = _words
+        .where((word) =>
+            word.translation.contains(text) ||
+            word.translation.startsWith(text))
+        .toList();
     update();
   }
 }

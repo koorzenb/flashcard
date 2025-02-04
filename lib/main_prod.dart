@@ -7,7 +7,8 @@ import 'models/server_environment.dart';
 
 void main() async {
   try {
-    await commonInit(DefaultFirebaseOptions.currentPlatform, ServerEnvironment.prod);
+    await commonInit(
+        DefaultFirebaseOptions.currentPlatform, ServerEnvironment.prod);
     final displayName = 'Kards';
 
     final configuredApp = AppConfig(

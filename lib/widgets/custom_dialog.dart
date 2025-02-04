@@ -24,7 +24,15 @@ class CustomDialog extends StatelessWidget {
       Color backgroundColor = Colors.white,
       bool barrierDismissible = true}) async {
     if (autoClose) {
-      await Get.dialog(CustomDialog(title, textConfirm, content, backgroundColor: backgroundColor), barrierDismissible: barrierDismissible);
+      await Get.dialog(
+        CustomDialog(
+          title,
+          textConfirm,
+          content,
+          backgroundColor: backgroundColor,
+        ),
+        barrierDismissible: barrierDismissible,
+      );
       await Future.delayed(const Duration(seconds: 1), () {});
       return true;
     } else {
@@ -43,7 +51,13 @@ class CustomDialog extends StatelessWidget {
   }
 
   const CustomDialog(this._title, this._confirmText, this._content,
-      {super.key, this.cancelText, this.onWillPop = true, this.autoClose = false, this.onConfirm, this.onCancel, this.backgroundColor = Colors.white});
+      {super.key,
+      this.cancelText,
+      this.onWillPop = true,
+      this.autoClose = false,
+      this.onConfirm,
+      this.onCancel,
+      this.backgroundColor = Colors.white});
 
   @override
   Widget build(BuildContext context) {

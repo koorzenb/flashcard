@@ -6,7 +6,13 @@ class Word {
   final String attributes;
   final bool isNew;
 
-  Word({this.id = '', required this.hebrew, required this.pronunciation, required this.translation, this.attributes = '', this.isNew = false});
+  Word(
+      {this.id = '',
+      required this.hebrew,
+      required this.pronunciation,
+      required this.translation,
+      this.attributes = '',
+      this.isNew = false});
 
   Map<String, dynamic> toJson() => {
         'id': id,

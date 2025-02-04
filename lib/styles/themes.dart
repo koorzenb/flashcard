@@ -30,7 +30,11 @@ class Themes {
           color: Colors.black,
           fontFamily: 'Segeo UI',
         ),
-        bodySmall: TextStyle(fontSize: 12, color: Colors.black, fontFamily: 'Segeo UI')),
+        bodySmall: TextStyle(
+          fontSize: 12,
+          color: Colors.black,
+          fontFamily: 'Segeo UI',
+        )),
     useMaterial3: true,
   );
 }

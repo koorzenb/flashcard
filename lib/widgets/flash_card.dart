@@ -10,7 +10,8 @@ class FlashCardWidget extends StatefulWidget {
   State<FlashCardWidget> createState() => _FlashCardWidgetState();
 }
 
-class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderStateMixin {
+class _FlashCardWidgetState extends State<FlashCardWidget>
+    with TickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
   AnimationStatus animationStatus = AnimationStatus.dismissed;
@@ -82,7 +83,8 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                           width: 26,
                           child: CircularProgressIndicator(
                             value: animation.value,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue.shade300),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.lightBlue.shade300),
                             strokeWidth: 1,
                           ),
                         ),
@@ -91,7 +93,9 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                   ),
                   if (!showProgressIndicator)
                     AnimatedOpacity(
-                        duration: showTranslation ? Duration(seconds: opacityAnimationDuration) : Duration.zero,
+                        duration: showTranslation
+                            ? Duration(seconds: opacityAnimationDuration)
+                            : Duration.zero,
                         opacity: showTranslation ? 1.0 : 0.0,
                         child: Column(children: [
                           Text(
@@ -100,12 +104,20 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                           ),
                           Text(
                             wordController.displayedWord.translation,
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.grey),
                           ),
                           wordController.displayedWord.attributes.isNotEmpty
                               ? Text(
                                   wordController.displayedWord.attributes,
-                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey, fontStyle: FontStyle.italic),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                          color: Colors.grey,
+                                          fontStyle: FontStyle.italic),
                                 )
                               : SizedBox(height: 12),
                         ])),
@@ -124,8 +136,10 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
       vsync: this,
     );
 
-    animationController.addStatusListener((status) => setState(() => animationStatus = status));
-    animation = Tween<double>(begin: 0, end: 1).animate(animationController)..addListener(() => setState(() {}));
+    animationController.addStatusListener(
+        (status) => setState(() => animationStatus = status));
+    animation = Tween<double>(begin: 0, end: 1).animate(animationController)
+      ..addListener(() => setState(() {}));
     animationController.forward();
   }
 
@@ -133,13 +147,17 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
     if (!showTranslation) {
       const startOpacityAnimationDelayMs = 100;
 
-      Future.delayed(const Duration(milliseconds: startOpacityAnimationDelayMs), () {
+      Future.delayed(const Duration(milliseconds: startOpacityAnimationDelayMs),
+          () {
         setState(() {
           showTranslation = true;
         });
       });
 
-      Future.delayed(Duration(milliseconds: startOpacityAnimationDelayMs + (opacityAnimationDuration * 1000)), () {
+      Future.delayed(
+          Duration(
+              milliseconds: startOpacityAnimationDelayMs +
+                  (opacityAnimationDuration * 1000)), () {
         debugPrint('enabled');
         setState(() => enabledOnTap = true);
       });

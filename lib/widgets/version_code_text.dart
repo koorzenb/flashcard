@@ -14,7 +14,8 @@ class _VersionCodeTextState extends State<VersionCodeText> {
   @override
   void initState() {
     super.initState();
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) => setState(() => versionCode = packageInfo.version));
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) =>
+        setState(() => versionCode = packageInfo.version));
   }
 
   @override
