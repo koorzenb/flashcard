@@ -66,10 +66,21 @@
 
 ## 0.1.7
 
-### SDK
-
-- Upgraded to Flutter 3.27.1
-
 ### Fix
 
 - Fixed environments
+
+## 0.1.8
+
+### SDK
+
+- Upgraded Flutter and upgraded all dependencies
+
+### Feature
+
+- Separated user data by means of authentication
+
+## Chore
+
+- Update build script to no longer need .env files
+- Added Github Action CI/CD
