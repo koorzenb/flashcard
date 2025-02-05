@@ -70,7 +70,7 @@
 
 - Fixed environments
 
-## 0.1.8
+## 0.2.0
 
 ### SDK
 
@@ -80,7 +80,7 @@
 
 - Separated user data by means of authentication
 
-## Chore
+### Chore
 
 - Update build script to no longer need .env files
 - Added Github Action CI/CD
