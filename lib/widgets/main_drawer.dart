@@ -20,10 +20,7 @@ class MainDrawer extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'Menu',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge!
-                      .copyWith(color: Colors.black),
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Colors.black),
                 ),
               ),
             ),
@@ -33,6 +30,7 @@ class MainDrawer extends StatelessWidget {
             height: 20,
           ),
           DrawerItem(
+            icon: Icons.list,
             title: 'Word List',
             onTap: () => Get.to(() => WordListScreen()),
           ),
