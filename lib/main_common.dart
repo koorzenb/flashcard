@@ -13,8 +13,7 @@ import 'storage/main_app_storage.dart';
 import 'storage/word_storage.dart';
 import 'styles/themes.dart';
 
-Future<void> commonInit(FirebaseOptions currentPlatform,
-    ServerEnvironment serverEnvironment) async {
+Future<void> commonInit(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeStorage();
   await _initializeFirebase(currentPlatform, serverEnvironment);
@@ -25,8 +24,7 @@ void _initializeControllers() {
   KardsAppController.getOrPut;
 }
 
-Future<void> _initializeFirebase(FirebaseOptions currentPlatform,
-    ServerEnvironment serverEnvironment) async {
+Future<void> _initializeFirebase(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
   KardsApiService.init(serverEnvironment);
   await Firebase.initializeApp(options: currentPlatform);
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
@@ -54,7 +52,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _signInHandler(BuildContext context, String displayName) {
-    final homeScreen = HomeScreen(title: displayName);
+    final homeScreen = HomeScreen();
 
     return firebase_auth.FirebaseAuth.instance.currentUser != null
         ? homeScreen
@@ -89,9 +87,9 @@ class MyApp extends StatelessWidget {
               }),
               AuthStateChangeAction<UserCreated>((context, state) async {
                 print('User created');
+                await Get.to(() => homeScreen);
               }),
-              AuthStateChangeAction<FetchingProvidersForEmail>(
-                  (context, state) async {
+              AuthStateChangeAction<FetchingProvidersForEmail>((context, state) async {
                 print('Fetching providers for email');
               }),
             ],

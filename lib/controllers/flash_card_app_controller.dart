@@ -16,10 +16,8 @@ class KardsAppController extends GetxController {
   KardsAppController._() {}
 
   Future<void> showWelcomeScreen() async {
-    if (!MainAppStorage.box.displayedWelcomeScreen) {
-      await CustomDialog.showWelcomeMessage(content: WelcomeMessageContent());
-      MainAppStorage.box.displayedWelcomeScreen = true;
-      update();
-    }
+    await CustomDialog.showWelcomeMessage(content: WelcomeMessageContent());
+    MainAppStorage.box.displayedWelcomeScreen = true;
+    update();
   }
 }

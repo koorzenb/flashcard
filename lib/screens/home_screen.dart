@@ -4,19 +4,13 @@ import 'package:get/get.dart';
 import '../controllers/flash_card_app_controller.dart';
 import '../controllers/word_controller.dart';
 import '../models/word.dart';
+import '../storage/main_app_storage.dart';
 import '../widgets/flash_card.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/version_code_text.dart';
 import 'word_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String title;
-
-  const HomeScreen({
-    required this.title,
-    super.key,
-  });
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -26,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     WordController.getOrPut;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
+      if (mounted && MainAppStorage.box.displayedWelcomeScreen) {
         KardsAppController.getOrPut.showWelcomeScreen();
       }
     });
@@ -35,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWord = WordController.getOrPut.currentWord;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -42,18 +38,17 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              widget.title,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            SizedBox(width: 10.0),
             VersionCodeText(),
           ],
         ),
       ),
       drawer: MainDrawer(),
-      body: const Center(
-        child: FlashCardWidget(),
+      body: Center(
+        child: currentWord == null
+            ? Text('No words to display')
+            : FlashCardWidget(
+                displayedWord: currentWord,
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async => await Get.to(() => WordDetailsScreen(

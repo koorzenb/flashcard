@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../logic/word_logic.dart';
-import '../models/server_environment.dart';
 import '../models/word.dart';
 import '../screens/word_details_screen.dart';
 import '../services/flashcard_api_service.dart';
@@ -12,13 +11,7 @@ import '../storage/word_storage.dart';
 class WordController extends GetxController {
   late List<Word> _words;
   late List<Word> _filteredWords;
-  Word displayedWord =
-      KardsApiService().serverEnvironment == ServerEnvironment.dev
-          ? Word(
-              hebrew: 'דָבָר',
-              pronunciation: 'pronunciation',
-              translation: 'translation')
-          : Word(hebrew: 'דָבָר', pronunciation: 'de-var', translation: 'word');
+  Word? currentWord;
 
   static WordController get getOrPut {
     try {
@@ -33,21 +26,12 @@ class WordController extends GetxController {
 
     if (_words.isEmpty) {
       KardsApiService().getWords().then((words) {
-        if (words.isEmpty) {
-          words = [
-            Word(
-                id: 'id',
-                hebrew: 'דָבָר',
-                pronunciation: 'de-var',
-                translation: 'word',
-                attributes: '')
-          ];
+        if (words.isNotEmpty) {
+          words.sort((a, b) => a.translation.compareTo(b.translation));
+          _words = words;
+          WordStorage.box.words = words;
+          update();
         }
-
-        words.sort((a, b) => a.translation.compareTo(b.translation));
-        _words = words;
-        WordStorage.box.words = _words;
-        update();
       });
     }
   }
@@ -61,18 +45,13 @@ class WordController extends GetxController {
   }
 
   Future<void> deleteWord(Word word) async {
-    _words.removeWhere((element) =>
-        element.hebrew == word.hebrew &&
-        element.translation == word.translation);
+    _words.removeWhere((element) => element.hebrew == word.hebrew && element.translation == word.translation);
     WordStorage.box.words = _words.toList();
     update();
 
     try {
-      final collectionReference =
-          FirebaseFirestore.instance.collection('words');
-      QuerySnapshot querySnapshot = await collectionReference
-          .where('hebrew', isEqualTo: word.hebrew)
-          .get();
+      final collectionReference = FirebaseFirestore.instance.collection('words');
+      QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: word.hebrew).get();
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         await doc.reference.delete();
@@ -87,7 +66,7 @@ class WordController extends GetxController {
   Future<void> addWord(Word word) async {
     final updatedWord = await KardsApiService().addWord(word);
     if (updatedWord != null) {
-      WordLogic(words).addWord(updatedWord);
+      WordLogic.instance.addWord(updatedWord);
       update();
     }
   }
@@ -101,26 +80,23 @@ class WordController extends GetxController {
   }
 
   void onTap() {
-    displayedWord = WordLogic(WordController.getOrPut.words).getWord();
-    debugPrint(displayedWord.translation);
+    currentWord = WordLogic.instance.getWord();
+    debugPrint(currentWord?.translation);
     update();
   }
 
   Future<void> onLongPress() async {
-    final updatedWord = await Get.to(
-        () => WordDetailsScreen(title: 'Update Word', word: displayedWord));
-    if (updatedWord != null) {
-      displayedWord = updatedWord;
-      update();
+    if (currentWord != null) {
+      final updatedWord = await Get.to(() => WordDetailsScreen(title: 'Update Word', word: currentWord!));
+      if (updatedWord != null) {
+        currentWord = updatedWord;
+        update();
+      }
     }
   }
 
   void onSearchChange(String text) {
-    _filteredWords = _words
-        .where((word) =>
-            word.translation.contains(text) ||
-            word.translation.startsWith(text))
-        .toList();
+    _filteredWords = _words.where((word) => word.translation.contains(text) || word.translation.startsWith(text)).toList();
     update();
   }
 }

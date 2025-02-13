@@ -29,73 +29,73 @@ void main() {
     setUp(() {
       words = [
         Word(
-            hebrew: 'word1',
-            pronunciation: 'pronunciation1',
-            translation: 'translation1'),
+          hebrew: 'word1',
+          pronunciation: 'pronunciation1',
+          translation: 'translation1',
+        ),
         Word(
-            hebrew: 'word2',
-            pronunciation: 'pronunciation2',
-            translation: 'translation2'),
+          hebrew: 'word2',
+          pronunciation: 'pronunciation2',
+          translation: 'translation2',
+        ),
         Word(
-            hebrew: 'word3',
-            pronunciation: 'pronunciation3',
-            translation: 'translation3'),
+          hebrew: 'word3',
+          pronunciation: 'pronunciation3',
+          translation: 'translation3',
+        ),
       ];
 
-      WordLogic.reset();
-      wordLogic = WordLogic(words);
+      wordLogic = WordLogic.create(words);
     });
 
-    test(
-        'getWord - should return a word, unread words should not contain given word',
-        () {
+    test('getWord - should return a word, unread words should not contain given word', () {
       final word1 = wordLogic.getWord();
 
       expect(word1, isA<Word>());
 
-      var expectedUnreadWords =
-          words.where((element) => element.hebrew != word1.hebrew).toList();
-      expect(WordLogic.unreadWords, expectedUnreadWords);
+      var expectedUnreadWords = words.where((element) => element.hebrew != word1.hebrew).toList();
+      expect(wordLogic.unreadWords, expectedUnreadWords);
 
       final word2 = wordLogic.getWord();
 
       expect(word2, isA<Word>());
-      expectedUnreadWords = words
-          .where((element) =>
-              element.hebrew != word1.hebrew && element.hebrew != word2.hebrew)
-          .toList();
-      expect(WordLogic.unreadWords, expectedUnreadWords);
-      expect(WordLogic.unreadWords.length, 1);
+      expectedUnreadWords = words.where((element) => element.hebrew != word1.hebrew && element.hebrew != word2.hebrew).toList();
+      expect(wordLogic.unreadWords, expectedUnreadWords);
+      expect(wordLogic.unreadWords.length, 1);
     });
 
     test('addWord()', () {
       final words = [
         Word(
-            hebrew: 'wordB',
-            pronunciation: 'pronunciationB',
-            translation: 'translationB'),
+          hebrew: 'wordB',
+          pronunciation: 'pronunciationB',
+          translation: 'translationB',
+        ),
       ];
 
-      final wordLogic = WordLogic(words);
+      WordLogic.removeInstance();
+
+      final wordLogic = WordLogic.create(words);
       wordLogic.addWord(Word(
-          hebrew: 'wordA',
-          pronunciation: 'pronunciationA',
-          translation: 'translationA'));
+        hebrew: 'wordA',
+        pronunciation: 'pronunciationA',
+        translation: 'translationA',
+      ));
 
       final expectedWords = [
         Word(
-            hebrew: 'wordA',
-            pronunciation: 'pronunciationA',
-            translation: 'translationA'),
+          hebrew: 'wordA',
+          pronunciation: 'pronunciationA',
+          translation: 'translationA',
+        ),
         Word(
-            hebrew: 'wordB',
-            pronunciation: 'pronunciationB',
-            translation: 'translationB'),
+          hebrew: 'wordB',
+          pronunciation: 'pronunciationB',
+          translation: 'translationB',
+        ),
       ];
 
-      expect(WordStorage.box.words[0].translation, expectedWords[0].translation,
-          reason:
-              'should add a word to the list, sort the list and save to storage');
+      expect(WordStorage.box.words[0].translation, expectedWords[0].translation, reason: 'should add a word to the list, sort the list and save to storage');
     });
   });
 }

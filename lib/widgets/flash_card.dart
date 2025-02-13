@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/word_controller.dart';
+import '../models/word.dart';
 
 class FlashCardWidget extends StatefulWidget {
-  const FlashCardWidget({super.key});
+  final Word displayedWord;
+
+  FlashCardWidget({required this.displayedWord, super.key});
 
   @override
   State<FlashCardWidget> createState() => _FlashCardWidgetState();
 }
 
-class _FlashCardWidgetState extends State<FlashCardWidget>
-    with TickerProviderStateMixin {
+class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
   AnimationStatus animationStatus = AnimationStatus.dismissed;
@@ -67,7 +69,7 @@ class _FlashCardWidgetState extends State<FlashCardWidget>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  wordController.displayedWord.hebrew,
+                  widget.displayedWord.hebrew,
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Stack(children: [
@@ -83,8 +85,7 @@ class _FlashCardWidgetState extends State<FlashCardWidget>
                           width: 26,
                           child: CircularProgressIndicator(
                             value: animation.value,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.lightBlue.shade300),
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue.shade300),
                             strokeWidth: 1,
                           ),
                         ),
@@ -93,31 +94,24 @@ class _FlashCardWidgetState extends State<FlashCardWidget>
                   ),
                   if (!showProgressIndicator)
                     AnimatedOpacity(
-                        duration: showTranslation
-                            ? Duration(seconds: opacityAnimationDuration)
-                            : Duration.zero,
+                        duration: showTranslation ? Duration(seconds: opacityAnimationDuration) : Duration.zero,
                         opacity: showTranslation ? 1.0 : 0.0,
                         child: Column(children: [
                           Text(
-                            wordController.displayedWord.pronunciation,
+                            widget.displayedWord.pronunciation,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           Text(
-                            wordController.displayedWord.translation,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(color: Colors.grey),
+                            widget.displayedWord.translation,
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
                           ),
-                          wordController.displayedWord.attributes.isNotEmpty
+                          widget.displayedWord.attributes.isNotEmpty
                               ? Text(
-                                  wordController.displayedWord.attributes,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                          color: Colors.grey,
-                                          fontStyle: FontStyle.italic),
+                                  widget.displayedWord.attributes,
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                        color: Colors.grey,
+                                        fontStyle: FontStyle.italic,
+                                      ),
                                 )
                               : SizedBox(height: 12),
                         ])),
@@ -136,34 +130,16 @@ class _FlashCardWidgetState extends State<FlashCardWidget>
       vsync: this,
     );
 
-    animationController.addStatusListener(
-        (status) => setState(() => animationStatus = status));
-    animation = Tween<double>(begin: 0, end: 1).animate(animationController)
-      ..addListener(() => setState(() {}));
+    animationController.addStatusListener((status) => setState(() => animationStatus = status));
+    animation = Tween<double>(begin: 0, end: 1).animate(animationController)..addListener(() => setState(() {}));
     animationController.forward();
   }
 
   _delayShowingTranslation() {
     if (!showTranslation) {
       const startOpacityAnimationDelayMs = 100;
-
-      Future.delayed(const Duration(milliseconds: startOpacityAnimationDelayMs),
-          () {
-        setState(() {
-          showTranslation = true;
-        });
-      });
-
-      Future.delayed(
-          Duration(
-              milliseconds: startOpacityAnimationDelayMs +
-                  (opacityAnimationDuration * 1000)), () {
-        debugPrint('enabled');
-        setState(() => enabledOnTap = true);
-      });
+      Future.delayed(const Duration(milliseconds: startOpacityAnimationDelayMs), () => setState(() => showTranslation = true));
+      Future.delayed(Duration(milliseconds: startOpacityAnimationDelayMs + (opacityAnimationDuration * 1000)), () => setState(() => enabledOnTap = true));
     }
   }
 }
-
-// TODO: change attributes to checkboxes: gender, plural, etc. Then color code the word. Will have to persist attribute settings too
-// add searching to WordList. Also, add ability to swop translation with hebrew word
