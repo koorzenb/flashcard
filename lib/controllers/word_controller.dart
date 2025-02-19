@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../logic/word_logic.dart';
 import '../models/word.dart';
 import '../screens/word_details_screen.dart';
 import '../services/flashcard_api_service.dart';
-import '../storage/word_storage.dart';
 
 class WordController extends GetxController {
   late List<Word> _words;
-  late List<Word> _filteredWords;
-  Word? currentWord;
+  List<Word> _filteredWords = [];
+  Word _currentWord = Word(hebrew: '', pronunciation: '', translation: '');
 
   static WordController get getOrPut {
     try {
@@ -22,27 +23,19 @@ class WordController extends GetxController {
   }
 
   WordController._() {
-    _filteredWords = _words = WordStorage.box.words;
-
-    if (_words.isEmpty) {
-      KardsApiService().getWords().then((words) {
-        if (words.isNotEmpty) {
-          words.sort((a, b) => a.translation.compareTo(b.translation));
-          _words = words;
-          WordStorage.box.words = words;
-          update();
-        }
-      });
-    }
+    WordLogic.initializeWords(WordStorage.box.words, KardsApiService().getWords).then((words) {
+      if (words.isNotEmpty) {
+        _filteredWords = _words = words;
+        final wordLogic = WordLogic.create(words);
+        _currentWord = wordLogic.getWord(words);
+        update();
+      }
+    });
   }
 
   List<Word> get words => _words;
   List<Word> get filteredWords => _filteredWords;
-
-  set words(List<Word> words) {
-    _words = words;
-    update();
-  }
+  Word get currentWord => _currentWord;
 
   Future<void> deleteWord(Word word) async {
     _words.removeWhere((element) => element.hebrew == word.hebrew && element.translation == word.translation);
@@ -66,7 +59,7 @@ class WordController extends GetxController {
   Future<void> addWord(Word word) async {
     final updatedWord = await KardsApiService().addWord(word);
     if (updatedWord != null) {
-      WordLogic.instance.addWord(updatedWord);
+      WordLogic.instance.addWord(updatedWord, _words);
       update();
     }
   }
@@ -74,22 +67,28 @@ class WordController extends GetxController {
   Future<void> updateWord(Word value) async {
     KardsApiService().updateWord(value);
     final index = _words.indexWhere((element) => element.id == value.id);
-    _words[index] = value;
-    WordStorage.box.words = _words.toList();
-    update();
+
+    if (index == -1) {
+      // scenario where words are out of sync with the server
+      await addWord(value);
+    } else {
+      _words[index] = value;
+      WordStorage.box.words = _words.toList();
+      update();
+    }
   }
 
   void onTap() {
-    currentWord = WordLogic.instance.getWord();
-    debugPrint(currentWord?.translation);
+    _currentWord = WordLogic.instance.getWord(_words);
+    debugPrint(_currentWord.translation);
     update();
   }
 
   Future<void> onLongPress() async {
-    if (currentWord != null) {
-      final updatedWord = await Get.to(() => WordDetailsScreen(title: 'Update Word', word: currentWord!));
+    if (_currentWord.hebrew.isNotEmpty) {
+      final updatedWord = await Get.to(() => WordDetailsScreen(title: 'Update Word', word: _currentWord)); //TODO: show updated word
       if (updatedWord != null) {
-        currentWord = updatedWord;
+        _currentWord = updatedWord;
         update();
       }
     }

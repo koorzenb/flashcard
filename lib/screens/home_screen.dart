@@ -29,8 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentWord = WordController.getOrPut.currentWord;
-
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -43,13 +41,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: MainDrawer(),
-      body: Center(
-        child: currentWord == null
-            ? Text('No words to display')
-            : FlashCardWidget(
-                displayedWord: currentWord,
-              ),
-      ),
+      body: GetBuilder<WordController>(builder: (wordController) {
+        return Center(
+          child: wordController.currentWord.hebrew.isEmpty
+              ? Text('No words to display')
+              : FlashCardWidget(
+                  displayedWord: wordController.currentWord,
+                ),
+        );
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async => await Get.to(() => WordDetailsScreen(
               title: 'Add Word',

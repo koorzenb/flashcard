@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flashcard/widgets/flashcard_snackbar.dart';
 import 'package:flutter/widgets.dart';
 
 import '../models/word.dart';
@@ -8,7 +9,6 @@ import '../storage/word_storage.dart';
 class WordLogic {
   static List<Word> _unReadWords = [];
   static WordLogic? _instance;
-  List<Word> _words = [];
 
   static WordLogic get instance {
     assert(_instance != null, 'WordLogic is not created yet');
@@ -16,7 +16,6 @@ class WordLogic {
   }
 
   WordLogic._(List<Word> words) {
-    _words = words;
     _unReadWords = words;
   }
 
@@ -27,35 +26,28 @@ class WordLogic {
     return _instance!;
   }
 
-  List<Word> addWord(Word word) {
-    _words.add(word);
-    _words.sort((firstWords, secondWord) => firstWords.translation.compareTo(secondWord.translation));
-    WordStorage.box.words = _words.toList();
-    return _words;
+  void addWord(Word word, List<Word> words) {
+    words.add(word);
+    words.sort((firstWords, secondWord) => firstWords.translation.compareTo(secondWord.translation));
+    WordStorage.box.words = words.toList();
   }
 
-  Word getWord() {
+  Word getWord(List<Word> words) {
     final int randomIndex = Random().nextInt(_unReadWords.length);
     final Word word = _unReadWords[randomIndex];
     _unReadWords.removeAt(randomIndex);
 
     if (_unReadWords.isEmpty) {
-      reset();
+      reset(words);
+      FlashcardSnackbar.showSnackBar('All words have been read. Starting over.');
     }
 
     return word;
   }
 
-  void reset() {
-    _unReadWords = _words.toList();
+  void reset(List<Word> words) {
+    _unReadWords = words.toList();
 
-    // start new branch - word weight
-
-    // add weight to words - 1 to 5: 1 == 2secs, 2 == 4 secs, 3 == 6 secs, 4 == 8 secs, 5 == 10 secs
-    // add CircularProgressIndicator below word to show time
-
-    // logic
-    // - if tapped before time, decrease weight by 1. alternatively, if not tapped, increase weight by 1
   }
 
   void clearCache() {
@@ -68,5 +60,24 @@ class WordLogic {
   @visibleForTesting
   static void removeInstance() {
     _instance = null;
+  }
+
+  static Future<List<Word>> initializeWords(
+    List<Word> words,
+    Future<List<Word>> Function() fetchWords,
+  ) async {
+    if (words.isNotEmpty) {
+      return words;
+    } else {
+      final fetchedWords = await fetchWords();
+
+      if (fetchedWords.isNotEmpty) {
+        fetchedWords.sort((a, b) => a.translation.compareTo(b.translation));
+        WordStorage.box.words = fetchedWords; // TODO: .toList()?
+        return fetchedWords;
+      } else {
+        return [Word(hebrew: '', pronunciation: '', translation: '', attributes: '')];
+      }
+    }
   }
 }

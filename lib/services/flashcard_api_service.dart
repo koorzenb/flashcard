@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flashcard/widgets/flashcard_snackbar.dart';
 
 import '../models/server_environment.dart';
 import '../models/word.dart';
@@ -78,18 +77,13 @@ class KardsApiService {
     });
   }
 
-  void deleteAllWords() {
+  void clearDatabase() {
     FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get().then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.delete();
       }
     });
 
-    ScaffoldMessenger.of(Get.context!).showSnackBar(
-      SnackBar(
-        content: Text('All words deleted'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    FlashcardSnackbar.showSnackBar('All words deleted');
   }
 }
