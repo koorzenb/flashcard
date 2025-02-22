@@ -143,3 +143,6 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
     }
   }
 }
+
+// TODO: change attributes to checkboxes: gender, plural, etc. Then color code the word. Will have to persist attribute settings too
+// TODO: add ability to swop translation with hebrew word

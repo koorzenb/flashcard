@@ -84,3 +84,10 @@
 
 - Update build script to no longer need .env files
 - Added Github Action CI/CD
+
+# 0.3.0
+
+## Feature
+
+- Added a mode for recognizing words from audio
+- Separated user data by means of authentication
