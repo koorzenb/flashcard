@@ -14,7 +14,7 @@ void main() {
   setUpAll(() async {
     TestsHelper.deleteTestDataFolder(kTestDataFolder);
     Hive.init(Directory(kTestDataFolder).path);
-    await WordStorage.init();
+    await WordStorage.init(kTestDataFolder);
   });
 
   tearDownAll(() async {

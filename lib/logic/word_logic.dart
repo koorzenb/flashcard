@@ -26,6 +26,10 @@ class WordLogic {
     return _instance!;
   }
 
+  static dispose() {
+    _instance = null;
+  }
+
   void addWord(Word word, List<Word> words) {
     words.add(word);
     words.sort((firstWords, secondWord) => firstWords.translation.compareTo(secondWord.translation));
@@ -73,7 +77,7 @@ class WordLogic {
 
       if (fetchedWords.isNotEmpty) {
         fetchedWords.sort((a, b) => a.translation.compareTo(b.translation));
-        WordStorage.box.words = fetchedWords; // TODO: .toList()?
+        WordStorage.box.words = fetchedWords;
         return fetchedWords;
       } else {
         return [Word(hebrew: '', pronunciation: '', translation: '', attributes: '')];

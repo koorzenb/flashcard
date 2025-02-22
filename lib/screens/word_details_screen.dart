@@ -20,13 +20,10 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
   final _pronunciationTextController = TextEditingController();
   final _translationTextController = TextEditingController();
   final _attributesTextController = TextEditingController();
-
   bool _isLoading = false;
-  Word? originalWord;
 
   @override
   void initState() {
-    originalWord = widget.word;
     setState(() {
       _hebrewTextController.text = widget.word.hebrew;
       _pronunciationTextController.text = widget.word.pronunciation;
@@ -51,7 +48,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () => WordController.getOrPut.deleteWord(widget.word),
+            onPressed: () => WordController.instance.deleteWord(widget.word),
             icon: const Icon(
               Icons.delete,
               color: Colors.white,
@@ -84,16 +81,22 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                           children: [
                             TextFormField(
                               controller: _hebrewTextController,
-                              decoration: const InputDecoration(
-                                icon: Icon(Icons.translate),
+                              decoration: InputDecoration(
+                                icon: const Icon(Icons.translate),
                                 hintText: 'What is the Hebrew word?',
                                 labelText: 'Hebrew',
+                                filled: _hebrewTextController.text.isNotEmpty,
+                                fillColor: _hebrewTextController.text.isNotEmpty ? Colors.grey[300] : null,
                               ),
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.next,
                               validator: (String? _) {
                                 return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
                               },
+                              enabled: _hebrewTextController.text.isEmpty,
+                              style: TextStyle(
+                                color: _hebrewTextController.text.isNotEmpty ? Colors.grey : Colors.black,
+                              ),
                             ),
                             TextFormField(
                               controller: _pronunciationTextController,
@@ -171,9 +174,9 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     );
 
     if (widget.word.isNew) {
-      WordController.getOrPut.addWord(word);
+      WordController.instance.addWord(word);
     } else {
-      WordController.getOrPut.updateWord(word);
+      WordController.instance.updateWord(word);
     }
 
     setState(() {

@@ -4,16 +4,16 @@ import '../storage/main_app_storage.dart';
 import '../widgets/custom_dialog.dart';
 import '../widgets/welcome_message.dart';
 
-class KardsAppController extends GetxController {
-  static KardsAppController get getOrPut {
+class FlashcardAppController extends GetxController {
+  static FlashcardAppController get getOrPut {
     try {
-      return Get.find<KardsAppController>();
+      return Get.find<FlashcardAppController>();
     } catch (e) {
-      return Get.put(KardsAppController._());
+      return Get.put(FlashcardAppController._());
     }
   }
 
-  KardsAppController._() {}
+  FlashcardAppController._() {}
 
   Future<void> showWelcomeScreen() async {
     await CustomDialog.showWelcomeMessage(content: WelcomeMessageContent());

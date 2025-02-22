@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flashcard/services/flashcard_auth_service.dart';
+import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -8,9 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'controllers/flash_card_app_controller.dart';
 import 'models/server_environment.dart';
 import 'screens/home_screen.dart';
-import 'services/flashcard_api_service.dart';
 import 'storage/main_app_storage.dart';
-import 'storage/word_storage.dart';
 import 'styles/themes.dart';
 
 Future<void> commonInit(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
@@ -21,19 +21,16 @@ Future<void> commonInit(FirebaseOptions currentPlatform, ServerEnvironment serve
 }
 
 void _initializeControllers() {
-  KardsAppController.getOrPut;
+  FlashcardAppController.getOrPut;
 }
 
 Future<void> _initializeFirebase(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
-  KardsApiService.init(serverEnvironment);
   await Firebase.initializeApp(options: currentPlatform);
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 }
 
 Future<void> _initializeStorage() async {
   await Hive.initFlutter();
-  await WordStorage.init();
-  // await WordStorage.box.erase();
   await MainAppStorage.init();
 }
 
@@ -52,47 +49,10 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _signInHandler(BuildContext context, String displayName) {
-    final homeScreen = HomeScreen();
+    if (!WordStorage.isInitialized) {
+      return FlashcardAuthService.signIn();
+    }
 
-    return firebase_auth.FirebaseAuth.instance.currentUser != null
-        ? homeScreen
-        : SignInScreen(
-            // see documentation for more info
-            // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/providers/email.md
-            // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/README.md
-
-            actions: [
-              AuthStateChangeAction<SignedIn>((context, state) async {
-                print('Signed in');
-
-                await Get.to(() => homeScreen);
-              }),
-              AuthStateChangeAction<Uninitialized>((context, state) async {
-                print('Uninitialized');
-              }),
-              AuthStateChangeAction<AuthFailed>((context, state) async {
-                print('Auth failed');
-              }),
-              AuthStateChangeAction<AuthState>((context, state) async {
-                print('Auth state');
-              }),
-              AuthStateChangeAction<SigningIn>((context, state) async {
-                print('Signing in');
-              }),
-              AuthStateChangeAction<CredentialReceived>((context, state) async {
-                print('Credential received');
-              }),
-              AuthStateChangeAction<CredentialLinked>((context, state) async {
-                print('Credential linked');
-              }),
-              AuthStateChangeAction<UserCreated>((context, state) async {
-                print('User created');
-                await Get.to(() => homeScreen);
-              }),
-              AuthStateChangeAction<FetchingProvidersForEmail>((context, state) async {
-                print('Fetching providers for email');
-              }),
-            ],
-          );
+    return firebase_auth.FirebaseAuth.instance.currentUser != null ? HomeScreen() : FlashcardAuthService.signIn();
   }
 }
