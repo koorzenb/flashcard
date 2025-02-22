@@ -21,7 +21,7 @@ class WordListScreen extends StatelessWidget {
           children: [
             SearchBar(
               controller: textEditingController,
-              onChanged: (value) => WordController.getOrPut.onSearchChange(value),
+              onChanged: (value) => WordController.instance.onSearchChange(value),
               hintText: 'Search...',
             ),
             Expanded(

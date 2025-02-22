@@ -1,19 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flashcard/widgets/flashcard_snackbar.dart';
 
-import '../models/server_environment.dart';
 import '../models/word.dart';
+import '../widgets/flashcard_snackbar.dart';
 
-class KardsApiService {
-  static ServerEnvironment _serverEnvironment = ServerEnvironment.prod;
-  static String _userId = FirebaseAuth.instance.currentUser!.uid;
+class FlashcardApiService {
+  late String _userId;
 
-  static void init(ServerEnvironment serverEnvironment) {
-    _serverEnvironment = serverEnvironment;
+  FlashcardApiService(String userId) {
+    _userId = userId;
   }
-
-  ServerEnvironment get serverEnvironment => _serverEnvironment;
 
   static void importWords() {
     // fetch words from firebase
@@ -47,10 +42,6 @@ class KardsApiService {
   }
 
   Future<List<Word>> getWords() async {
-    if (_serverEnvironment == ServerEnvironment.dev) {
-      return [Word(id: 'id', hebrew: 'בְּדִיקָה', pronunciation: "b'dee-QAH", translation: 'test', attributes: '')];
-    }
-
     List<Word> words = [];
 
     final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
@@ -77,6 +68,7 @@ class KardsApiService {
     });
   }
 
+  // leave here. Not used in the app, but useful
   void clearDatabase() {
     FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get().then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {

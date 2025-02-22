@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:flashcard/widgets/flashcard_snackbar.dart';
 import 'package:flutter/widgets.dart';
 
 import '../models/word.dart';
 import '../storage/word_storage.dart';
+import '../widgets/flashcard_snackbar.dart';
 
 class WordLogic {
   static List<Word> _unReadWords = [];
@@ -16,7 +16,7 @@ class WordLogic {
   }
 
   WordLogic._(List<Word> words) {
-    _unReadWords = words;
+    _unReadWords = words.toList();
   }
 
   static WordLogic create(List<Word> words) {
@@ -24,6 +24,10 @@ class WordLogic {
       _instance = WordLogic._(words);
     }
     return _instance!;
+  }
+
+  static dispose() {
+    _instance = null;
   }
 
   void addWord(Word word, List<Word> words) {
@@ -73,7 +77,7 @@ class WordLogic {
 
       if (fetchedWords.isNotEmpty) {
         fetchedWords.sort((a, b) => a.translation.compareTo(b.translation));
-        WordStorage.box.words = fetchedWords; // TODO: .toList()?
+        WordStorage.box.words = fetchedWords;
         return fetchedWords;
       } else {
         return [Word(hebrew: '', pronunciation: '', translation: '', attributes: '')];

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,22 +7,24 @@ import '../logic/word_logic.dart';
 import '../models/word.dart';
 import '../screens/word_details_screen.dart';
 import '../services/flashcard_api_service.dart';
+import '../services/flashcard_auth_service.dart';
+import '../storage/word_storage.dart';
 
 class WordController extends GetxController {
   late List<Word> _words;
   List<Word> _filteredWords = [];
   Word _currentWord = Word(hebrew: '', pronunciation: '', translation: '');
 
-  static WordController get getOrPut {
-    try {
-      return Get.find<WordController>();
-    } catch (e) {
-      return Get.put(WordController._());
-    }
+  static WordController create() {
+    return Get.put(WordController._());
+  }
+
+  static WordController get instance {
+    return Get.find<WordController>();
   }
 
   WordController._() {
-    WordLogic.initializeWords(WordStorage.box.words, KardsApiService().getWords).then((words) {
+    WordLogic.initializeWords(WordStorage.box.words, FlashcardApiService(FlashcardAuthService.userId).getWords).then((words) {
       if (words.isNotEmpty) {
         _filteredWords = _words = words;
         final wordLogic = WordLogic.create(words);
@@ -57,7 +58,7 @@ class WordController extends GetxController {
   }
 
   Future<void> addWord(Word word) async {
-    final updatedWord = await KardsApiService().addWord(word);
+    final updatedWord = await FlashcardApiService(FlashcardAuthService.userId).addWord(word);
     if (updatedWord != null) {
       WordLogic.instance.addWord(updatedWord, _words);
       update();
@@ -65,7 +66,7 @@ class WordController extends GetxController {
   }
 
   Future<void> updateWord(Word value) async {
-    KardsApiService().updateWord(value);
+    FlashcardApiService(FlashcardAuthService.userId).updateWord(value);
     final index = _words.indexWhere((element) => element.id == value.id);
 
     if (index == -1) {
