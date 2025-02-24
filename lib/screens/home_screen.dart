@@ -1,14 +1,12 @@
+import 'package:flashcard/screens/reading_screen.dart';
+import 'package:flashcard/screens/writing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/flash_card_app_controller.dart';
-import '../controllers/word_controller.dart';
-import '../models/word.dart';
 import '../storage/main_app_storage.dart';
-import '../widgets/flash_card.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/version_code_text.dart';
-import 'word_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -40,31 +38,39 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       drawer: MainDrawer(),
-      body: GetBuilder<WordController>(builder: (wordController) {
-        return Center(
-          child: wordController.currentWord.hebrew.isEmpty
-              ? Text('No words to display')
-              : FlashCardWidget(
-                  displayedWord: wordController.currentWord,
-                ),
-        );
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Get.to(() => WordDetailsScreen(
-              title: 'Add Word',
-              word: Word(
-                hebrew: '',
-                pronunciation: '',
-                translation: '',
-                attributes: '',
-                isNew: true,
-              ),
-            )),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+      body: NavigationBar(destinations: [
+        NavBarDestination(
+          title: 'Writing',
+          icon: Icons.create,
+          onTap: () => Get.to(() => WritingScreen()),
         ),
-      ),
+        NavBarDestination(
+          title: 'Reading',
+          icon: Icons.abc_sharp,
+          onTap: () => Get.to(() => ReadingScreen()),
+        )
+      ]),
+    );
+  }
+}
+
+class NavBarDestination extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final void Function() onTap;
+
+  NavBarDestination({
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: onTap,
     );
   }
 }
