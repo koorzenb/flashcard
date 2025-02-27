@@ -39,7 +39,7 @@ class WordListScreen extends StatelessWidget {
                             children: [
                               ListTile(
                                 title: Text(wordController.filteredWords[index].translation),
-                                subtitle: Text(wordController.filteredWords[index].hebrew),
+                                subtitle: Text(wordController.filteredWords[index].native),
                               ),
                               const Divider(
                                 thickness: 1,

@@ -16,7 +16,7 @@ class WordDetailsScreen extends StatefulWidget {
 
 class _WordDetailsScreenState extends State<WordDetailsScreen> {
   final _form = GlobalKey<FormState>();
-  final _hebrewTextController = TextEditingController();
+  final _nativeTextController = TextEditingController();
   final _pronunciationTextController = TextEditingController();
   final _translationTextController = TextEditingController();
   final _attributesTextController = TextEditingController();
@@ -25,7 +25,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
   @override
   void initState() {
     setState(() {
-      _hebrewTextController.text = widget.word.hebrew;
+      _nativeTextController.text = widget.word.native;
       _pronunciationTextController.text = widget.word.pronunciation;
       _translationTextController.text = widget.word.translation;
       _attributesTextController.text = widget.word.attributes;
@@ -36,7 +36,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
   @override
   void dispose() {
     super.dispose();
-    _hebrewTextController.dispose();
+    _nativeTextController.dispose();
     _pronunciationTextController.dispose();
     _translationTextController.dispose();
     _attributesTextController.dispose();
@@ -80,22 +80,22 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextFormField(
-                              controller: _hebrewTextController,
+                              controller: _nativeTextController,
                               decoration: InputDecoration(
                                 icon: const Icon(Icons.translate),
-                                hintText: 'What is the Hebrew word?',
-                                labelText: 'Hebrew',
-                                filled: _hebrewTextController.text.isNotEmpty,
-                                fillColor: _hebrewTextController.text.isNotEmpty ? Colors.grey[300] : null,
+                                hintText: 'What is the native word?',
+                                labelText: 'Native word',
+                                filled: _nativeTextController.text.isNotEmpty,
+                                fillColor: _nativeTextController.text.isNotEmpty ? Colors.grey[300] : null,
                               ),
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.next,
                               validator: (String? _) {
-                                return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
+                                return _nativeTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
                               },
-                              enabled: _hebrewTextController.text.isEmpty,
+                              enabled: _nativeTextController.text.isEmpty,
                               style: TextStyle(
-                                color: _hebrewTextController.text.isNotEmpty ? Colors.grey : Colors.black,
+                                color: _nativeTextController.text.isNotEmpty ? Colors.grey : Colors.black,
                               ),
                             ),
                             TextFormField(
@@ -121,7 +121,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.next,
                               validator: (String? _) {
-                                return _hebrewTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
+                                return _nativeTextController.text.trim().isEmpty ? 'Please enter valid word' : null;
                               },
                             ),
                             TextFormField(
@@ -166,7 +166,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
 
     final word = Word(
       id: widget.word.id,
-      hebrew: _hebrewTextController.text,
+      native: _nativeTextController.text,
       pronunciation: _pronunciationTextController.text,
       translation: _translationTextController.text,
       attributes: _attributesTextController.text,

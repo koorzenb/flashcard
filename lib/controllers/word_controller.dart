@@ -13,7 +13,7 @@ import '../storage/word_storage.dart';
 class WordController extends GetxController {
   late List<Word> _words;
   List<Word> _filteredWords = [];
-  Word _currentWord = Word(hebrew: '', pronunciation: '', translation: '');
+  Word _currentWord = Word(native: '', pronunciation: '', translation: '');
 
   static WordController create() {
     return Get.put(WordController._());
@@ -39,13 +39,13 @@ class WordController extends GetxController {
   Word get currentWord => _currentWord;
 
   Future<void> deleteWord(Word word) async {
-    _words.removeWhere((element) => element.hebrew == word.hebrew && element.translation == word.translation);
+    _words.removeWhere((element) => element.native == word.native && element.translation == word.translation);
     WordStorage.box.words = _words.toList();
     update();
 
     try {
       final collectionReference = FirebaseFirestore.instance.collection('words');
-      QuerySnapshot querySnapshot = await collectionReference.where('hebrew', isEqualTo: word.hebrew).get();
+      QuerySnapshot querySnapshot = await collectionReference.where('native', isEqualTo: word.native).get();
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         await doc.reference.delete();
@@ -86,7 +86,7 @@ class WordController extends GetxController {
   }
 
   Future<void> onLongPress() async {
-    if (_currentWord.hebrew.isNotEmpty) {
+    if (_currentWord.native.isNotEmpty) {
       final updatedWord = await Get.to(() => WordDetailsScreen(title: 'Update Word', word: _currentWord)); //TODO: show updated word
       if (updatedWord != null) {
         _currentWord = updatedWord;

@@ -22,7 +22,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
       ),
       body: GetBuilder<WordController>(builder: (wordController) {
         return Center(
-          child: wordController.currentWord.hebrew.isEmpty
+          child: wordController.currentWord.native.isEmpty
               ? Text('No words to display')
               : FlashCardWidget(
                   displayedWord: wordController.currentWord,
@@ -33,7 +33,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
         onPressed: () async => await Get.to(() => WordDetailsScreen(
               title: 'Add Word',
               word: Word(
-                hebrew: '',
+                native: '',
                 pronunciation: '',
                 translation: '',
                 attributes: '',

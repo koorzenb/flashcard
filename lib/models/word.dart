@@ -1,16 +1,16 @@
 class Word {
   final String id;
-  final String hebrew;
+  final String native;
   final String pronunciation;
   final String translation;
   final String attributes;
   final bool isNew;
 
-  Word({this.id = '', required this.hebrew, required this.pronunciation, required this.translation, this.attributes = '', this.isNew = false});
+  Word({this.id = '', required this.native, required this.pronunciation, required this.translation, this.attributes = '', this.isNew = false});
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'hebrew': hebrew,
+        'native': native,
         'pronunciation': pronunciation,
         'translation': translation,
         'attributes': attributes,
@@ -24,7 +24,7 @@ class Word {
 
   factory Word.fromJson(Map<String, dynamic> json) => Word(
         id: json['id'],
-        hebrew: json['hebrew'],
+        native: json['hebrew'],
         pronunciation: json['pronunciation'],
         translation: json['translation'],
         attributes: json['attributes'],

@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 import '../models/word.dart';
 import '../widgets/flashcard_snackbar.dart';
@@ -16,14 +21,71 @@ class FlashcardApiService {
     // save to local storage
   }
 
-  static void exportWords() {
-    // to implement
+  Future<void> exportWords() async {
+    List<Word> words = [];
+
+    final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
+
+    snapshot.docs.forEach((doc) {
+      words.add(Word(
+        id: doc.id,
+        native: doc['native'], // TODO: for all words in DB, change property name to 'native'
+        pronunciation: doc['pronunciation'],
+        translation: doc['translation'],
+        attributes: doc['attributes'],
+      ));
+    });
+
+    final json = words.map((word) => word.toJson()).toList();
+    final jsonString = jsonEncode(json);
+
+    try {
+      final directory = (await getApplicationDocumentsDirectory()).path;
+      final filePath = path.join(directory, 'flashcards.json');
+      final file = File(filePath);
+
+      // Ensure the file exists
+      if (!await file.exists()) {
+        await file.create(recursive: true);
+      }
+
+      // Write to file in the application's documents directory
+      await file.writeAsString(jsonString);
+
+      print('Exported words to $filePath');
+    } catch (e) {
+      print('error occured: $e');
+    }
+  }
+
+  Future<void> migrateWords() async {
+    try {
+      final directory = (await getApplicationDocumentsDirectory()).path;
+      final filePath = path.join(directory, 'flashcards.json');
+      final file = File(filePath);
+
+      final jsonString = await file.readAsString();
+      final json = jsonDecode(jsonString);
+
+      for (var word in json) {
+        await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').add({
+          'native': word['hebrew'], // T
+          'pronunciation': word['pronunciation'],
+          'translation': word['translation'],
+          'attributes': word['attributes'],
+        });
+      }
+
+      print('Migrated words from flashcards.json');
+    } catch (e) {
+      print('error occured: $e');
+    }
   }
 
   Future<Word?> addWord(Word word) async {
     try {
       final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').add({
-        'hebrew': word.hebrew,
+        'native': word.native,
         'pronunciation': word.pronunciation,
         'translation': word.translation,
         'attributes': word.attributes,
@@ -31,7 +93,7 @@ class FlashcardApiService {
 
       return Word(
         id: snapshot.id,
-        hebrew: word.hebrew,
+        native: word.native,
         pronunciation: word.pronunciation,
         translation: word.translation,
         attributes: word.attributes,
@@ -49,7 +111,7 @@ class FlashcardApiService {
     snapshot.docs.forEach((doc) {
       words.add(Word(
         id: doc.id,
-        hebrew: doc['hebrew'],
+        native: doc['native'],
         pronunciation: doc['pronunciation'],
         translation: doc['translation'],
         attributes: doc['attributes'],
@@ -61,7 +123,7 @@ class FlashcardApiService {
 
   void updateWord(Word word) {
     FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').doc(word.id).update({
-      'hebrew': word.hebrew,
+      'native': word.native,
       'pronunciation': word.pronunciation,
       'translation': word.translation,
       'attributes': word.attributes,

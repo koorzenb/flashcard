@@ -87,7 +87,7 @@ class WordLogic {
         WordStorage.box.words = fetchedWords;
         return fetchedWords;
       } else {
-        return [Word(hebrew: '', pronunciation: '', translation: '', attributes: '')];
+        return [Word(native: '', pronunciation: '', translation: '', attributes: '')];
       }
     }
   }

@@ -29,17 +29,17 @@ void main() {
     setUp(() {
       _words = [
         Word(
-          hebrew: 'word1',
+          native: 'word1',
           pronunciation: 'pronunciation1',
           translation: 'translation1',
         ),
         Word(
-          hebrew: 'word2',
+          native: 'word2',
           pronunciation: 'pronunciation2',
           translation: 'translation2',
         ),
         Word(
-          hebrew: 'word3',
+          native: 'word3',
           pronunciation: 'pronunciation3',
           translation: 'translation3',
         ),
@@ -53,13 +53,13 @@ void main() {
 
       expect(word1, isA<Word>());
 
-      var expectedUnreadWords = _words.where((element) => element.hebrew != word1.hebrew).toList();
+      var expectedUnreadWords = _words.where((element) => element.native != word1.native).toList();
       expect(wordLogic.unreadWords, expectedUnreadWords);
 
       final word2 = wordLogic.getWord(_words);
 
       expect(word2, isA<Word>());
-      expectedUnreadWords = _words.where((element) => element.hebrew != word1.hebrew && element.hebrew != word2.hebrew).toList();
+      expectedUnreadWords = _words.where((element) => element.native != word1.native && element.native != word2.native).toList();
       expect(wordLogic.unreadWords, expectedUnreadWords);
       expect(wordLogic.unreadWords.length, 1);
     });
@@ -67,7 +67,7 @@ void main() {
     test('addWord()', () {
       final words = [
         Word(
-          hebrew: 'wordB',
+          native: 'wordB',
           pronunciation: 'pronunciationB',
           translation: 'translationB',
         ),
@@ -78,7 +78,7 @@ void main() {
       final wordLogic = WordLogic.create(words);
       wordLogic.addWord(
           Word(
-            hebrew: 'wordA',
+            native: 'wordA',
             pronunciation: 'pronunciationA',
             translation: 'translationA',
           ),
@@ -86,12 +86,12 @@ void main() {
 
       final expectedWords = [
         Word(
-          hebrew: 'wordA',
+          native: 'wordA',
           pronunciation: 'pronunciationA',
           translation: 'translationA',
         ),
         Word(
-          hebrew: 'wordB',
+          native: 'wordB',
           pronunciation: 'pronunciationB',
           translation: 'translationB',
         ),
@@ -108,17 +108,17 @@ void main() {
     setUp(() {
       _database = [
         Word(
-          hebrew: 'word2',
+          native: 'word2',
           pronunciation: 'pronunciation2',
           translation: 'translation2',
         ),
         Word(
-          hebrew: 'word1',
+          native: 'word1',
           pronunciation: 'pronunciation1',
           translation: 'translation1',
         ),
         Word(
-          hebrew: 'word3',
+          native: 'word3',
           pronunciation: 'pronunciation3',
           translation: 'translation3',
         ),
@@ -126,17 +126,17 @@ void main() {
 
       _passedWords = [
         Word(
-          hebrew: 'word4',
+          native: 'word4',
           pronunciation: 'pronunciation4',
           translation: 'translation4',
         ),
         Word(
-          hebrew: 'word5',
+          native: 'word5',
           pronunciation: 'pronunciation5',
           translation: 'translation5',
         ),
         Word(
-          hebrew: 'word6',
+          native: 'word6',
           pronunciation: 'pronunciation6',
           translation: 'translation6',
         )
@@ -147,25 +147,25 @@ void main() {
       final words = await WordLogic.initializeWords([], () async => []);
 
       expect(words.isNotEmpty, isTrue);
-      expect(words[0].hebrew.isEmpty, isTrue);
+      expect(words[0].native.isEmpty, isTrue);
     });
 
     test('no words provided and words on database', () async {
       final words = await WordLogic.initializeWords([], () async => _database.toList());
 
-      expect(words[0].hebrew, _database[1].hebrew, reason: 'should return words from database and have it sorted');
+      expect(words[0].native, _database[1].native, reason: 'should return words from database and have it sorted');
     });
 
     test('words provided and no words on database', () async {
       final words = await WordLogic.initializeWords(_passedWords.toList(), () async => []);
 
-      expect(words[0].hebrew, _passedWords[0].hebrew, reason: 'should return words from provided list and have it sorted');
+      expect(words[0].native, _passedWords[0].native, reason: 'should return words from provided list and have it sorted');
     });
 
     test('words provided and words on database', () async {
       final words = await WordLogic.initializeWords(_passedWords.toList(), () async => _database);
 
-      expect(words[0].hebrew, _passedWords[0].hebrew, reason: 'should return words from provided list and have it sorted');
+      expect(words[0].native, _passedWords[0].native, reason: 'should return words from provided list and have it sorted');
     });
   });
 }

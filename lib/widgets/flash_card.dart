@@ -69,7 +69,7 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  widget.displayedWord.hebrew,
+                  widget.displayedWord.native,
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Stack(children: [
@@ -145,4 +145,4 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
 }
 
 // TODO: change attributes to checkboxes: gender, plural, etc. Then color code the word. Will have to persist attribute settings too
-// TODO: add ability to swop translation with hebrew word
+// TODO: add ability to swop translation with native word
