@@ -67,3 +67,4 @@ linux/Flutter/generated_plugin_registrant.cc
 
 #API keys
 android/app/google-services.json
+android/app/.cxx/

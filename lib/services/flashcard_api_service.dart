@@ -108,15 +108,20 @@ class FlashcardApiService {
 
     final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
 
-    snapshot.docs.forEach((doc) {
-      words.add(Word(
-        id: doc.id,
-        native: doc['native'],
-        pronunciation: doc['pronunciation'],
-        translation: doc['translation'],
-        attributes: doc['attributes'],
-      ));
-    });
+    try {
+      // need to wrap in try-catch block to handle errors
+      snapshot.docs.forEach((doc) {
+        words.add(Word(
+          id: doc.id,
+          native: doc['native'],
+          pronunciation: doc['pronunciation'],
+          translation: doc['translation'],
+          attributes: doc['attributes'],
+        ));
+      });
+    } catch (e) {
+      FlashcardSnackbar.showSnackBar('Error fetching words');
+    }
 
     return words;
   }

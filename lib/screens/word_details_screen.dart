@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/sound_controller.dart';
 import '../controllers/word_controller.dart';
 import '../models/word.dart';
 
@@ -24,6 +25,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
 
   @override
   void initState() {
+    SoundController.getOrPut;
     setState(() {
       _nativeTextController.text = widget.word.native;
       _pronunciationTextController.text = widget.word.pronunciation;
@@ -98,18 +100,36 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                                 color: _nativeTextController.text.isNotEmpty ? Colors.grey : Colors.black,
                               ),
                             ),
-                            TextFormField(
-                              controller: _pronunciationTextController,
-                              decoration: const InputDecoration(
-                                icon: Icon(Icons.record_voice_over),
-                                hintText: 'How would this word be pronounced phonetically?',
-                                labelText: 'Pronunciation',
-                              ),
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
-                              validator: (String? _) {
-                                return _pronunciationTextController.text.trim().isEmpty ? 'Please enter valid pronunciation' : null;
-                              },
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: TextFormField(
+                                      controller: _pronunciationTextController,
+                                      decoration: const InputDecoration(
+                                        icon: Icon(Icons.record_voice_over),
+                                        hintText: 'How would this word be pronounced phonetically?',
+                                        labelText: 'Pronunciation',
+                                      ),
+                                      keyboardType: TextInputType.name,
+                                      textInputAction: TextInputAction.next,
+                                      validator: (String? _) {
+                                        return _pronunciationTextController.text.trim().isEmpty ? 'Please enter valid pronunciation' : null;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onLongPressStart: (_) {
+                                    SoundController.getOrPut.startRecordAudio(widget.word.id);
+                                  },
+                                  onLongPressEnd: (_) {
+                                    SoundController.getOrPut.stopRecordAudio(widget.word.id);
+                                  },
+                                  child: Icon(Icons.mic),
+                                ),
+                              ],
                             ),
                             TextFormField(
                               controller: _translationTextController,
