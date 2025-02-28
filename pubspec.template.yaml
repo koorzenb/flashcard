@@ -41,10 +41,14 @@ dependencies:
   cloud_firestore: ^5.6.0
   firebase_ui_auth: ^1.16.0
   google_sign_in: ^6.2.2
+  permission_handler: ^11.4.0
+  flutter_sound: ^9.23.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  path_provider: ^2.1.5
+  path: ^1.9.0
 
 flutter_lints: ^5.0.0
 

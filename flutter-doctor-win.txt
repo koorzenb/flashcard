@@ -1,29 +1,31 @@
-[√] Flutter (Channel stable, 3.27.1, on Microsoft Windows [Version 10.0.22631.4751], locale en-CA)
-    • Flutter version 3.27.1 on channel stable at C:\Users\koorz\fvm\versions\3.27.1
+[√] Flutter (Channel stable, 3.29.0, on Microsoft Windows [Version 10.0.22631.4890], locale en-CA) [1,442ms]
+    • Flutter version 3.29.0 on channel stable at C:\Users\koorz\fvm\versions\3.29.0
     • Upstream repository https://github.com/flutter/flutter.git
-    • Framework revision 17025dd882 (8 weeks ago), 2024-12-17 03:23:09 +0900
-    • Engine revision cb4b5fff73
-    • Dart version 3.6.0
-    • DevTools version 2.40.2
+    • Framework revision 35c388afb5 (3 weeks ago), 2025-02-10 12:48:41 -0800
+    • Engine revision f73bfc4522
+    • Dart version 3.7.0
+    • DevTools version 2.42.2
 
-[√] Windows Version (Installed version of Windows is version 10 or higher)
+[√] Windows Version (11 Home 64-bit, 23H2, 2009) [5.2s]
 
-[√] Android toolchain - develop for Android devices (Android SDK version 34.0.0)
+[√] Android toolchain - develop for Android devices (Android SDK version 34.0.0) [4.9s]
     • Android SDK at C:\Users\koorz\AppData\Local\Android\sdk
     • Platform android-35, build-tools 34.0.0
     • Java binary at: C:\Program Files\Android\Android Studio\jbr\bin\java
+      This is the JDK bundled with the latest Android Studio installation on this machine.
+      To manually set the JDK path, use: `flutter config --jdk-dir="path/to/jdk"`.
     • Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
     • All Android licenses accepted.
 
-[√] Chrome - develop for the web
+[√] Chrome - develop for the web [197ms]
     • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
 
-[√] Visual Studio - develop Windows apps (Visual Studio Community 2022 17.9.0)
+[√] Visual Studio - develop Windows apps (Visual Studio Community 2022 17.9.0) [194ms]
     • Visual Studio at C:\Program Files\Microsoft Visual Studio\2022\Community
     • Visual Studio Community 2022 version 17.9.34607.119
     • Windows 10 SDK version 10.0.22621.0
 
-[√] Android Studio (version 2023.1)
+[√] Android Studio (version 2023.1) [29ms]
     • Android Studio at C:\Program Files\Android\Android Studio
     • Flutter plugin can be installed from:
        https://plugins.jetbrains.com/plugin/9212-flutter
@@ -31,65 +33,46 @@
        https://plugins.jetbrains.com/plugin/6351-dart
     • Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
 
-[√] VS Code (version 1.97.0)
+[√] VS Code (version 1.97.2) [26ms]
     • VS Code at C:\Users\koorz\AppData\Local\Programs\Microsoft VS Code
     • Flutter extension version 3.104.0
 
-[√] Connected device (3 available)
-    • Windows (desktop) • windows • windows-x64    • Microsoft Windows [Version 10.0.22631.4751]
-    • Chrome (web)      • chrome  • web-javascript • Google Chrome 132.0.6834.196
-    • Edge (web)        • edge    • web-javascript • Microsoft Edge 133.0.3065.51
+[√] Connected device (4 available) [593ms]
+    • sdk gphone64 x86 64 (mobile) • emulator-5554 • android-x64    • Android 14 (API 34) (emulator)
+    • Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.22631.4890]
+    • Chrome (web)                 • chrome        • web-javascript • Google Chrome 133.0.6943.142
+    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 133.0.3065.92
 
-[√] Network resources
+[√] Network resources [695ms]
     • All expected network resources are available.
 
 • No issues found!
 Showing outdated packages.
 [*] indicates versions that are not the latest available.
 
-Package Name                               Current     Upgradable  Resolvable  Latest   
+Package Name                      Current          Upgradable       Resolvable       Latest   
 
-direct dependencies:                      
-cloud_firestore                            *5.6.2      5.6.3       5.6.3       5.6.3    
-firebase_auth                              *5.4.1      5.4.2       5.4.2       5.4.2    
-firebase_core                              *3.10.1     3.11.0      3.11.0      3.11.0   
-package_info_plus                          *8.2.0      8.2.1       8.2.1       8.2.1    
+direct dependencies: all up-to-date.
 
-transitive dependencies:                  
-_flutterfire_internals                     *1.3.50     1.3.51      1.3.51      1.3.51   
-async                                      *2.11.0     *2.11.0     *2.11.0     2.13.0   
-boolean_selector                           *2.1.1      *2.1.1      *2.1.1      2.1.2    
-characters                                 *1.3.0      *1.3.0      *1.3.0      1.4.0    
-clock                                      *1.1.1      *1.1.1      *1.1.1      1.1.2    
-cloud_firestore_platform_interface         *6.6.2      6.6.3       6.6.3       6.6.3    
-cloud_firestore_web                        *4.4.2      4.4.3       4.4.3       4.4.3    
-collection                                 *1.19.0     *1.19.0     *1.19.0     1.19.1   
-email_validator                            *2.1.17     *2.1.17     *2.1.17     3.0.0    
-fake_async                                 *1.3.1      *1.3.1      *1.3.1      1.3.3    
-firebase_auth_platform_interface           *7.5.1      7.5.2       7.5.2       7.5.2    
-firebase_auth_web                          *5.13.7     5.13.8      5.13.8      5.13.8   
-firebase_core_web                          *2.19.0     2.20.0      2.20.0      2.20.0   
-firebase_dynamic_links                     *6.1.1      6.1.2       6.1.2       6.1.2    (discontinued)  
-firebase_dynamic_links_platform_interface  *0.2.7+1    0.2.7+2     0.2.7+2     0.2.7+2  
-intl                                       *0.19.0     *0.19.0     *0.19.0     0.20.2   
-leak_tracker                               *10.0.7     *10.0.7     *10.0.7     10.0.9   
-leak_tracker_flutter_testing               *3.0.8      *3.0.8      *3.0.8      3.0.9    
-matcher                                    *0.12.16+1  *0.12.16+1  *0.12.16+1  0.12.17  
-material_color_utilities                   *0.11.1     *0.11.1     *0.11.1     0.12.0   
-meta                                       *1.15.0     *1.15.0     *1.15.0     1.16.0   
-path                                       *1.9.0      *1.9.0      *1.9.0      1.9.1    
-petitparser                                *6.0.2      *6.0.2      *6.0.2      6.1.0    
-source_span                                *1.10.0     *1.10.0     *1.10.0     1.10.1   
-stack_trace                                *1.12.0     *1.12.0     *1.12.0     1.12.1   
-stream_channel                             *2.1.2      *2.1.2      *2.1.2      2.1.4    
-string_scanner                             *1.3.0      *1.3.0      *1.3.0      1.4.1    
-term_glyph                                 *1.2.1      *1.2.1      *1.2.1      1.2.2    
-test_api                                   *0.7.3      *0.7.3      *0.7.3      0.7.4    
-vector_graphics                            *1.1.17     1.1.18      1.1.18      1.1.18   
-vm_service                                 *14.3.0     *14.3.0     *14.3.0     15.0.0   
+dev_dependencies: all up-to-date.
 
-13 upgradable dependencies are locked (in pubspec.lock) to older versions.
+transitive dependencies:         
+async                             *2.12.0          *2.12.0          *2.12.0          2.13.0   
+email_validator                   *2.1.17          *2.1.17          *2.1.17          3.0.0    
+etau                              *0.0.14-alpha.5  *0.0.14-alpha.5  *0.0.14-alpha.5  0.17.15  
+fake_async                        *1.3.2           *1.3.2           *1.3.2           1.3.3    
+ffi                               *2.1.3           2.1.4            2.1.4            2.1.4    
+flutter_sound_platform_interface  *9.23.1          *9.23.1          *9.23.1          9.24.2   
+flutter_sound_web                 *9.23.1          *9.23.1          *9.23.1          9.24.2   
+intl                              *0.19.0          *0.19.0          *0.19.0          0.20.2   
+leak_tracker                      *10.0.8          *10.0.8          *10.0.8          10.0.9   
+material_color_utilities          *0.11.1          *0.11.1          *0.11.1          0.12.0   
+petitparser                       *6.0.2           6.1.0            6.1.0            6.1.0    
+synchronized                      *3.3.0+3         3.3.1            3.3.1            3.3.1    
+tau_web                           *0.0.14-alpha.5  *0.0.14-alpha.5  *0.0.14-alpha.5  0.17.15  
+vm_service                        *14.3.1          *14.3.1          *14.3.1          15.0.0   
+win32                             *5.10.1          5.11.0           5.11.0           5.11.0   
+
+4 upgradable dependencies are locked (in pubspec.lock) to older versions.
 To update these dependencies, use `flutter pub upgrade`.
-
-firebase_dynamic_links
-    Package firebase_dynamic_links has been discontinued. See https://dart.dev/go/package-discontinue
+all dependencies are up-to-date.
