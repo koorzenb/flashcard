@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../app_settings.dart';
 import '../screens/word_list_screen.dart';
 import '../services/flashcard_auth_service.dart';
 import 'drawer_item.dart';
@@ -45,7 +46,13 @@ class MainDrawer extends StatelessWidget {
           Column(
             children: [
               Divider(),
-              DrawerItem(title: 'Sign Out', onTap: FlashcardAuthService.signOut, icon: Icons.logout),
+              DrawerItem(
+                  title: 'Sign Out',
+                  onTap: () {
+                    FlashcardAuthService.signOut();
+                    clearAppData();
+                  },
+                  icon: Icons.logout),
             ],
           )
         ],

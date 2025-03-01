@@ -49,10 +49,10 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _signInHandler(BuildContext context, String displayName) {
-    if (!WordStorage.isInitialized) {
+    if (!WordStorage.isInitialized || firebase_auth.FirebaseAuth.instance.currentUser == null) {
       return FlashcardAuthService.signIn();
+    } else {
+      return HomeScreen();
     }
-
-    return firebase_auth.FirebaseAuth.instance.currentUser != null ? HomeScreen() : FlashcardAuthService.signIn();
   }
 }

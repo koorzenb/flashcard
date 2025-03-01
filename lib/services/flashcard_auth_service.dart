@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flashcard/controllers/sound_controller.dart';
+import 'package:flashcard/controllers/writing_controller.dart';
 import 'package:get/get.dart';
 
-import '../app_settings.dart';
 import '../controllers/word_controller.dart';
 import '../screens/home_screen.dart';
 import '../storage/word_storage.dart';
@@ -22,7 +23,7 @@ class FlashcardAuthService {
       actions: [
         AuthStateChangeAction<SignedIn>((context, state) async {
           print('Signed in');
-          await _init();
+          await _init(); // TODO: future improvement: these methods should not reside in this callback
           await Get.to(() => HomeScreen());
         }),
         AuthStateChangeAction<Uninitialized>((context, state) async {
@@ -56,11 +57,8 @@ class FlashcardAuthService {
   }
 
   static void signOut() {
-    Get.until((route) => route.isFirst);
-    Get.to(() => signIn());
     FirebaseAuth.instance.signOut();
     _userId = '';
-    clearAppData();
     print('Signed out');
   }
 
