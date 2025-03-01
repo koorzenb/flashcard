@@ -1,6 +1,6 @@
+import 'package:flashcard/controllers/sound_controller.dart';
 import 'package:flashcard/widgets/record_audio_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 
 class WritingScreen extends StatefulWidget {
@@ -12,18 +12,11 @@ class WritingScreen extends StatefulWidget {
 
 class _WritingScreenState extends State<WritingScreen> {
   final TextEditingController _textController = TextEditingController();
-  final FlutterSoundPlayer _playerModule = FlutterSoundPlayer();
 
   @override
   void initState() {
     super.initState();
-    _initializePlayer();
-  }
-
-  Future<void> _initializePlayer() async {
-    await _playerModule.closePlayer();
-    await _playerModule.openPlayer();
-    await _playerModule.setSubscriptionDuration(const Duration(milliseconds: 10));
+    SoundController.getOrPut;
   }
 
   @override

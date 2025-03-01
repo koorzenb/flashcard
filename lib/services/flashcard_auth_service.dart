@@ -68,5 +68,6 @@ class FlashcardAuthService {
     _userId = FirebaseAuth.instance.currentUser!.uid;
     await WordStorage.init(extractUsername(FirebaseAuth.instance.currentUser!.email!));
     WordController.create();
+    await SoundController.init();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flashcard/widgets/flashcard_snackbar.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
@@ -8,7 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 class SoundController extends GetxController {
   late FlutterSoundRecorder _recorder;
   late FlutterSoundPlayer _player;
-  late String _directoryPath;
+  static late String _directoryPath;
 
   static SoundController get getOrPut {
     try {
@@ -18,10 +20,14 @@ class SoundController extends GetxController {
     }
   }
 
+  static Future<void> init() async {
+    final dirPath = (await getApplicationDocumentsDirectory()).path;
+    _directoryPath = path.join(dirPath, 'audio-clips');
+  }
+
   SoundController._() {
     _recorder = FlutterSoundRecorder();
     _player = FlutterSoundPlayer();
-    _init();
   }
 
   Future<void> _init() async {
@@ -30,15 +36,20 @@ class SoundController extends GetxController {
     if (status != PermissionStatus.granted) {
       throw RecordingPermissionException('Microphone permission not granted'); // TODO: Handle this error
     }
-    final dirPath = (await getApplicationDocumentsDirectory()).path;
-    _directoryPath = path.join(dirPath, 'audio-clips');
+
     await _player.openPlayer();
+  }
+
+  @override
+  void onClose() {
+    _recorder.closeRecorder();
+    _player.closePlayer();
+    super.onClose();
   }
 
   Future<void> startRecordAudio(String id) async {
     final codec = Codec.aacADTS;
 
-    // await _recorder.openRecorder();
     if (!await _recorder.isEncoderSupported(codec)) {
       print('codec not supported');
       return;
@@ -70,21 +81,25 @@ class SoundController extends GetxController {
     await _recorder.stopRecorder();
     FlashcardSnackbar.showSnackBar('Finished recording');
     await Future.delayed(const Duration(seconds: 1));
+    // TODO: update icon to play icon
 
     await playAudio(id);
+    // TODO: dispose player
   }
 
   Future<void> playAudio(String id) async {
-    try {
-      // TODO: remove this try catch
-      await _player.startPlayer(
-        fromURI: path.join(_directoryPath, '$id.aac'),
-        codec: Codec.aacADTS,
-      );
-      print('Playing sound');
-    } catch (e) {
-      print('some error occured: $e');
+    // check if file exists
+    if (!await File(path.join(_directoryPath, '$id.aac')).exists()) {
+      FlashcardSnackbar.showSnackBar('No audio record found');
       return;
     }
+
+    // Implement SQLLite for relationship between word and audio
+
+    await _player.startPlayer(
+      fromURI: path.join(_directoryPath, '$id.aac'),
+      codec: Codec.aacADTS,
+    );
+    print('Playing sound');
   }
 }
