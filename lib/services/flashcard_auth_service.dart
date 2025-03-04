@@ -65,9 +65,11 @@ class FlashcardAuthService {
   static Future<void> _init() async {
     // TODO: move this to authController. Should not handle this here
     // AFter auth, then perform functions and update controller
+    // should also not call it here, but rather from HomeScreen.initState and create spinner while initializing
     _userId = FirebaseAuth.instance.currentUser!.uid;
     await WordStorage.init(extractUsername(FirebaseAuth.instance.currentUser!.email!));
     WordController.create();
+    WritingController.create();
     await SoundController.init();
   }
 }

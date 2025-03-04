@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashcard/controllers/sound_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -57,25 +58,28 @@ class WordController extends GetxController {
     Get.back();
   }
 
-  Future<void> addWord(Word word) async {
+  Future<Word?>? _addWord(Word word) async {
     final updatedWord = await FlashcardApiService(FlashcardAuthService.userId).addWord(word);
     if (updatedWord != null) {
       WordLogic.instance.addWord(updatedWord, _words);
       update();
     }
+
+    return updatedWord;
   }
 
-  Future<void> updateWord(Word value) async {
-    FlashcardApiService(FlashcardAuthService.userId).updateWord(value);
-    final index = _words.indexWhere((element) => element.id == value.id);
+  Future<bool> _updateWord(Word word) async {
+    FlashcardApiService(FlashcardAuthService.userId).updateWord(word);
+    final index = _words.indexWhere((element) => element.id == word.id);
 
     if (index == -1) {
       // scenario where words are out of sync with the server
-      await addWord(value);
+      return false;
     } else {
-      _words[index] = value;
+      _words[index] = word;
       WordStorage.box.words = _words.toList();
       update();
+      return true;
     }
   }
 
@@ -98,5 +102,23 @@ class WordController extends GetxController {
   void onSearchChange(String text) {
     _filteredWords = _words.where((word) => word.translation.contains(text) || word.translation.startsWith(text)).toList();
     update();
+  }
+
+  Future<void> saveWord(Word word) async {
+    if (word.isNew) {
+      final updatedWord = await _addWord(word);
+
+      if (updatedWord != null && word.audioId.isNotEmpty) {
+        await SoundController.getOrPut.updateStorageAudioFilename(updatedWord.id);
+        updatedWord.audioId = updatedWord.id;
+        await _updateWord(updatedWord); //  updated the Firebase audioId from 'temp-id' to new id value
+      }
+    } else {
+      final res = await _updateWord(word);
+
+      if (!res) {
+        await _addWord(word);
+      }
+    }
   }
 }

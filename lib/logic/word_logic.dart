@@ -36,7 +36,11 @@ class WordLogic {
     WordStorage.box.words = words.toList();
   }
 
-  Word getWord(List<Word> words) {
+  Word getWord(List<Word> words, [bool updateUnreadWords = false]) {
+    if (updateUnreadWords) {
+      _unReadWords = words.toList();
+    }
+
     final int randomIndex = Random().nextInt(_unReadWords.length);
     final Word word = _unReadWords[randomIndex];
     _unReadWords.removeAt(randomIndex);
@@ -46,6 +50,7 @@ class WordLogic {
       FlashcardSnackbar.showSnackBar('All words have been read. Starting over.');
     }
 
+    print('Word = ${word.translation}');
     return word;
   }
 

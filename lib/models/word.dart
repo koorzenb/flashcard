@@ -4,7 +4,7 @@ class Word {
   final String pronunciation;
   final String translation;
   final String attributes;
-  final bool hasAudio;
+  String audioId;
   final bool isNew;
 
   Word(
@@ -13,7 +13,7 @@ class Word {
       required this.pronunciation,
       required this.translation,
       this.attributes = '',
-      this.hasAudio = false,
+      this.audioId = '',
       this.isNew = false});
 
   Map<String, dynamic> toJson() => {
@@ -22,7 +22,7 @@ class Word {
         'pronunciation': pronunciation,
         'translation': translation,
         'attributes': attributes,
-        'hasAudio': hasAudio,
+        'audioId': audioId,
       };
 
   static List<dynamic> arrayToJsonList(List<Word> words) {
@@ -33,11 +33,11 @@ class Word {
 
   factory Word.fromJson(Map<String, dynamic> json) => Word(
         id: json['id'],
-        native: json['hebrew'],
+        native: json['native'],
         pronunciation: json['pronunciation'],
         translation: json['translation'],
         attributes: json['attributes'],
-        hasAudio: json['hasAudio'],
+        audioId: json['audioId'],
       );
 
   static List<Word> listFromJsonList(List<dynamic> jsonList) {

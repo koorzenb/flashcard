@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flashcard/app_constants.dart';
 import 'package:flashcard/widgets/flashcard_snackbar.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
@@ -26,18 +27,24 @@ class SoundController extends GetxController {
   }
 
   SoundController._() {
-    _recorder = FlutterSoundRecorder();
-    _player = FlutterSoundPlayer();
+    _init();
   }
 
   Future<void> _init() async {
-    await _recorder.openRecorder();
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
       throw RecordingPermissionException('Microphone permission not granted'); // TODO: Handle this error
     }
 
+    _recorder = FlutterSoundRecorder();
+    _player = FlutterSoundPlayer();
+    await _recorder.openRecorder();
     await _player.openPlayer();
+
+    final dir = Directory(_directoryPath);
+    if (!await dir.exists()) {
+      await dir.create();
+    }
   }
 
   @override
@@ -48,7 +55,7 @@ class SoundController extends GetxController {
   }
 
   Future<void> startRecordAudio(String id) async {
-    final codec = Codec.aacADTS;
+    final codec = AppConstants.codec;
 
     if (!await _recorder.isEncoderSupported(codec)) {
       print('codec not supported');
@@ -62,29 +69,28 @@ class SoundController extends GetxController {
       // - adb devices
       // - adb shell
       // - run-as com.example.flashcard
-      // - cd app_flutter
+      // - cd app_flutter/audio-clips/
       // - ls -lh
 
       await _recorder.startRecorder(
-        toFile: path.join(_directoryPath, '$id.aac'),
+        toFile: path.join(_directoryPath, '$id.${AppConstants.audioFileExtension}'),
         codec: codec,
         bitRate: 16000, // Low quality bitrate
         sampleRate: 16000, // Low quality sample rate
       );
     } catch (e) {
-      print('some error occured: $e');
+      print('some error occurred: $e');
       return;
     }
   }
 
   Future<void> stopRecordAudio(String id) async {
+    FlashcardSnackbar.showSnackBar('Finished recording', 500);
     await _recorder.stopRecorder();
-    FlashcardSnackbar.showSnackBar('Finished recording');
-    await Future.delayed(const Duration(seconds: 1));
     // TODO: update icon to play icon
 
+    await Future.delayed(const Duration(seconds: 1));
     await playAudio(id);
-    // TODO: dispose player
   }
 
   Future<void> playAudio(String id) async {
@@ -101,5 +107,17 @@ class SoundController extends GetxController {
       codec: Codec.aacADTS,
     );
     print('Playing sound');
+  }
+
+  Future<void> updateStorageAudioFilename(String id) async {
+    if (id == AppConstants.tempAudioFileName) {
+      return;
+    }
+
+    final tempFilepath = File(path.join(_directoryPath, '${AppConstants.tempAudioFileName}.${AppConstants.audioFileExtension}'));
+
+    if (await tempFilepath.exists()) {
+      await tempFilepath.rename(path.join(_directoryPath, '$id.${AppConstants.audioFileExtension}'));
+    }
   }
 }

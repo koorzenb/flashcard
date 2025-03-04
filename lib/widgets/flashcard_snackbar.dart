@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FlashcardSnackbar {
-  static void showSnackBar(String message) => ScaffoldMessenger.of(Get.context!).showSnackBar(
+  static void showSnackBar(String message, [int durationMs = 2000]) => ScaffoldMessenger.of(Get.context!).showSnackBar(
         SnackBar(
           content: Text(message),
-          duration: const Duration(seconds: 2),
+          duration: Duration(milliseconds: durationMs),
         ),
       );
 }

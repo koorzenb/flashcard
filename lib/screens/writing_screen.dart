@@ -1,7 +1,10 @@
 import 'package:flashcard/controllers/sound_controller.dart';
-import 'package:flashcard/widgets/record_audio_page.dart';
+import 'package:flashcard/models/word.dart';
+import 'package:flashcard/screens/word_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../controllers/writing_controller.dart';
 
 class WritingScreen extends StatefulWidget {
   const WritingScreen({super.key});
@@ -20,22 +23,10 @@ class _WritingScreenState extends State<WritingScreen> {
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
+    SoundController.getOrPut.onClose();
     _textController.dispose();
-    await _playerModule.closePlayer();
     super.dispose();
-  }
-
-  Future<void> _playAudio() async {
-    // Replace with your audio file URL or asset path
-    const audioUrl = 'https://www.example.com/audio.mp3';
-    await _playerModule.startPlayer(fromURI: audioUrl);
-  }
-
-  void _checkWord() {
-    final enteredText = _textController.text;
-    // Add your logic to check the word here
-    print('Entered text: $enteredText');
   }
 
   @override
@@ -46,34 +37,53 @@ class _WritingScreenState extends State<WritingScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: _playAudio,
-              child: const Text('Play Audio'),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _textController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter the word',
+        child: GetBuilder<WritingController>(builder: (writingController) {
+          return writingController.currentWord.native.isEmpty
+              ? Center(child: Text('No words available'))
+              : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                      onPressed: () => SoundController.getOrPut.playAudio(WritingController.instance.currentWord.id),
+                icon: Icon(Icons.play_arrow),
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _checkWord,
-              child: const Text('Check Word'),
-            ),
-          ],
-        ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _textController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter the word',
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                      onPressed: () async {
+                        final result = await writingController.onCheckWord(_textController.text);
+
+                        if (result) {
+                          _textController.clear();
+                        }
+                      },
+                child: const Text('Check Word'),
+              ),
+              SizedBox(height: 20),
+              writingController.resultsIcon ?? const SizedBox(),
+            ],
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => RecordAudioPage());
-        },
-        child: const Icon(Icons.arrow_back),
+        onPressed: () async => await Get.to(() => WordDetailsScreen(
+              title: 'Add Word',
+              word: Word(
+                native: '',
+                pronunciation: '',
+                translation: '',
+                attributes: '',
+                isNew: true,
+              ),
+            )),
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flashcard/services/flashcard_auth_service.dart';
+import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -8,9 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'controllers/flash_card_app_controller.dart';
 import 'models/server_environment.dart';
 import 'screens/home_screen.dart';
-import 'services/flashcard_auth_service.dart';
 import 'storage/main_app_storage.dart';
-import 'storage/word_storage.dart';
 import 'styles/themes.dart';
 
 Future<void> commonInit(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
