@@ -38,31 +38,35 @@ class _WritingScreenState extends State<WritingScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GetBuilder<WritingController>(builder: (writingController) {
+          if (writingController.attemptsRemaining == 1) {
+            _textController.text = writingController.currentWord.native;
+          }
+
           return writingController.currentWord.native.isEmpty
               ? Center(child: Text('No words available'))
               : Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                      onPressed: () => SoundController.getOrPut.playAudio(WritingController.instance.currentWord.id),
+                      onPressed: () => SoundController.getOrPut.playAudio(writingController.currentWord.id),
                 icon: Icon(Icons.play_arrow),
               ),
               const SizedBox(height: 20),
               TextField(
                 controller: _textController,
-                decoration: const InputDecoration(
+                      decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Enter the word',
+                        hintText: writingController.attemptsRemaining < 2 ? writingController.currentWord.native : 'Enter the word',
                 ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                       onPressed: () async {
-                        final result = await writingController.onCheckWord(_textController.text);
+                        await writingController.onCheckWord(_textController.text);
 
-                        if (result) {
+                        setState(() {
                           _textController.clear();
-                        }
+                        });
                       },
                 child: const Text('Check Word'),
               ),

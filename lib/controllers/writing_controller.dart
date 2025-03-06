@@ -1,4 +1,5 @@
 import 'package:flashcard/logic/word_logic.dart';
+import 'package:flashcard/logic/writing_logic.dart';
 import 'package:flashcard/models/word.dart';
 import 'package:flashcard/services/flashcard_api_service.dart';
 import 'package:flashcard/services/flashcard_auth_service.dart';
@@ -10,9 +11,11 @@ class WritingController extends GetxController {
   late List<Word> _filteredWords = [];
   Word _currentWord = Word(native: '', pronunciation: '', translation: '');
   Icon? _resultsIcon;
+  int _attemptsRemaining = 2;
 
   Icon? get resultsIcon => _resultsIcon;
   Word get currentWord => _currentWord;
+  int get attemptsRemaining => _attemptsRemaining;
 
   static WritingController create() {
     return Get.put(WritingController._());
@@ -37,34 +40,22 @@ class WritingController extends GetxController {
   }
 
   Future<bool> onCheckWord(String enteredText) async {
-    // Add your logic to check the word here
-    print('Entered text: $enteredText');
+    final result = WritingLogic.checkWord(enteredText, _currentWord.native, _attemptsRemaining);
 
-    final isCorrect = enteredText == _currentWord.native;
-
-    if (!isCorrect) {
-      _resultsIcon = Icon(
-        Icons.close,
-        color: Colors.red,
-      );
-    } else {
-      _resultsIcon = Icon(
-        Icons.check,
-        color: Colors.green,
-      );
-    }
-    update();
+    _resultsIcon = result.icon;
+    _attemptsRemaining = result.attemptsRemaining;
+    update(); // updating icon
 
     await Future.delayed(const Duration(seconds: 2), () {});
 
     _resultsIcon = null;
 
-    if (isCorrect) {
+    if (result.updateCurrentWord) {
       _currentWord = WordLogic.instance.getWord(_filteredWords);
     }
 
-    update();
-    return isCorrect;
+    update(); // reset icon and update current word
+    return result.isCorrect;
   }
 
   void updateCurrentWord(List<Word> words) {
