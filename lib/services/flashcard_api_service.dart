@@ -29,7 +29,7 @@ class FlashcardApiService {
     snapshot.docs.forEach((doc) {
       words.add(Word(
         id: doc.id,
-        native: doc['native'], // TODO: for all words in DB, change property name to 'native'
+        native: doc['native'],
         pronunciation: doc['pronunciation'],
         translation: doc['translation'],
         attributes: doc['attributes'],
@@ -54,7 +54,7 @@ class FlashcardApiService {
 
       print('Exported words to $filePath');
     } catch (e) {
-      print('error occured: $e');
+      print('error occurred: $e');
     }
   }
 
@@ -78,7 +78,7 @@ class FlashcardApiService {
 
       print('Migrated words from flashcards.json');
     } catch (e) {
-      print('error occured: $e');
+      print('error occurred: $e');
     }
   }
 
