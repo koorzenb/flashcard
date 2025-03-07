@@ -85,7 +85,7 @@ class SoundController extends GetxController {
   }
 
   Future<void> stopRecordAudio(String id) async {
-    FlashcardSnackbar.showSnackBar('Finished recording', 500);
+    FlashcardSnackbar.showSnackBar(id == AppConstants.tempAudioFileName ? 'Finished recording' : 'Overwrote previous recording', 500);
     await _recorder.stopRecorder();
     // TODO: update icon to play icon
 

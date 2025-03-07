@@ -38,42 +38,43 @@ class _WritingScreenState extends State<WritingScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GetBuilder<WritingController>(builder: (writingController) {
-          if (writingController.attemptsRemaining == 1) {
+          if (writingController.attemptsRemaining == 0) {
             _textController.text = writingController.currentWord.native;
           }
 
           return writingController.currentWord.native.isEmpty
               ? Center(child: Text('No words available'))
               : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Score: ${writingController.score}',
+                    ),
+                    IconButton(
                       onPressed: () => SoundController.getOrPut.playAudio(writingController.currentWord.id),
-                icon: Icon(Icons.play_arrow),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _textController,
+                      icon: Icon(Icons.play_arrow),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _textController,
                       decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         hintText: writingController.attemptsRemaining < 2 ? writingController.currentWord.native : 'Enter the word',
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
                       onPressed: () async {
                         await writingController.onCheckWord(_textController.text);
-
-                        setState(() {
-                          _textController.clear();
-                        });
+                        setState(_textController.clear);
                       },
-                child: const Text('Check Word'),
-              ),
-              SizedBox(height: 20),
-              writingController.resultsIcon ?? const SizedBox(),
-            ],
-          );
+                      child: const Text('Check Word'),
+                    ),
+                    SizedBox(height: 20),
+                    writingController.resultsIcon ?? Icon(Icons.check, color: Colors.transparent),
+                    Text(writingController.resultTranslation),
+                  ],
+                );
         }),
       ),
       floatingActionButton: FloatingActionButton(

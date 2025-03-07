@@ -1,9 +1,10 @@
 import 'package:flashcard/logic/check_word_result.dart';
+import 'package:flashcard/models/word.dart';
 import 'package:flutter/material.dart';
 
 class WritingLogic {
-  static CheckWordResult checkWord(String enteredText, String currentWord, int attemptsRemaining) {
-    final isCorrect = enteredText == currentWord;
+  static CheckWordResult checkWord(String enteredText, Word currentWord, int attemptsRemaining, int score) {
+    final isCorrect = enteredText == currentWord.native;
 
     if (!isCorrect) {
       if (attemptsRemaining == 0) {
@@ -14,7 +15,9 @@ class WritingLogic {
             color: Colors.red,
           ),
           updateCurrentWord: true,
+          translation: currentWord.translation,
           attemptsRemaining: 2,
+          score: score,
         );
       } else {
         attemptsRemaining--;
@@ -25,7 +28,9 @@ class WritingLogic {
             color: Colors.red,
           ),
           updateCurrentWord: false,
+          translation: '',
           attemptsRemaining: attemptsRemaining,
+          score: score,
         );
       }
     } else {
@@ -36,7 +41,9 @@ class WritingLogic {
           color: Colors.green,
         ),
         updateCurrentWord: true,
+        translation: currentWord.translation,
         attemptsRemaining: 2,
+        score: attemptsRemaining == 2 ? score + 1 : score,
       );
     }
   }

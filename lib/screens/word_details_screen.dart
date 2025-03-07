@@ -125,23 +125,19 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                               ),
                             ),
                           ),
-                          widget.word.id.isEmpty
-                              ? GestureDetector(
-                                  onLongPressStart: (_) {
-                                    SoundController.getOrPut.startRecordAudio(_audioFileName);
-                                  },
-                                  onLongPressEnd: (_) {
-                                    SoundController.getOrPut.stopRecordAudio(_audioFileName);
-                                    _hasAudio = true;
-                                  },
-                                  child: Icon(widget.word.audioId.isEmpty ? Icons.mic : Icons.play_arrow),
-                                )
-                              : GestureDetector(
-                                  onTap: () async {
-                                    await SoundController.getOrPut.playAudio(_audioFileName);
-                                  },
-                                  child: Icon(Icons.play_arrow),
-                                ),
+                          GestureDetector(
+                            onTap: () async {
+                              await SoundController.getOrPut.playAudio(_audioFileName);
+                            },
+                            onLongPressStart: (_) {
+                              SoundController.getOrPut.startRecordAudio(_audioFileName);
+                            },
+                            onLongPressEnd: (_) {
+                              SoundController.getOrPut.stopRecordAudio(_audioFileName);
+                              setState(() => _hasAudio = true);
+                            },
+                            child: Icon(widget.word.audioId.isNotEmpty || _hasAudio ? Icons.play_arrow : Icons.mic),
+                          ),
                         ],
                       ),
                       TextFormField(
