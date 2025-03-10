@@ -1,14 +1,14 @@
-[√] Flutter (Channel stable, 3.29.0, on Microsoft Windows [Version 10.0.22631.4890], locale en-CA) [1,442ms]
+[√] Flutter (Channel stable, 3.29.0, on Microsoft Windows [Version 10.0.22631.4890], locale en-CA) [848ms]
     • Flutter version 3.29.0 on channel stable at C:\Users\koorz\fvm\versions\3.29.0
     • Upstream repository https://github.com/flutter/flutter.git
-    • Framework revision 35c388afb5 (3 weeks ago), 2025-02-10 12:48:41 -0800
+    • Framework revision 35c388afb5 (4 weeks ago), 2025-02-10 12:48:41 -0800
     • Engine revision f73bfc4522
     • Dart version 3.7.0
     • DevTools version 2.42.2
 
-[√] Windows Version (11 Home 64-bit, 23H2, 2009) [5.2s]
+[√] Windows Version (11 Home 64-bit, 23H2, 2009) [9.2s]
 
-[√] Android toolchain - develop for Android devices (Android SDK version 34.0.0) [4.9s]
+[√] Android toolchain - develop for Android devices (Android SDK version 34.0.0) [7.4s]
     • Android SDK at C:\Users\koorz\AppData\Local\Android\sdk
     • Platform android-35, build-tools 34.0.0
     • Java binary at: C:\Program Files\Android\Android Studio\jbr\bin\java
@@ -17,15 +17,15 @@
     • Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
     • All Android licenses accepted.
 
-[√] Chrome - develop for the web [197ms]
+[√] Chrome - develop for the web [227ms]
     • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
 
-[√] Visual Studio - develop Windows apps (Visual Studio Community 2022 17.9.0) [194ms]
+[√] Visual Studio - develop Windows apps (Visual Studio Community 2022 17.9.0) [224ms]
     • Visual Studio at C:\Program Files\Microsoft Visual Studio\2022\Community
     • Visual Studio Community 2022 version 17.9.34607.119
     • Windows 10 SDK version 10.0.22621.0
 
-[√] Android Studio (version 2023.1) [29ms]
+[√] Android Studio (version 2023.1) [39ms]
     • Android Studio at C:\Program Files\Android\Android Studio
     • Flutter plugin can be installed from:
        https://plugins.jetbrains.com/plugin/9212-flutter
@@ -33,46 +33,52 @@
        https://plugins.jetbrains.com/plugin/6351-dart
     • Java version OpenJDK Runtime Environment (build 17.0.7+0-b2043.56-10550314)
 
-[√] VS Code (version 1.97.2) [26ms]
+[√] VS Code (version 1.98.0) [35ms]
     • VS Code at C:\Users\koorz\AppData\Local\Programs\Microsoft VS Code
-    • Flutter extension version 3.104.0
+    • Flutter extension version 3.106.0
 
-[√] Connected device (4 available) [593ms]
+[√] Connected device (4 available) [1,056ms]
     • sdk gphone64 x86 64 (mobile) • emulator-5554 • android-x64    • Android 14 (API 34) (emulator)
     • Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.22631.4890]
     • Chrome (web)                 • chrome        • web-javascript • Google Chrome 133.0.6943.142
-    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 133.0.3065.92
+    • Edge (web)                   • edge          • web-javascript • Microsoft Edge 134.0.3124.51
 
-[√] Network resources [695ms]
+[√] Network resources [696ms]
     • All expected network resources are available.
 
 • No issues found!
 Showing outdated packages.
 [*] indicates versions that are not the latest available.
 
-Package Name                      Current          Upgradable       Resolvable       Latest   
+Package Name                       Current          Upgradable  Resolvable  Latest    
 
-direct dependencies: all up-to-date.
+direct dependencies:              
+flutter_sound                      *9.23.1          9.25.4      9.25.4      9.25.4    
+google_sign_in                     *6.2.2           6.3.0       6.3.0       6.3.0     
 
-dev_dependencies: all up-to-date.
+dev_dependencies: all up-to-date. 
 
-transitive dependencies:         
-async                             *2.12.0          *2.12.0          *2.12.0          2.13.0   
-email_validator                   *2.1.17          *2.1.17          *2.1.17          3.0.0    
-etau                              *0.0.14-alpha.5  *0.0.14-alpha.5  *0.0.14-alpha.5  0.17.15  
-fake_async                        *1.3.2           *1.3.2           *1.3.2           1.3.3    
-ffi                               *2.1.3           2.1.4            2.1.4            2.1.4    
-flutter_sound_platform_interface  *9.23.1          *9.23.1          *9.23.1          9.24.2   
-flutter_sound_web                 *9.23.1          *9.23.1          *9.23.1          9.24.2   
-intl                              *0.19.0          *0.19.0          *0.19.0          0.20.2   
-leak_tracker                      *10.0.8          *10.0.8          *10.0.8          10.0.9   
-material_color_utilities          *0.11.1          *0.11.1          *0.11.1          0.12.0   
-petitparser                       *6.0.2           6.1.0            6.1.0            6.1.0    
-synchronized                      *3.3.0+3         3.3.1            3.3.1            3.3.1    
-tau_web                           *0.0.14-alpha.5  *0.0.14-alpha.5  *0.0.14-alpha.5  0.17.15  
-vm_service                        *14.3.1          *14.3.1          *14.3.1          15.0.0   
-win32                             *5.10.1          5.11.0           5.11.0           5.11.0   
+transitive dependencies:          
+async                              *2.12.0          *2.12.0     *2.12.0     2.13.0    
+email_validator                    *2.1.17          *2.1.17     *2.1.17     3.0.0     
+etau                               *0.0.14-alpha.5  -           -           0.17.15   
+fake_async                         *1.3.2           *1.3.2      *1.3.2      1.3.3     
+ffi                                *2.1.3           2.1.4       2.1.4       2.1.4     
+flutter_sound_platform_interface   *9.23.1          9.25.4      9.25.4      9.25.4    
+flutter_sound_web                  *9.23.1          9.25.4      9.25.4      9.25.4    
+google_sign_in_android             *6.1.35          6.2.0       6.2.0       6.2.0     
+google_sign_in_ios                 *5.8.0           5.8.1       5.8.1       5.8.1     
+google_sign_in_platform_interface  *2.4.5           2.5.0       2.5.0       2.5.0     
+google_sign_in_web                 *0.12.4+3        0.12.4+4    0.12.4+4    0.12.4+4  
+intl                               *0.19.0          *0.19.0     *0.19.0     0.20.2    
+leak_tracker                       *10.0.8          *10.0.8     *10.0.8     10.0.9    
+material_color_utilities           *0.11.1          *0.11.1     *0.11.1     0.12.0    
+path_provider_android              *2.2.15          2.2.16      2.2.16      2.2.16    
+petitparser                        *6.0.2           6.1.0       6.1.0       6.1.0     
+synchronized                       *3.3.0+3         3.3.1       3.3.1       3.3.1     
+tau_web                            *0.0.14-alpha.5  -           -           0.17.15   
+vm_service                         *14.3.1          *14.3.1     *14.3.1     15.0.0    
+win32                              *5.10.1          5.11.0      5.11.0      5.11.0    
 
-4 upgradable dependencies are locked (in pubspec.lock) to older versions.
+13 upgradable dependencies are locked (in pubspec.lock) to older versions.
 To update these dependencies, use `flutter pub upgrade`.
-all dependencies are up-to-date.
