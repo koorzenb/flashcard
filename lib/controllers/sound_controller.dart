@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:flashcard/app_constants.dart';
-import 'package:flashcard/widgets/flashcard_snackbar.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../app_constants.dart';
+import '../widgets/flashcard_snackbar.dart';
 
 class SoundController extends GetxController {
   late FlutterSoundRecorder _recorder;

@@ -1,6 +1,7 @@
-import 'package:flashcard/logic/check_word_result.dart';
-import 'package:flashcard/models/word.dart';
 import 'package:flutter/material.dart';
+
+import '../models/word.dart';
+import 'check_word_result.dart';
 
 class WritingLogic {
   static CheckWordResult checkWord(String enteredText, Word currentWord, int attemptsRemaining, int score) {

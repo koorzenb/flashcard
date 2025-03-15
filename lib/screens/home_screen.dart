@@ -1,5 +1,3 @@
-import 'package:flashcard/screens/reading_screen.dart';
-import 'package:flashcard/screens/writing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,6 +5,8 @@ import '../controllers/flash_card_app_controller.dart';
 import '../storage/main_app_storage.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/version_code_text.dart';
+import 'reading_screen.dart';
+import 'writing_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

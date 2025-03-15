@@ -1,10 +1,10 @@
-import 'package:flashcard/app_constants.dart';
-import 'package:flashcard/controllers/writing_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../app_constants.dart';
 import '../controllers/sound_controller.dart';
 import '../controllers/word_controller.dart';
+import '../controllers/writing_controller.dart';
 import '../models/word.dart';
 
 class WordDetailsScreen extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flashcard/controllers/sound_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,9 +6,10 @@ import 'package:get/get.dart';
 import '../logic/word_logic.dart';
 import '../models/word.dart';
 import '../screens/word_details_screen.dart';
-import '../services/flashcard_api_service.dart';
+import '../services/firebase_service.dart';
 import '../services/flashcard_auth_service.dart';
 import '../storage/word_storage.dart';
+import 'sound_controller.dart';
 
 class WordController extends GetxController {
   late List<Word> _words;
@@ -25,7 +25,7 @@ class WordController extends GetxController {
   }
 
   WordController._() {
-    WordLogic.initializeWords(WordStorage.box.words, FlashcardApiService(FlashcardAuthService.userId).getWords).then((words) {
+    WordLogic.initializeWords(WordStorage.box.words, FirebaseService(FlashcardAuthService.userId).getWords).then((words) {
       if (words.isNotEmpty) {
         _filteredWords = _words = words;
         final wordLogic = WordLogic.create(words);
@@ -59,7 +59,7 @@ class WordController extends GetxController {
   }
 
   Future<Word?>? _addWord(Word word) async {
-    final updatedWord = await FlashcardApiService(FlashcardAuthService.userId).addWord(word);
+    final updatedWord = await FirebaseService(FlashcardAuthService.userId).addWord(word);
     if (updatedWord != null) {
       WordLogic.instance.addWord(updatedWord, _words);
       update();
@@ -69,7 +69,7 @@ class WordController extends GetxController {
   }
 
   Future<bool> _updateWord(Word word) async {
-    FlashcardApiService(FlashcardAuthService.userId).updateWord(word);
+    FirebaseService(FlashcardAuthService.userId).updateWord(word);
     final index = _words.indexWhere((element) => element.id == word.id);
 
     if (index == -1) {

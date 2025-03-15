@@ -8,10 +8,10 @@ import 'package:path_provider/path_provider.dart';
 import '../models/word.dart';
 import '../widgets/flashcard_snackbar.dart';
 
-class FlashcardApiService {
+class FirebaseService {
   late String _userId;
 
-  FlashcardApiService(String userId) {
+  FirebaseService(String userId) {
     _userId = userId;
   }
 

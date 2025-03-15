@@ -1,11 +1,12 @@
-import 'package:flashcard/logic/word_logic.dart';
-import 'package:flashcard/logic/writing_logic.dart';
-import 'package:flashcard/models/word.dart';
-import 'package:flashcard/services/flashcard_api_service.dart';
-import 'package:flashcard/services/flashcard_auth_service.dart';
-import 'package:flashcard/storage/word_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../logic/word_logic.dart';
+import '../logic/writing_logic.dart';
+import '../models/word.dart';
+import '../services/firebase_service.dart';
+import '../services/flashcard_auth_service.dart';
+import '../storage/word_storage.dart';
 
 class WritingController extends GetxController {
   late List<Word> _filteredWords = [];
@@ -30,7 +31,7 @@ class WritingController extends GetxController {
   }
 
   WritingController._() {
-    WordLogic.initializeWords(WordStorage.box.words, FlashcardApiService(FlashcardAuthService.userId).getWords).then((words) {
+    WordLogic.initializeWords(WordStorage.box.words, FirebaseService(FlashcardAuthService.userId).getWords).then((words) {
       if (words.isNotEmpty) {
         updateCurrentWord(words);
       }

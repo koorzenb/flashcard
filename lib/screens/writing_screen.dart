@@ -1,10 +1,10 @@
-import 'package:flashcard/controllers/sound_controller.dart';
-import 'package:flashcard/models/word.dart';
-import 'package:flashcard/screens/word_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/sound_controller.dart';
 import '../controllers/writing_controller.dart';
+import '../models/word.dart';
+import 'word_details_screen.dart';
 
 class WritingScreen extends StatefulWidget {
   const WritingScreen({super.key});

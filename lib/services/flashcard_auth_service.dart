@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:flashcard/controllers/sound_controller.dart';
-import 'package:flashcard/controllers/writing_controller.dart';
 import 'package:get/get.dart';
 
+import '../controllers/sound_controller.dart';
 import '../controllers/word_controller.dart';
+import '../controllers/writing_controller.dart';
 import '../screens/home_screen.dart';
 import '../storage/word_storage.dart';
 import '../utilities/utilities.dart';
