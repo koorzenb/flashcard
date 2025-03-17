@@ -30,15 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            VersionCodeText(),
-          ],
-        ),
       ),
       drawer: MainDrawer(),
-      body: NavigationBar(destinations: [
+      bottomNavigationBar: NavigationBar(destinations: [
         NavBarDestination(
           title: 'Writing',
           icon: Icons.create,
@@ -50,6 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: () => Get.to(() => ReadingScreen()),
         )
       ]),
+      body: Stack(
+        children: [
+          // ...existing body content...
+          Positioned(
+            bottom: 16,
+            left: 16,
+            child: VersionCodeText(),
+          ),
+        ],
+      ),
     );
   }
 }
