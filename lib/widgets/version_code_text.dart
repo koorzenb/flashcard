@@ -21,7 +21,7 @@ class _VersionCodeTextState extends State<VersionCodeText> {
   Widget build(BuildContext context) {
     return Text(
       '  $versionCode',
-      style: const TextStyle(fontSize: 8.0, color: Colors.white10),
+      style: TextStyle(fontSize: 8.0, color: Colors.grey.shade500),
     );
   }
 }

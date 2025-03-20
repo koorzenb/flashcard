@@ -1,3 +1,9 @@
+## 0.4.0
+
+### Chore
+
+- Implemented auto semver update
+
 # CHANGELOG
 
 ## 0.0.0 (2023-07-01)
