@@ -108,10 +108,9 @@ class WordController extends GetxController {
     if (word.isNew) {
       final updatedWord = await _addWord(word);
 
+      // update all audio file references to 'temp-id' with the new id received from Firebase
       if (updatedWord != null && word.audioId.isNotEmpty) {
-        await SoundController.getOrPut.updateStorageAudioFilename(updatedWord.id);
-        updatedWord.audioId = updatedWord.id;
-        await _updateWord(updatedWord); //  updated the Firebase audioId from 'temp-id' to new id value
+        await updateAudioFileName(word, updatedWord);
       }
     } else {
       final res = await _updateWord(word);
@@ -121,4 +120,11 @@ class WordController extends GetxController {
       }
     }
   }
+
+  Future<void> updateAudioFileName(Word currentWord, Word updatedWord) async {
+    await SoundController.getOrPut.updateStorageAudioFilename(currentWord.audioId, updatedWord.id);
+    updatedWord.audioId = updatedWord.id;
+    await _updateWord(updatedWord); //  updated the Firebase audioId
+  }
+
 }

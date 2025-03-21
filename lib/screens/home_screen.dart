@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && MainAppStorage.box.displayedWelcomeScreen) {
+      if (mounted && !MainAppStorage.box.displayedWelcomeScreen) {
         FlashcardAppController.getOrPut.showWelcomeScreen();
       }
     });

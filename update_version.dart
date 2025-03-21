@@ -56,12 +56,14 @@ void main() {
 
   // Determine next version based on commit type
   Version nextVersion;
-  if (commitType == 'fix') {
+  int nextBuildNumber;
+  if (commitType == 'fix' || commitType == 'bug' || commitType == 'ref') {
     nextVersion = currentVersion.nextPatch; // Increment the patch version
+    nextBuildNumber = currentBuildNumber + 1; // Increment the build number
   } else {
     nextVersion = currentVersion.nextMinor; // Increment the minor version
+    nextBuildNumber = currentBuildNumber + 100; // Increment the build number
   }
-  final nextBuildNumber = currentBuildNumber + 1; // Increment the build number
 
   // Update pubspec.yaml with new version and build number
   final updatedPubspecContent = pubspecContent.replaceFirst(
@@ -76,7 +78,7 @@ void main() {
   final changelogEntry = '''
 ## $nextVersion
 
-### ${capitalize(commitType)}
+### ${capitalize(commitType == 'ref' ? 'refactor' : commitType)}
 
 - $commitDescription
 

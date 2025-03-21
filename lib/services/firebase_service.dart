@@ -106,9 +106,8 @@ class FirebaseService {
   Future<List<Word>> getWords() async {
     List<Word> words = [];
 
-    final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
-
     try {
+      final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
       // need to wrap in try-catch block to handle errors
       snapshot.docs.forEach((doc) {
         words.add(Word(

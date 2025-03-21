@@ -86,10 +86,8 @@ class SoundController extends GetxController {
   }
 
   Future<void> stopRecordAudio(String id) async {
-    FlashcardSnackbar.showSnackBar(id == AppConstants.tempAudioFileName ? 'Finished recording' : 'Overwrote previous recording', 500);
     await _recorder.stopRecorder();
-
-    await Future.delayed(const Duration(seconds: 1));
+    FlashcardSnackbar.showSnackBar('Finished recording', 500);
     await playAudio(id);
   }
 
@@ -109,15 +107,15 @@ class SoundController extends GetxController {
     print('Playing sound');
   }
 
-  Future<void> updateStorageAudioFilename(String id) async {
-    if (id == AppConstants.tempAudioFileName) {
+  Future<void> updateStorageAudioFilename(String currentAudioId, String newAudioId) async {
+    if (currentAudioId == newAudioId) {
       return;
     }
 
-    final tempFilepath = File(path.join(_directoryPath, '${AppConstants.tempAudioFileName}.${AppConstants.audioFileExtension}'));
+    final tempFilepath = File(path.join(_directoryPath, '${currentAudioId}.${AppConstants.audioFileExtension}'));
 
     if (await tempFilepath.exists()) {
-      await tempFilepath.rename(path.join(_directoryPath, '$id.${AppConstants.audioFileExtension}'));
+      await tempFilepath.rename(path.join(_directoryPath, '$newAudioId.${AppConstants.audioFileExtension}'));
     }
   }
 }

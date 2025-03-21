@@ -1,7 +1,7 @@
+import 'package:flashcard/widgets/flashcard_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../app_constants.dart';
 import '../controllers/sound_controller.dart';
 import '../controllers/word_controller.dart';
 import '../controllers/writing_controller.dart';
@@ -25,11 +25,10 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
   final _attributesTextController = TextEditingController();
   bool _isLoading = false;
   bool _hasAudio = false;
-  String _audioFileName = '';
+  late final String _tempAudioId;
 
   @override
   void initState() {
-    _audioFileName = widget.word.id.isEmpty ? AppConstants.tempAudioFileName : widget.word.id;
     SoundController.getOrPut;
     setState(() {
       _nativeTextController.text = widget.word.native;
@@ -48,6 +47,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     _translationTextController.dispose();
     _attributesTextController.dispose();
     SoundController.getOrPut.onClose();
+    Get.delete<SoundController>();
   }
 
   @override
@@ -120,24 +120,36 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.next,
                                 validator: (String? _) {
-                                  return _pronunciationTextController.text.trim().isEmpty ? 'Please enter valid pronunciation' : null;
+                                  return _pronunciationTextController.text.trim().isEmpty && _hasAudio == false ? 'Please enter valid pronunciation' : null;
                                 },
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              await SoundController.getOrPut.playAudio(_audioFileName);
-                            },
-                            onLongPressStart: (_) {
-                              SoundController.getOrPut.startRecordAudio(_audioFileName);
-                            },
-                            onLongPressEnd: (_) {
-                              SoundController.getOrPut.stopRecordAudio(_audioFileName);
-                              setState(() => _hasAudio = true);
-                            },
-                            child: Icon(widget.word.audioId.isNotEmpty || _hasAudio ? Icons.play_arrow : Icons.mic),
-                          ),
+                          widget.word.audioId.isNotEmpty || _hasAudio
+                              ? GestureDetector(
+                                  onTap: () async {
+                                    await SoundController.getOrPut.playAudio(widget.word.audioId.isNotEmpty ? widget.word.audioId : _nativeTextController.text);
+                                  },
+                                  child: Icon(Icons.play_arrow),
+                                )
+                              : GestureDetector(
+                                  onLongPressStart: (_) {
+                                    if (_nativeTextController.text.isEmpty) {
+                                      FlashcardSnackbar.showSnackBar('Please enter a word before recording audio');
+                                      return;
+                                    }
+                                    _tempAudioId = _nativeTextController.text;
+                                    SoundController.getOrPut.startRecordAudio(_tempAudioId);
+                                  },
+                                  onLongPressEnd: (_) {
+                                    if (_nativeTextController.text.isEmpty) {
+                                      return;
+                                    }
+                                    SoundController.getOrPut.stopRecordAudio(_tempAudioId);
+                                    setState(() => _hasAudio = true);
+                                  },
+                                  child: Icon(Icons.mic),
+                                ),
                         ],
                       ),
                       TextFormField(
@@ -199,7 +211,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
       translation: _translationTextController.text,
       attributes: _attributesTextController.text,
       isNew: widget.word.isNew,
-      audioId: _hasAudio ? _audioFileName : '',
+      audioId: _hasAudio ? _tempAudioId : '',
     ));
 
     WritingController.instance.updateCurrentWord(WordController.instance.words);
