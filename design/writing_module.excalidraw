@@ -1,0 +1,51 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "e6-4-Iag29HuRbXDGnc7b",
+      "type": "text",
+      "x": 484,
+      "y": 263,
+      "width": 689.1995849609375,
+      "height": 100,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 1189323029,
+      "version": 188,
+      "versionNonce": 328761243,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1742558620110,
+      "link": null,
+      "locked": false,
+      "text": "- record audio\n- save to firebase and get id\n- save to local storage with filename == id from firebase\n    - if offline, then save to local storage with filename == native word",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "- record audio\n- save to firebase and get id\n- save to local storage with filename == id from firebase\n    - if offline, then save to local storage with filename == native word",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

@@ -1,3 +1,9 @@
+## 0.4.2
+
+### Refactor
+
+- Refactored saving of audioFile
+
 ## 0.4.1
 
 ### Refactor

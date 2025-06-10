@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,8 @@ class WordController extends GetxController {
   WordController._() {
     WordLogic.initializeWords(WordStorage.box.words, FirebaseService(FlashcardAuthService.userId).getWords).then((words) {
       if (words.isNotEmpty) {
+        // TODO: do search for audioFiles (will return a list of audio files) and update the words with their audioIds
+        // TODO:  ListTiles in WordList widget should then have an audio icon if the word has an audio file
         _filteredWords = _words = words;
         final wordLogic = WordLogic.create(words);
         _currentWord = wordLogic.getWord(words);
@@ -111,6 +115,7 @@ class WordController extends GetxController {
       // update all audio file references to 'temp-id' with the new id received from Firebase
       if (updatedWord != null && word.audioId.isNotEmpty) {
         await updateAudioFileName(word, updatedWord);
+        unawaited(SoundController.getOrPut.uploadAudioFile(updatedWord.id));
       }
     } else {
       final res = await _updateWord(word);
@@ -127,4 +132,8 @@ class WordController extends GetxController {
     await _updateWord(updatedWord); //  updated the Firebase audioId
   }
 
+  // TODO: method for downloading audio files
+  downloadAudioFile(String id) {
+    SoundController.getOrPut.downloadAudioFile(id);
+  }
 }

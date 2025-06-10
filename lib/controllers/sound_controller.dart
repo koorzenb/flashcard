@@ -1,7 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:flashcard/services/firestore_service.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart' show Level;
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -37,8 +40,8 @@ class SoundController extends GetxController {
       throw RecordingPermissionException('Microphone permission not granted'); // TODO: Handle this error
     }
 
-    _recorder = FlutterSoundRecorder();
-    _player = FlutterSoundPlayer();
+    _recorder = FlutterSoundRecorder(logLevel: Level.off);
+    _player = FlutterSoundPlayer(logLevel: Level.off);
     await _recorder.openRecorder();
     await _player.openPlayer();
 
@@ -117,5 +120,53 @@ class SoundController extends GetxController {
     if (await tempFilepath.exists()) {
       await tempFilepath.rename(path.join(_directoryPath, '$newAudioId.${AppConstants.audioFileExtension}'));
     }
+  }
+
+  Future<void> uploadAudioFile(String audioId) async {
+    try {
+      final filePath = path.join(_directoryPath, '$audioId.${AppConstants.audioFileExtension}');
+      final file = File(filePath);
+
+      if (!await file.exists()) {
+        FlashcardSnackbar.showSnackBar('Audio file does not exist');
+        return;
+      }
+
+      // Assuming FirebaseStorage is already configured in the project
+      await FirestoreService(audioId).uploadAudioFile(file);
+    } catch (e) {
+      print('Error finding audio file: $e');
+      FlashcardSnackbar.showSnackBar('Audio file does not exist');
+      debugger;
+    }
+
+    // Optionally, save the download URL to Firestore or another database
+    // Example:
+    // await FirebaseFirestore.instance.collection('audioFiles').doc(audioId).set({'url': downloadUrl});
+  }
+
+  // method for downloading audio files
+  Future<void> downloadAudioFile(String audioId) async {
+    // TODO: implement
+    // try {
+    //   final filePath = path.join(_directoryPath, '$audioId.${AppConstants.audioFileExtension}');
+    //   final file = File(filePath);
+
+    //   if (await file.exists()) {
+    //     FlashcardSnackbar.showSnackBar('Audio file already exists');
+    //     return;
+    //   }
+
+    //   // Assuming FirebaseStorage is already configured in the project
+    //   import FirebaseStorage from pub.dev and ask ChatGPT how to save
+
+    //   final storageRef = FirebaseStorage.instance.ref().child('audio/$audioId.${AppConstants.audioFileExtension}');
+    //   await storageRef.writeToFile(file);
+
+    //   print('File downloaded successfully');
+    // } catch (e) {
+    //   print('Error downloading file: $e');
+    //   FlashcardSnackbar.showSnackBar('Failed to download audio file');
+    // }
   }
 }
