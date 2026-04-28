@@ -31,7 +31,9 @@ class WritingController extends GetxController {
   }
 
   WritingController._() {
-    WordLogic.initializeWords(WordStorage.box.words, FirebaseService(FlashcardAuthService.userId).getWords).then((words) {
+    WordLogic.initializeWords(WordStorage.box.words,
+            FirebaseService(FlashcardAuthService.userId).getWords)
+        .then((words) {
       if (words.isNotEmpty) {
         updateCurrentWord(words);
       }
@@ -39,7 +41,8 @@ class WritingController extends GetxController {
   }
 
   Future<bool> onCheckWord(String enteredText) async {
-    final result = WritingLogic.checkWord(enteredText, _currentWord, _attemptsRemaining, _score);
+    final result = WritingLogic.checkWord(
+        enteredText, _currentWord, _attemptsRemaining, _score);
 
     _resultsIcon = result.icon;
     _attemptsRemaining = result.attemptsRemaining;
@@ -62,9 +65,9 @@ class WritingController extends GetxController {
   void updateCurrentWord(List<Word> words) {
     _filteredWords = words.where((word) => word.audioId.isNotEmpty).toList();
 
-    for (var word in words) {
-      print('Native: ${word.native}, audioId: ${word.audioId}');
-    }
+    // for (var word in words) {
+    // print('Native: ${word.native}, audioId: ${word.audioId}');
+    // }
 
     if (_filteredWords.isNotEmpty) {
       _currentWord = WordLogic.instance.getWord(_filteredWords, true);

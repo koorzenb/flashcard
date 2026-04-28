@@ -9,11 +9,13 @@ import 'controllers/flash_card_app_controller.dart';
 import 'models/server_environment.dart';
 import 'screens/home_screen.dart';
 import 'services/flashcard_auth_service.dart';
+import 'storage/auth_storage.dart';
 import 'storage/main_app_storage.dart';
 import 'storage/word_storage.dart';
 import 'styles/themes.dart';
 
-Future<void> commonInit(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
+Future<void> commonInit(FirebaseOptions currentPlatform,
+    ServerEnvironment serverEnvironment) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeStorage();
   await _initializeFirebase(currentPlatform, serverEnvironment);
@@ -24,7 +26,8 @@ void _initializeControllers() {
   FlashcardAppController.getOrPut;
 }
 
-Future<void> _initializeFirebase(FirebaseOptions currentPlatform, ServerEnvironment serverEnvironment) async {
+Future<void> _initializeFirebase(FirebaseOptions currentPlatform,
+    ServerEnvironment serverEnvironment) async {
   await Firebase.initializeApp(options: currentPlatform);
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 }
@@ -49,7 +52,9 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _signInHandler(BuildContext context, String displayName) {
-    if (!WordStorage.isInitialized || firebase_auth.FirebaseAuth.instance.currentUser == null) {
+    if (!WordStorage.isInitialized ||
+        firebase_auth.FirebaseAuth.instance.currentUser == null) {
+      // WordStorage.isInitialized should not be used as a condition for showing the sign-in screen>. See flashcard_auth_service.init() for more details
       return FlashcardAuthService.signIn();
     } else {
       return HomeScreen();
