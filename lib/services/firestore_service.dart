@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flashcard/app_constants.dart';
-import 'package:flashcard/widgets/flashcard_snackbar.dart';
+import '../app_constants.dart';
+import '../widgets/flashcard_snackbar.dart';
 import 'package:path/path.dart' as path;
 
 class FirestoreService {

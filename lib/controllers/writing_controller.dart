@@ -32,7 +32,7 @@ class WritingController extends GetxController {
 
   WritingController._() {
     WordLogic.initializeWords(WordStorage.box.words,
-            FirebaseService(FlashcardAuthService.userId).getWords)
+            FirebaseService(FlashcardAuthService.getOrPut.userId.value).getWords)
         .then((words) {
       if (words.isNotEmpty) {
         updateCurrentWord(words);

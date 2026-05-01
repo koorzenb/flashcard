@@ -27,7 +27,7 @@ class WordController extends GetxController {
   }
 
   WordController._() {
-    WordLogic.initializeWords(WordStorage.box.words, FirebaseService(FlashcardAuthService.userId).getWords).then((words) {
+    WordLogic.initializeWords(WordStorage.box.words, FirebaseService(FlashcardAuthService.getOrPut.userId.value).getWords).then((words) {
       if (words.isNotEmpty) {
         // TODO: do search for audioFiles (will return a list of audio files) and update the words with their audioIds
         // TODO:  ListTiles in WordList widget should then have an audio icon if the word has an audio file
@@ -63,7 +63,7 @@ class WordController extends GetxController {
   }
 
   Future<Word?>? _addWord(Word word) async {
-    final updatedWord = await FirebaseService(FlashcardAuthService.userId).addWord(word);
+    final updatedWord = await FirebaseService(FlashcardAuthService.getOrPut.userId.value).addWord(word);
     if (updatedWord != null) {
       WordLogic.instance.addWord(updatedWord, _words);
       update();
@@ -73,7 +73,7 @@ class WordController extends GetxController {
   }
 
   Future<bool> _updateWord(Word word) async {
-    FirebaseService(FlashcardAuthService.userId).updateWord(word);
+    FirebaseService(FlashcardAuthService.getOrPut.userId.value).updateWord(word);
     final index = _words.indexWhere((element) => element.id == word.id);
 
     if (index == -1) {

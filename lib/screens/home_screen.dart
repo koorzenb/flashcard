@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controllers/flash_card_app_controller.dart';
+import '../controllers/app_controller.dart';
 import '../storage/main_app_storage.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/version_code_text.dart';
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && !MainAppStorage.box.displayedWelcomeScreen) {
-        FlashcardAppController.getOrPut.showWelcomeScreen();
+        AppController.instance.showWelcomeScreen();
       }
     });
     super.initState();

@@ -49,7 +49,7 @@ class MainDrawer extends StatelessWidget {
               DrawerItem(
                   title: 'Sign Out',
                   onTap: () {
-                    FlashcardAuthService.signOut();
+                    FlashcardAuthService.getOrPut.signOut();
                     clearAppData();
                   },
                   icon: Icons.logout),

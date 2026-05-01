@@ -11,3 +11,8 @@ App for practicing foreign language vocabulary.
 Releases
 
 - Releases can be found in the [releases](./release/) folder
+
+# Authentication
+
+- The app uses Firebase Authentication for user sign-in and sign-out.
+- Once signed in, Firebase maintains the user's authentication state, which is used to determine whether to show the sign-in screen or the home screen.

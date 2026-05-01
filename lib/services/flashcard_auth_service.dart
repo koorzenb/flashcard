@@ -2,19 +2,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:get/get.dart';
 
-import '../controllers/sound_controller.dart';
-import '../controllers/word_controller.dart';
-import '../controllers/writing_controller.dart';
 import '../screens/home_screen.dart';
-import '../storage/word_storage.dart';
+import '../storage/auth_storage.dart';
 import '../utilities/utilities.dart';
 
-class FlashcardAuthService {
-  static String _userId = '';
+class FlashcardAuthService extends GetxController {
+  static FlashcardAuthService get getOrPut {
+    try {
+      return Get.find<FlashcardAuthService>();
+    } catch (e) {
+      return Get.put(FlashcardAuthService._());
+    }
+  }
 
-  static String get userId => _userId;
+  FlashcardAuthService._() {
+    // Initialize userId from persisted Firebase Auth session
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      userId.value = currentUser.uid;
+    }
+  }
 
-  static SignInScreen signIn() {
+  final userId = ''.obs;
+
+  SignInScreen signIn() {
     return SignInScreen(
       // see documentation for more info
       // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/providers/email.md
@@ -23,7 +34,14 @@ class FlashcardAuthService {
       actions: [
         AuthStateChangeAction<SignedIn>((context, state) async {
           print('Signed in');
-          await _init(); // TODO: future improvement: these methods should not reside in this callback
+          final currentUser = FirebaseAuth.instance.currentUser!;
+          userId.value = currentUser.uid;
+
+          // Save to persistent storage
+          AuthStorage.box.userId = currentUser.uid;
+          AuthStorage.box.username = extractUsername(currentUser.email!);
+
+          print('User ID: ${userId.value}');
           await Get.to(() => HomeScreen());
         }),
         AuthStateChangeAction<Uninitialized>((context, state) async {
@@ -46,30 +64,26 @@ class FlashcardAuthService {
         }),
         AuthStateChangeAction<UserCreated>((context, state) async {
           print('User created');
-          await _init();
+          final currentUser = FirebaseAuth.instance.currentUser!;
+          userId.value = currentUser.uid;
+
+          // Save to persistent storage
+          AuthStorage.box.userId = currentUser.uid;
+          AuthStorage.box.username = extractUsername(currentUser.email!);
+
           await Get.to(() => HomeScreen());
         }),
-        AuthStateChangeAction<FetchingProvidersForEmail>((context, state) async {
+        AuthStateChangeAction<FetchingProvidersForEmail>(
+            (context, state) async {
           print('Fetching providers for email');
         }),
       ],
     );
   }
 
-  static void signOut() {
+  void signOut() {
     FirebaseAuth.instance.signOut();
-    _userId = '';
+    userId.value = '';
     print('Signed out');
-  }
-
-  static Future<void> _init() async {
-    // TODO: move this to authController. Should not handle this here
-    // AFter auth, then perform functions and update controller
-    // should also not call it here, but rather from HomeScreen.initState and create spinner while initializing
-    _userId = FirebaseAuth.instance.currentUser!.uid;
-    await WordStorage.init(extractUsername(FirebaseAuth.instance.currentUser!.email!));
-    WordController.create();
-    WritingController.create();
-    await SoundController.init();
   }
 }

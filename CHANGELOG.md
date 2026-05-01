@@ -1,20 +1,14 @@
-## 0.6.0
-
-### Other
-
-- wip
-
 ## 0.5.0
 
 ### Other
 
-- testing commit
+- Minor changes
+
+Co-authored-by: Copilot <copilot@github.com>
 
 ## 0.4.2
 
-### Refactor
-
-- Refactored saving of audioFile
+- Optimised authentication process to work with new storage structure
 
 ## 0.4.1
 

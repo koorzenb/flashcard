@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import 'controllers/word_controller.dart';
 import 'logic/word_logic.dart';
 import 'services/flashcard_auth_service.dart';
+import 'storage/auth_storage.dart';
 import 'storage/word_storage.dart';
 
 void clearAppData() {
   WordStorage.disposeBox();
   WordLogic.dispose();
+  AuthStorage.box.clear();
   Get.delete<WordController>();
   Get.until((route) => route.isFirst);
-  Get.to(FlashcardAuthService.signIn);
+  Get.to(FlashcardAuthService.getOrPut.signIn);
 }

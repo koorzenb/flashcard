@@ -1,4 +1,4 @@
-import 'package:flashcard/widgets/flashcard_snackbar.dart';
+import '../widgets/flashcard_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
