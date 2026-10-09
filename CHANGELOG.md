@@ -1,3 +1,9 @@
+## 0.6.0
+
+### Other
+
+- Optimised authentication process to work with new storage structure
+
 ## 0.5.0
 
 ### Other

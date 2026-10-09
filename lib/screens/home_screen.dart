@@ -1,12 +1,13 @@
+import 'package:flashcard/widgets/word_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/app_controller.dart';
+import '../models/word.dart';
 import '../storage/main_app_storage.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/version_code_text.dart';
-import 'reading_screen.dart';
-import 'writing_screen.dart';
+import 'word_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -32,21 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       drawer: MainDrawer(),
-      bottomNavigationBar: NavigationBar(destinations: [
-        NavBarDestination(
-          title: 'Writing',
-          icon: Icons.create,
-          onTap: () => Get.to(() => WritingScreen()),
-        ),
-        NavBarDestination(
-          title: 'Reading',
-          icon: Icons.abc_sharp,
-          onTap: () => Get.to(() => ReadingScreen()),
-        )
-      ]),
       body: Stack(
         children: [
-          // ...existing body content...
+          Center(
+            child: WordList(),
+          ),
           Positioned(
             bottom: 16,
             left: 16,
@@ -54,6 +45,34 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async => await Get.to(() => WordDetailsScreen(
+              title: 'Add Word',
+              word: Word(
+                native: '',
+                pronunciation: '',
+                translation: '',
+                attributes: '',
+                isNew: true,
+              ),
+            )),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+      //   bottomNavigationBar: NavigationBar(destinations: [
+      //   NavBarDestination(
+      //     title: 'Writing',
+      //     icon: Icons.create,
+      //     onTap: () => Get.to(() => WritingScreen()),
+      //   ),
+      //   NavBarDestination(
+      //     title: 'Reading',
+      //     icon: Icons.abc_sharp,
+      //     onTap: () => Get.to(() => ReadingScreen()),
+      //   )
+      // ]),
     );
   }
 }
