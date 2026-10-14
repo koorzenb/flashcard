@@ -1,3 +1,15 @@
+## 0.8.0
+
+### Enh
+
+- included searching on native words
+
+## 0.7.0
+
+### Enh
+
+- included searching on native words
+
 ## 0.6.0
 
 ### Other

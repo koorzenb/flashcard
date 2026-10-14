@@ -18,7 +18,8 @@ void main() {
 
   // Read pubspec.yaml
   final pubspecContent = pubspecFile.readAsStringSync();
-  final currentVersionMatch = RegExp(r'version:\s*(\d+\.\d+\.\d+)\+(\d+)').firstMatch(pubspecContent);
+  final currentVersionMatch =
+      RegExp(r'version:\s*(\d+\.\d+\.\d+)\+(\d+)').firstMatch(pubspecContent);
 
   if (currentVersionMatch == null) {
     print('Error: Could not find version in pubspec.yaml!');
@@ -26,8 +27,10 @@ void main() {
   }
 
   // Extract version and build number
-  final currentVersion = Version.parse(currentVersionMatch.group(1)!); // Semantic version (e.g., 0.3.0)
-  final currentBuildNumber = int.parse(currentVersionMatch.group(2)!); // Build number (e.g., 03000)
+  final currentVersion = Version.parse(
+      currentVersionMatch.group(1)!); // Semantic version (e.g., 0.3.0)
+  final currentBuildNumber =
+      int.parse(currentVersionMatch.group(2)!); // Build number (e.g., 03000)
 
   // Get the current commit message from .git/COMMIT_EDITMSG
   final commitMessageFile = File('.git/COMMIT_EDITMSG');
@@ -47,7 +50,8 @@ void main() {
   final commitParts = RegExp(r'^(.*?):\s*(.*)$').firstMatch(commitMessage);
 
   String commitType = 'Other'; // Default type if none is provided
-  String commitDescription = commitMessage; // Use the entire message as description
+  String commitDescription =
+      commitMessage; // Use the entire message as description
 
   if (commitParts != null) {
     commitType = commitParts.group(1)!.trim().toLowerCase();
@@ -83,12 +87,15 @@ void main() {
 - $commitDescription
 
 ''';
-  changelogFile.writeAsStringSync(changelogEntry + changelogFile.readAsStringSync());
+  changelogFile
+      .writeAsStringSync(changelogEntry + changelogFile.readAsStringSync());
 
-  print('Added changelog entry for version: $nextVersion+$nextBuildNumber with type "$commitType" and message: "$commitDescription"');
+  print(
+      'Added changelog entry for version: $nextVersion+$nextBuildNumber with type "$commitType" and message: "$commitDescription"');
 
   // Stage the updated files
-  final gitAddResult = Process.runSync('git', ['add', 'pubspec.yaml', 'CHANGELOG.md']);
+  final gitAddResult =
+      Process.runSync('git', ['add', 'pubspec.yaml', 'CHANGELOG.md']);
   if (gitAddResult.exitCode != 0) {
     print('Error: Failed to stage files. ${gitAddResult.stderr}');
     return;
