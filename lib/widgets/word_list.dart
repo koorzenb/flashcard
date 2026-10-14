@@ -36,8 +36,22 @@ class WordList extends StatelessWidget {
                           ListTile(
                             title: Text(wordController
                                 .filteredWords[index].translation),
-                            subtitle: Text(
-                                wordController.filteredWords[index].native),
+                            subtitle: Wrap(
+                              spacing: 8,
+                              children: [
+                                Text(
+                                    wordController.filteredWords[index].native),
+                                const SizedBox(width: 8),
+                                Text(
+                                  wordController
+                                      .filteredWords[index].pronunciation,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           const Divider(
                             thickness: 1,

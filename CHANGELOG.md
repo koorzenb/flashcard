@@ -1,3 +1,15 @@
+## 0.10.0
+
+### Feat
+
+- update version to 0.7.0 and enhance changelog
+
+## 0.9.0
+
+### Feat
+
+- update version to 0.7.0 and enhance changelog
+
 ## 0.8.0
 
 ### Enh
