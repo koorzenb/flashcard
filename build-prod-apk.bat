@@ -11,11 +11,11 @@ setlocal EnableDelayedExpansion
 @REM     dart pub global activate define_env
 @REM )
 
-call copy-pubspec.bat
+call set-build-env.bat
 
 REM Create folder for build if it doesn't exist
-set OUTPUT_FOLDER=release\%BUILD_VERSION%
-set OUTPUT_FILE=%PROJ_NAME%-%BUILD_VERSION%.apk
+set OUTPUT_FOLDER=release\%VERSION_NUMBER%
+set OUTPUT_FILE=%PROJ_NAME%-%VERSION_NUMBER%.apk
 
 REM Warn user if folder already exists
 echo Output file = .\%OUTPUT_FOLDER%\%OUTPUT_FILE%
@@ -47,7 +47,7 @@ exit /b
 
     if exist build\app\outputs\flutter-apk\app-release.apk (
         move /Y build\app\outputs\flutter-apk\app-release.apk %OUTPUT_FOLDER%\%OUTPUT_FILE%
-        echo Built %BUILD_VERSION% bundle to "%OUTPUT_FOLDER%"
+        echo Built %VERSION_NUMBER% bundle to "%OUTPUT_FOLDER%"
     ) else (
         echo Build failed.
     )

@@ -1,3 +1,20 @@
+## 0.14.0
+
+### Refactor
+
+- update Flutter SDK path and streamline build scripts
+
+## [0.13.0] - 2026-10-16
+  
+### Refactor
+  
+- update Flutter SDK path and streamline build scripts
+
+### Docs
+
+- add Product Requirements Document (PRD) for Kards app
+
+
 ## 0.12.0
 
 ### Docs
