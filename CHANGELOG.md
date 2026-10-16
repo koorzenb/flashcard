@@ -1,3 +1,15 @@
+## 0.12.0
+
+### Docs
+
+- add Product Requirements Document (PRD) for Kards app
+
+## 0.11.0
+
+### Feat
+
+- improved word list display
+
 ## 0.10.0
 
 ### Feat
