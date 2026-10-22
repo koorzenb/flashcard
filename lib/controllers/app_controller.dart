@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import '../app_settings.dart';
+import '../logic/migrations/word_migration_bootstrap.dart';
 import 'sound_controller.dart';
 import 'word_controller.dart';
 import 'writing_controller.dart';
@@ -101,6 +102,13 @@ class AppController {
       }
 
       await WordStorage.init(username.isEmpty ? user.uid : username);
+
+      // Run the data migrations for this user's word box BEFORE the word
+      // list is read into the controller. Otherwise the controller would read
+      // un-migrated data into `_words` and write it back, re-contaminating
+      // the box.
+      await WordMigrationBootstrap.run();
+
       WordController.create();
       WritingController.create();
       await SoundController.init();

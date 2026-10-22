@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +7,6 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../models/word.dart';
-import '../models/word_attributes.dart';
 import '../widgets/flashcard_snackbar.dart';
 
 class FirebaseService {
@@ -14,6 +14,24 @@ class FirebaseService {
 
   FirebaseService(String userId) {
     _userId = userId;
+  }
+
+  /// Builds a [Word] from a Firestore document, tolerating any legacy shape.
+  ///
+  /// The document id is the authoritative identity of a word, so it is always
+  /// applied to the `id` field (a document may not even carry an `id` field).
+  /// Every other field goes through the tolerant [Word.fromJson], so a
+  /// missing field, a `null` value or a legacy free-text `attributes` string
+  /// degrades gracefully instead of throwing and aborting the whole fetch.
+  ///
+  /// Exposed as a static helper so it can be unit-tested without a live
+  /// Firestore instance.
+  static Word wordFromDocument(Map<String, dynamic>? data, String docId) {
+    final Map<String, dynamic> fields = Map<String, dynamic>.from(
+      data ?? const <String, dynamic>{},
+    );
+    fields['id'] = docId;
+    return Word.fromJson(fields);
   }
 
   static void importWords() {
@@ -32,13 +50,7 @@ class FirebaseService {
         .get();
 
     snapshot.docs.forEach((doc) {
-      words.add(Word(
-        id: doc.id,
-        native: doc['native'],
-        pronunciation: doc['pronunciation'],
-        translation: doc['translation'],
-        attributes: WordAttributes.fromJson(doc['attributes']),
-      ));
+      words.add(wordFromDocument(doc.data(), doc.id));
     });
 
     final json = words.map((word) => word.toJson()).toList();
@@ -125,16 +137,21 @@ class FirebaseService {
           .doc(_userId)
           .collection('words')
           .get();
-      // need to wrap in try-catch block to handle errors
-      snapshot.docs.forEach((doc) {
-        words.add(Word(
-          id: doc.id,
-          native: doc['native'],
-          pronunciation: doc['pronunciation'],
-          translation: doc['translation'],
-          attributes: WordAttributes.fromJson(doc['attributes']),
-        ));
-      });
+      // Each document is parsed independently through the tolerant parser, so
+      // one legacy-shaped or incomplete document cannot abort the whole
+      // fetch.
+      for (final doc in snapshot.docs) {
+        try {
+          words.add(wordFromDocument(doc.data(), doc.id));
+        } catch (e) {
+          // Counts only - never the word content.
+          developer.log(
+            'firebase.getWords.skippedDocument error=${e.runtimeType}',
+            name: 'WORD_PARSE',
+            level: 900,
+          );
+        }
+      }
     } catch (e) {
       FlashcardSnackbar.showSnackBar('Error fetching words');
     }

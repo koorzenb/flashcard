@@ -1,3 +1,15 @@
+## 0.20.1
+
+### Refactor
+
+- enhance WordAttributes with legacy support and improved JSON handling
+
+## [0.20.0] - 2026-10-22
+  
+### Feature
+  
+- Created a tolerant reader pending new word migration
+
 ## 0.19.0
 
 ### Docs
