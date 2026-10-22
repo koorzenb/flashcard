@@ -6,6 +6,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../models/word.dart';
+import '../models/word_attributes.dart';
 import '../widgets/flashcard_snackbar.dart';
 
 class FirebaseService {
@@ -24,7 +25,11 @@ class FirebaseService {
   Future<void> exportWords() async {
     List<Word> words = [];
 
-    final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .collection('words')
+        .get();
 
     snapshot.docs.forEach((doc) {
       words.add(Word(
@@ -32,7 +37,7 @@ class FirebaseService {
         native: doc['native'],
         pronunciation: doc['pronunciation'],
         translation: doc['translation'],
-        attributes: doc['attributes'],
+        attributes: WordAttributes.fromJson(doc['attributes']),
       ));
     });
 
@@ -68,7 +73,11 @@ class FirebaseService {
       final json = jsonDecode(jsonString);
 
       for (var word in json) {
-        await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').add({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_userId)
+            .collection('words')
+            .add({
           'native': word['hebrew'], // T
           'pronunciation': word['pronunciation'],
           'translation': word['translation'],
@@ -84,11 +93,15 @@ class FirebaseService {
 
   Future<Word?> addWord(Word word) async {
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').add({
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userId)
+          .collection('words')
+          .add({
         'native': word.native,
         'pronunciation': word.pronunciation,
         'translation': word.translation,
-        'attributes': word.attributes,
+        'attributes': word.attributes.toJson(),
       });
 
       return Word(
@@ -107,7 +120,11 @@ class FirebaseService {
     List<Word> words = [];
 
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userId)
+          .collection('words')
+          .get();
       // need to wrap in try-catch block to handle errors
       snapshot.docs.forEach((doc) {
         words.add(Word(
@@ -115,7 +132,7 @@ class FirebaseService {
           native: doc['native'],
           pronunciation: doc['pronunciation'],
           translation: doc['translation'],
-          attributes: doc['attributes'],
+          attributes: WordAttributes.fromJson(doc['attributes']),
         ));
       });
     } catch (e) {
@@ -126,17 +143,27 @@ class FirebaseService {
   }
 
   void updateWord(Word word) {
-    FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').doc(word.id).update({
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .collection('words')
+        .doc(word.id)
+        .update({
       'native': word.native,
       'pronunciation': word.pronunciation,
       'translation': word.translation,
-      'attributes': word.attributes,
+      'attributes': word.attributes.toJson(),
     });
   }
 
   // leave here. Not used in the app, but useful
   void clearDatabase() {
-    FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get().then((snapshot) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .collection('words')
+        .get()
+        .then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.delete();
       }

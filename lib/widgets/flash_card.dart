@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/word_controller.dart';
+import '../models/gender.dart';
 import '../models/word.dart';
+import '../models/word_attributes.dart';
 
 class FlashCardWidget extends StatefulWidget {
   final Word displayedWord;
@@ -13,7 +15,8 @@ class FlashCardWidget extends StatefulWidget {
   State<FlashCardWidget> createState() => _FlashCardWidgetState();
 }
 
-class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderStateMixin {
+class _FlashCardWidgetState extends State<FlashCardWidget>
+    with TickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
   AnimationStatus animationStatus = AnimationStatus.dismissed;
@@ -85,7 +88,8 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                           width: 26,
                           child: CircularProgressIndicator(
                             value: animation.value,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue.shade300),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.lightBlue.shade300),
                             strokeWidth: 1,
                           ),
                         ),
@@ -94,7 +98,9 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                   ),
                   if (!showProgressIndicator)
                     AnimatedOpacity(
-                        duration: showTranslation ? Duration(seconds: opacityAnimationDuration) : Duration.zero,
+                        duration: showTranslation
+                            ? Duration(seconds: opacityAnimationDuration)
+                            : Duration.zero,
                         opacity: showTranslation ? 1.0 : 0.0,
                         child: Column(children: [
                           Text(
@@ -103,13 +109,22 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
                           ),
                           Text(
                             widget.displayedWord.translation,
-                            style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.grey),
                           ),
-                          widget.displayedWord.attributes.isNotEmpty
+                          widget.displayedWord.attributes !=
+                                  const WordAttributes.blank()
                               ? Text(
-                                  widget.displayedWord.attributes,
-                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                        color: Colors.grey,
+                                  _attributesLabel(
+                                      widget.displayedWord.attributes),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        color: widget.displayedWord.attributes
+                                            .gender.color,
                                         fontStyle: FontStyle.italic,
                                       ),
                                 )
@@ -124,25 +139,39 @@ class _FlashCardWidgetState extends State<FlashCardWidget> with TickerProviderSt
     });
   }
 
+  String _attributesLabel(WordAttributes attributes) {
+    final parts = [attributes.gender.label];
+    if (attributes.isPlural) {
+      parts.add('Plural');
+    }
+    return parts.join(' · ');
+  }
+
   void _initAnimationController() {
     animationController = AnimationController(
       duration: const Duration(seconds: progressIndicatorDuration),
       vsync: this,
     );
 
-    animationController.addStatusListener((status) => setState(() => animationStatus = status));
-    animation = Tween<double>(begin: 0, end: 1).animate(animationController)..addListener(() => setState(() {}));
+    animationController.addStatusListener(
+        (status) => setState(() => animationStatus = status));
+    animation = Tween<double>(begin: 0, end: 1).animate(animationController)
+      ..addListener(() => setState(() {}));
     animationController.forward();
   }
 
   _delayShowingTranslation() {
     if (!showTranslation) {
       const startOpacityAnimationDelayMs = 100;
-      Future.delayed(const Duration(milliseconds: startOpacityAnimationDelayMs), () => setState(() => showTranslation = true));
-      Future.delayed(Duration(milliseconds: startOpacityAnimationDelayMs + (opacityAnimationDuration * 1000)), () => setState(() => enabledOnTap = true));
+      Future.delayed(const Duration(milliseconds: startOpacityAnimationDelayMs),
+          () => setState(() => showTranslation = true));
+      Future.delayed(
+          Duration(
+              milliseconds: startOpacityAnimationDelayMs +
+                  (opacityAnimationDuration * 1000)),
+          () => setState(() => enabledOnTap = true));
     }
   }
 }
 
-// TODO: change attributes to checkboxes: gender, plural, etc. Then color code the word. Will have to persist attribute settings too
 // TODO: add ability to swop translation with native word

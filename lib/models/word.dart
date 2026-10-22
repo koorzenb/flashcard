@@ -1,9 +1,11 @@
+import 'word_attributes.dart';
+
 class Word {
   final String id;
   final String native;
   final String pronunciation;
   final String translation;
-  final String attributes;
+  final WordAttributes attributes;
   String audioId;
   final bool isNew;
 
@@ -12,7 +14,7 @@ class Word {
       required this.native,
       required this.pronunciation,
       required this.translation,
-      this.attributes = '',
+      this.attributes = const WordAttributes.blank(),
       this.audioId = '',
       this.isNew = false});
 
@@ -21,8 +23,9 @@ class Word {
         'native': native,
         'pronunciation': pronunciation,
         'translation': translation,
-        'attributes': attributes,
+        'attributes': attributes.toJson(),
         'audioId': audioId,
+        'isNew': isNew,
       };
 
   static List<dynamic> arrayToJsonList(List<Word> words) {
@@ -36,8 +39,9 @@ class Word {
         native: json['native'],
         pronunciation: json['pronunciation'],
         translation: json['translation'],
-        attributes: json['attributes'],
+        attributes: WordAttributes.fromJson(json['attributes']),
         audioId: json['audioId'],
+        isNew: json['isNew'] ?? false,
       );
 
   static List<Word> listFromJsonList(List<dynamic> jsonList) {

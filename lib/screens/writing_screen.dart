@@ -1,3 +1,4 @@
+import '../models/word_attributes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,7 +52,8 @@ class _WritingScreenState extends State<WritingScreen> {
                       'Score: ${writingController.score}',
                     ),
                     IconButton(
-                      onPressed: () => SoundController.getOrPut.playAudio(writingController.currentWord.id),
+                      onPressed: () => SoundController.getOrPut
+                          .playAudio(writingController.currentWord.id),
                       icon: Icon(Icons.play_arrow),
                     ),
                     const SizedBox(height: 20),
@@ -59,19 +61,23 @@ class _WritingScreenState extends State<WritingScreen> {
                       controller: _textController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: writingController.attemptsRemaining < 2 ? writingController.currentWord.native : 'Enter the word',
+                        hintText: writingController.attemptsRemaining < 2
+                            ? writingController.currentWord.native
+                            : 'Enter the word',
                       ),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
-                        await writingController.onCheckWord(_textController.text);
+                        await writingController
+                            .onCheckWord(_textController.text);
                         setState(_textController.clear);
                       },
                       child: const Text('Check Word'),
                     ),
                     SizedBox(height: 20),
-                    writingController.resultsIcon ?? Icon(Icons.check, color: Colors.transparent),
+                    writingController.resultsIcon ??
+                        Icon(Icons.check, color: Colors.transparent),
                     Text(writingController.resultTranslation),
                   ],
                 );
@@ -84,7 +90,7 @@ class _WritingScreenState extends State<WritingScreen> {
                 native: '',
                 pronunciation: '',
                 translation: '',
-                attributes: '',
+                attributes: WordAttributes.blank(),
                 isNew: true,
               ),
             )),

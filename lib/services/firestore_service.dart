@@ -16,7 +16,8 @@ class FirestoreService {
     try {
       final audioId = path.basename(file.path);
       // Create a path that includes the user ID as a folder
-      final storagePath = 'audio/${_userId}/$audioId.${AppConstants.audioFileExtension}';
+      final storagePath =
+          'audio/${_userId}/$audioId.${AppConstants.audioFileExtension}';
       final storageRef = FirebaseStorage.instance.ref().child(storagePath);
       print('Uploading to path: $storagePath');
 
@@ -38,7 +39,8 @@ class FirestoreService {
   Future<void> deleteAudioFile(String audioId) async {
     try {
       // Create a path that includes the user ID as a folder
-      final storagePath = 'audio/${_userId}/$audioId.${AppConstants.audioFileExtension}';
+      final storagePath =
+          'audio/${_userId}/$audioId.${AppConstants.audioFileExtension}';
       final storageRef = FirebaseStorage.instance.ref().child(storagePath);
 
       // Delete the file

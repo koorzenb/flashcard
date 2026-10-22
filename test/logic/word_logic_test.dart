@@ -48,18 +48,24 @@ void main() {
       wordLogic = WordLogic.create(_words);
     });
 
-    test('getWord - should return a word, unread words should not contain given word', () {
+    test(
+        'getWord - should return a word, unread words should not contain given word',
+        () {
       final word1 = wordLogic.getWord(_words);
 
       expect(word1, isA<Word>());
 
-      var expectedUnreadWords = _words.where((element) => element.native != word1.native).toList();
+      var expectedUnreadWords =
+          _words.where((element) => element.native != word1.native).toList();
       expect(wordLogic.unreadWords, expectedUnreadWords);
 
       final word2 = wordLogic.getWord(_words);
 
       expect(word2, isA<Word>());
-      expectedUnreadWords = _words.where((element) => element.native != word1.native && element.native != word2.native).toList();
+      expectedUnreadWords = _words
+          .where((element) =>
+              element.native != word1.native && element.native != word2.native)
+          .toList();
       expect(wordLogic.unreadWords, expectedUnreadWords);
       expect(wordLogic.unreadWords.length, 1);
     });
@@ -97,7 +103,9 @@ void main() {
         ),
       ];
 
-      expect(WordStorage.box.words[0].translation, expectedWords[0].translation, reason: 'should add a word to the list, sort the list and save to storage');
+      expect(WordStorage.box.words[0].translation, expectedWords[0].translation,
+          reason:
+              'should add a word to the list, sort the list and save to storage');
     });
   });
 
@@ -151,21 +159,27 @@ void main() {
     });
 
     test('no words provided and words on database', () async {
-      final words = await WordLogic.initializeWords([], () async => _database.toList());
+      final words =
+          await WordLogic.initializeWords([], () async => _database.toList());
 
-      expect(words[0].native, _database[1].native, reason: 'should return words from database and have it sorted');
+      expect(words[0].native, _database[1].native,
+          reason: 'should return words from database and have it sorted');
     });
 
     test('words provided and no words on database', () async {
-      final words = await WordLogic.initializeWords(_passedWords.toList(), () async => []);
+      final words = await WordLogic.initializeWords(
+          _passedWords.toList(), () async => []);
 
-      expect(words[0].native, _passedWords[0].native, reason: 'should return words from provided list and have it sorted');
+      expect(words[0].native, _passedWords[0].native,
+          reason: 'should return words from provided list and have it sorted');
     });
 
     test('words provided and words on database', () async {
-      final words = await WordLogic.initializeWords(_passedWords.toList(), () async => _database);
+      final words = await WordLogic.initializeWords(
+          _passedWords.toList(), () async => _database);
 
-      expect(words[0].native, _passedWords[0].native, reason: 'should return words from provided list and have it sorted');
+      expect(words[0].native, _passedWords[0].native,
+          reason: 'should return words from provided list and have it sorted');
     });
   });
 }

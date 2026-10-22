@@ -1,4 +1,24 @@
-## 0.14.0
+## 0.17.0
+
+### Other
+
+- Refactor word attributes handling and improve code formatting
+
+## [0.15.0] - 2026-10-22
+  
+### Enhancement
+  
+Refactor word attributes handling and improve code formatting
+
+- Introduced a new `Gender` enum and `WordAttributes` model to manage grammatical attributes of words.
+- Updated `Word` model to use `WordAttributes` instead of a string for attributes.
+- Refactored `SoundController`, `WritingController`, and `WordLogic` to accommodate changes in word attributes.
+- Enhanced UI components to include `WordAttributesInput` for selecting gender and plurality.
+- Improved code formatting for better readability across multiple files.
+- Removed deprecated `pubspec.template.yaml` file.
+- Added tests to ensure proper functionality of word logic with new attributes.
+
+## [0.14.0]
 
 ### Refactor
 
