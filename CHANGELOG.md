@@ -1,3 +1,9 @@
+## 0.18.0
+
+### Other
+
+- Refactor word attributes handling and improve code formatting
+
 ## 0.17.0
 
 ### Other
