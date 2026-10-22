@@ -1,3 +1,15 @@
+## 0.19.0
+
+### Docs
+
+- add migration plan for word attribute schema from String to WordAttributes
+
+## [0.18.1] - 2026-10-22
+  
+### Refactor
+  
+- enhance WordAttributes with legacy support and improved JSON handling
+
 ## 0.18.0
 
 ### Other
