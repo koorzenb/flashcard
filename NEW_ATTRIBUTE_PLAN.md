@@ -70,7 +70,7 @@
 
 ---
 
-## Phase 1: Tolerant Readers (no data loss, no version bump)
+## Phase 1: Tolerant Readers (no data loss, no version bump) - COMPLETE
 
 **Goal**: Make every read path accept legacy `attributes` strings, missing `attributes`, and malformed records - so no data is lost even before any migration runs. Tolerant readers are a permanent, unconditional capability, not a temporary migration aid.
 **Dependencies**: `lib/models/word_attributes.dart`, `lib/models/word.dart`, `lib/services/firebase_service.dart`

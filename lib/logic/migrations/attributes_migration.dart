@@ -13,7 +13,7 @@ import 'migration_context.dart';
 /// in [WordAttributes.fromLegacy] and is applied by the tolerant reader when
 /// the word is parsed. By the time this step runs, every word already carries
 /// a structured value; the step's job is to make the container's data
-/// explicitly carry the new shape.
+/// explicitly carry the new shape, including the `attributesRaw` field.
 class AttributesMigration extends Migration {
   const AttributesMigration();
 
@@ -35,7 +35,8 @@ class AttributesMigration extends Migration {
 
     // Every word is rewritten with its normalized attributes. Words that are
     // already in the target shape are written unchanged, so re-running the
-    // step is a no-op.
+    // step is a no-op. We preserve `attributesRaw` so the original legacy
+    // string survives the round-trip.
     await ctx.writeWords([
       for (final word in words)
         Word(
@@ -44,6 +45,7 @@ class AttributesMigration extends Migration {
           pronunciation: word.pronunciation,
           translation: word.translation,
           attributes: word.attributes,
+          attributesRaw: word.attributesRaw,
           audioId: word.audioId,
           isNew: word.isNew,
         ),

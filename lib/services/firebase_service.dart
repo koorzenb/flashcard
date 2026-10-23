@@ -7,6 +7,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../models/word.dart';
+import '../models/word_attributes.dart';
 import '../widgets/flashcard_snackbar.dart';
 
 class FirebaseService {
@@ -82,18 +83,32 @@ class FirebaseService {
       final file = File(filePath);
 
       final jsonString = await file.readAsString();
-      final json = jsonDecode(jsonString);
+      final json = jsonDecode(jsonString) as List<dynamic>;
 
       for (var word in json) {
+        // Normalize the 'native' field: prefer 'native', fall back to 'hebrew'
+        // for older exported flashcards.json files.
+        final native = word['native'] ?? word['hebrew'] ?? '';
+
+        // Normalize 'attributes' through the tolerant parser so that a legacy
+        // free-text string is converted to the structured map shape before
+        // writing to Firestore.
+        final attributesRaw = word['attributes'];
+        final attributes = attributesRaw is String
+            ? WordAttributes.fromLegacy(attributesRaw)
+            : (attributesRaw is Map
+                ? WordAttributes.fromJson(attributesRaw)
+                : WordAttributes.blank());
+
         await FirebaseFirestore.instance
             .collection('users')
             .doc(_userId)
             .collection('words')
             .add({
-          'native': word['hebrew'], // T
-          'pronunciation': word['pronunciation'],
-          'translation': word['translation'],
-          'attributes': word['attributes'],
+          'native': native,
+          'pronunciation': word['pronunciation'] ?? '',
+          'translation': word['translation'] ?? '',
+          'attributes': attributes.toJson(),
         });
       }
 

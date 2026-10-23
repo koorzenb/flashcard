@@ -8,6 +8,7 @@ class Word {
   final String pronunciation;
   final String translation;
   final WordAttributes attributes;
+  final String? attributesRaw; // Raw JSON string for legacy attribute storage
   String audioId;
   final bool isNew;
 
@@ -17,6 +18,7 @@ class Word {
       required this.pronunciation,
       required this.translation,
       this.attributes = const WordAttributes.blank(),
+      this.attributesRaw,
       this.audioId = '',
       this.isNew = false});
 
@@ -28,6 +30,7 @@ class Word {
         'attributes': attributes.toJson(),
         'audioId': audioId,
         'isNew': isNew,
+        'attributesRaw': attributesRaw,
       };
 
   static List<dynamic> arrayToJsonList(List<Word> words) {
@@ -53,6 +56,7 @@ class Word {
         attributes: WordAttributes.fromJson(json['attributes']),
         audioId: _readString(json['audioId']),
         isNew: json['isNew'] == true,
+        attributesRaw: json['attributesRaw'] as String?,
       );
 
   /// Reads a persisted string field, tolerating a missing, null or
@@ -102,4 +106,30 @@ class Word {
 
     return words;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Word &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          native == other.native &&
+          pronunciation == other.pronunciation &&
+          translation == other.translation &&
+          attributes == other.attributes &&
+          attributesRaw == other.attributesRaw &&
+          audioId == other.audioId &&
+          isNew == other.isNew;
+
+  @override
+  int get hashCode => Object.hash(
+        id,
+        native,
+        pronunciation,
+        translation,
+        attributes,
+        attributesRaw,
+        audioId,
+        isNew,
+      );
 }

@@ -53,20 +53,20 @@ class HiveWordMigrationContext implements MigrationContext {
   @override
   Future<void> writeWords(List<Word> words) async {
     try {
-      // 1. Preserve the current payload so the pre-migration state is always
-      //    recoverable.
-      final dynamic current = _box.get(wordsKey);
-      if (current != null) {
-        await _box.put(backupKey, current);
-      }
-
-      // 2. Stage the new payload under a shadow key. If the process dies
-      //    here, the live key still holds the old (readable) payload.
+      // 1. Stage the new payload under a shadow key first.
+      //    If the process dies here, the live key still holds the old (readable) payload.
       final version = await readVersion();
       final staged = WordPayloadCodec.encode(
         WordPayload(version: version, words: words),
       );
       await _box.put(shadowKey, staged);
+
+      // 2. Copy the current payload to the backup, so the pre-migration state
+      //    is always recoverable even if the subsequent swap fails.
+      final dynamic current = _box.get(wordsKey);
+      if (current != null) {
+        await _box.put(backupKey, current);
+      }
 
       // 3. Swap the shadow key into the live key, then drop the shadow.
       await _box.put(wordsKey, staged);

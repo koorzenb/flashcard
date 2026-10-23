@@ -7,12 +7,18 @@ import 'gender.dart';
 class WordAttributes {
   final Gender gender;
   final bool isPlural;
+  final String? attributesRaw;
 
-  const WordAttributes({required this.gender, required this.isPlural});
+  const WordAttributes({
+    required this.gender,
+    required this.isPlural,
+    this.attributesRaw,
+  });
 
   const WordAttributes.blank()
       : gender = Gender.neutral,
-        isPlural = false;
+        isPlural = false,
+        attributesRaw = null;
 
   /// Legacy free-text tokens mapped to a gender.
   static const Map<String, Gender> _legacyGenders = {
@@ -32,6 +38,7 @@ class WordAttributes {
   Map<String, dynamic> toJson() => {
         'gender': gender.name,
         'isPlural': isPlural,
+        if (attributesRaw != null) 'attributesRaw': attributesRaw,
       };
 
   /// Builds attributes from any persisted shape.
@@ -46,9 +53,13 @@ class WordAttributes {
     if (json is! Map) {
       return const WordAttributes.blank();
     }
+    final gender = _genderFromValue(json['gender']);
+    final isPlural = json['isPlural'] == true;
+    final attributesRaw = json['attributesRaw'] as String?;
     return WordAttributes(
-      gender: _genderFromValue(json['gender']),
-      isPlural: json['isPlural'] == true,
+      gender: gender,
+      isPlural: isPlural,
+      attributesRaw: attributesRaw,
     );
   }
 
@@ -76,7 +87,11 @@ class WordAttributes {
       }
     }
 
-    return WordAttributes(gender: gender, isPlural: isPlural);
+    return WordAttributes(
+      gender: gender,
+      isPlural: isPlural,
+      attributesRaw: raw,
+    );
   }
 
   /// Resolves a persisted gender value, falling back to [Gender.neutral].
@@ -101,8 +116,9 @@ class WordAttributes {
       other is WordAttributes &&
           runtimeType == other.runtimeType &&
           gender == other.gender &&
-          isPlural == other.isPlural;
+          isPlural == other.isPlural &&
+          attributesRaw == other.attributesRaw;
 
   @override
-  int get hashCode => Object.hash(gender, isPlural);
+  int get hashCode => Object.hash(gender, isPlural, attributesRaw);
 }

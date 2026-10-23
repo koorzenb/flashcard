@@ -1,3 +1,15 @@
+## 0.21.0
+
+### Feat
+
+- Created a tolerant reader pending new word migration
+
+## [0.20.2] - 2026-10-23
+  
+### Refactor
+  
+- complete Phase 1 of word attributes migration with legacy support and tests
+
 ## 0.20.1
 
 ### Refactor
