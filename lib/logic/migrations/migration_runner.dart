@@ -31,12 +31,18 @@ class MigrationRunner {
   const MigrationRunner({
     required this.steps,
     int? targetVersion,
+    this.force = false,
   }) : _targetVersion = targetVersion;
 
   /// The ordered registry of known steps.
   ///
   /// The runner sorts them itself, so the registration order does not matter.
   final List<Migration> steps;
+
+  /// When `true`, re-runs every step up to [targetVersion] regardless of the
+  /// container's current version. Used by the "Repair data" flow to recover
+  /// from a partially-interrupted migration.
+  final bool force;
 
   /// The schema version this runner migrates up to.
   ///
@@ -84,6 +90,7 @@ class MigrationRunner {
       currentVersion: currentVersion,
       targetVersion: targetVersion,
       stepIds: selected.map((step) => step.id).toList(growable: false),
+      force: force,
     );
 
     if (selected.isEmpty) {
@@ -102,6 +109,7 @@ class MigrationRunner {
 
     var containerVersion = currentVersion;
     var stepsRun = 0;
+    final stepIds = <String>[];
 
     for (final step in selected) {
       MigrationLog.stepStart(
@@ -149,6 +157,7 @@ class MigrationRunner {
         await ctx.writeVersion(step.toVersion);
         containerVersion = step.toVersion;
         stepsRun++;
+        stepIds.add(step.id);
 
         MigrationLog.stepSuccess(
           stepId: step.id,
@@ -171,6 +180,7 @@ class MigrationRunner {
           toVersion: containerVersion,
           failure: failure,
           stepsRun: stepsRun,
+          stepIds: stepIds,
         );
       }
     }
@@ -186,6 +196,7 @@ class MigrationRunner {
       fromVersion: currentVersion,
       toVersion: containerVersion,
       stepsRun: stepsRun,
+      stepIds: stepIds,
     );
   }
 
@@ -202,7 +213,7 @@ class MigrationRunner {
   /// and reported through the log.
   List<Migration> selectSteps(int currentVersion) {
     final selected = steps
-        .where((step) => step.toVersion > currentVersion)
+        .where((step) => force || step.toVersion > currentVersion)
         .where((step) => step.toVersion <= targetVersion)
         .toList()
       ..sort((a, b) => a.fromVersion.compareTo(b.fromVersion));

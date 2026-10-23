@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../app_settings.dart';
+import '../controllers/app_controller.dart';
 import '../screens/word_list_screen.dart';
 import '../services/flashcard_auth_service.dart';
 import 'drawer_item.dart';
@@ -42,6 +43,14 @@ class MainDrawer extends StatelessWidget {
                   icon: Icons.list,
                   title: 'Word List',
                   onTap: () => Get.to(() => WordListScreen()),
+                ),
+                DrawerItem(
+                  icon: Icons.build,
+                  title: 'Repair Data',
+                  onTap: () {
+                    Get.back();
+                    AppController.instance.repairData();
+                  },
                 ),
               ],
             ),

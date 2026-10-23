@@ -12,6 +12,7 @@ final class MigrationRunResult {
     required this.toVersion,
     required this.stepsRun,
     this.failure,
+    this.stepIds = const [],
   });
 
   /// The run completed and the version was advanced to [toVersion].
@@ -19,11 +20,13 @@ final class MigrationRunResult {
     required int fromVersion,
     required int toVersion,
     required int stepsRun,
+    List<String> stepIds = const [],
   }) : this._(
           status: MigrationRunStatus.success,
           fromVersion: fromVersion,
           toVersion: toVersion,
           stepsRun: stepsRun,
+          stepIds: stepIds,
         );
 
   /// The run was aborted at the first failing step.
@@ -44,12 +47,14 @@ final class MigrationRunResult {
     required int toVersion,
     required MigrationFailure failure,
     required int stepsRun,
+    List<String> stepIds = const [],
   }) : this._(
           status: MigrationRunStatus.aborted,
           fromVersion: fromVersion,
           toVersion: toVersion,
           stepsRun: stepsRun,
           failure: failure,
+          stepIds: stepIds,
         );
 
   /// Whether the run completed or was aborted.
@@ -70,6 +75,13 @@ final class MigrationRunResult {
 
   /// The failure that aborted the run, if any.
   final MigrationFailure? failure;
+
+  /// The ids of every step that was executed in this run.
+  ///
+  /// Empty for a no-op run (when the container was already up to date and
+  /// `force` was not requested). Populated even for idempotent re-runs when
+  /// `force` is `true`.
+  final List<String> stepIds;
 
   /// Whether the run completed successfully.
   bool get isSuccess => status == MigrationRunStatus.success;

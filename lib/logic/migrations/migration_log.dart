@@ -31,12 +31,14 @@ class MigrationLog {
     required int currentVersion,
     required int targetVersion,
     required List<String> stepIds,
+    bool force = false,
   }) {
     if (!_verboseEnabled) return;
     _emit(
       'run.start',
       'scope=$scope current=$currentVersion target=$targetVersion '
-          'steps=${stepIds.isEmpty ? 'none' : stepIds.join(',')}',
+          'steps=${stepIds.isEmpty ? 'none' : stepIds.join(',')}'
+          '${force ? ' force=true' : ''}',
     );
   }
 

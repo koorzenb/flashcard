@@ -254,21 +254,21 @@ The reusable migration framework is in place. A new schema change is added as a 
 **Goal**: Ship the actual transformers that move existing data to the new shape, locally and in Firestore, automatically, incrementally and resumably. This phase proves the framework with the attribute step (`0 -> 1`); every later schema change repeats the same shape with a new step.
 **Dependencies**: Phase 2 complete
 
-### Step 3.1: Implement `m001_attributes_to_map` (family `attributes`)
+### Step 3.1: Implement `m001_attributes_to_map` (family `attributes`) - DONE
 
 - **Action**: Add `lib/logic/migrations/m001_attributes_to_map.dart` (`fromVersion: 0`, `toVersion: 1`, `family: 'attributes'`). For every word, if `attributes` is a legacy `String`, convert it via the canonical mapping and store the result as a map; preserve the original text in `attributesRaw`. If `attributes` is already a map, leave it untouched. The step must be idempotent: re-running it on already-migrated data is a no-op.
 - **Files**: `lib/logic/migrations/m001_attributes_to_map.dart`
 - **Test**: `flutter test test/logic/migrations/m001_attributes_to_map_test.dart`
 - **Success**: a legacy list of three words (one string `attributes`, one map `attributes`, one missing `attributes`) is fully converted; running the step twice produces byte-identical output.
 
-### Step 3.2: Implement the safe local write path
+### Step 3.2: Implement the safe local write path - DONE
 
 - **Action**: In `HiveWordMigrationContext.writeWords()`, write the new payload (envelope + words) to a shadow key `wordListJson_new`, then copy `wordListJson` to `wordListJson_backup`, then set `wordListJson` to the new payload, then delete the shadow key. Never delete the backup during a migration. Note that this is a **sequence of individual Hive writes, not one atomic operation** - the atomicity guarantee comes from the *ordering* (shadow written and verified before the live key is replaced) plus the retained backup, so that a crash at any point leaves either the old payload or the new payload intact, never a partial list. After the swap, run the local integrity check (Step 3.3) comparing `wordListJson_backup` against `wordListJson`.
 - **Files**: `lib/logic/migrations/hive_word_migration_context.dart`
 - **Test**: `flutter test test/logic/migrations/migration_context_test.dart`
 - **Success**: after a write, `wordListJson` contains the new envelope (with the new version), `wordListJson_backup` contains the pre-migration payload, and no `wordListJson_new` key remains.
 
-### Step 3.3: Implement the migration integrity check (old data vs. restructured data) - DONE (core), PARTIAL (per-storage entry points)
+### Step 3.3: Implement the migration integrity check (old data vs. restructured data) - DONE
 
 - **Action**: Add `lib/logic/migrations/migration_integrity_check.dart`, a storage-agnostic verifier that compares a container's **pre-migration payload** against its **post-migration payload** and reports a structured `IntegrityReport` (no writes, no data movement - read and compare only). The report contains: `beforeCount` / `afterCount`, `missing` (word ids present before but absent after - the data-loss signal), `added` (ids present after but not before), `changed` (ids present in both whose content differs), and `unchanged` count. The comparison is done on the **stable identity key** `id` (falling back to `native` + `translation` for legacy records with no `id`), never on list position, because a migration may legitimately reorder the list. Content equality is checked on the fields that survive the migration - `id`, `native`, `pronunciation`, `translation`, `audioId` - plus a **semantic** attributes comparison: the migrated `WordAttributes` must be *equivalent to* the legacy string parsed by `WordAttributes.fromLegacy()`, i.e. `gender` and `isPlural` match, and `attributesRaw` must equal the original legacy string verbatim (this proves the original text was preserved, not re-derived). The check must be **non-destructive**: it never repairs and never deletes; it only reports. Two entry points: a local one that compares `wordListJson_backup` against `wordListJson` after a Hive migration, and a cloud one that compares the set of documents captured before the backfill against the documents after it (the backfill must keep the same document ids - it may only normalize field shapes, never add or remove documents).
 - **Files**: `lib/logic/migrations/migration_integrity_check.dart`, `lib/logic/migrations/hive_word_migration_context.dart` (invoke the local check after `writeWords()`), `lib/logic/migrations/firestore_backfill.dart` (invoke the cloud check after the last batch)
@@ -280,28 +280,28 @@ The reusable migration framework is in place. A new schema change is added as a 
   - The `attributesRaw` clause of the success criterion does not apply yet, because `attributesRaw` is not implemented (see Step 2.1). The semantic comparison currently proves that the legacy string was mapped to the equivalent structured value, but it cannot yet prove the original text was preserved verbatim.
 - **Tests added** (in `test/logic/migrations/migration_integrity_check_test.dart`): an identical 50-word payload, exactly one dropped record reported as missing, an added record, a changed record (which does not fail the check), matching by id rather than by position, the `native` + `translation` fallback for records without an id, a legacy `attributes` string compared against its mapping, a changed attributes mapping, an empty payload reported as losing everything, an empty before-payload reported as adding everything, and the content-free summary. The runner's use of the check is covered in `migration_runner_test.dart` (a dropped record blocks the version advance; a changed record does not).
 
-### Step 3.4: Implement the resumable Firestore backfill (shape-driven, not version-driven)
+### Step 3.4: Implement the resumable Firestore backfill (shape-driven, not version-driven) - DONE
 
 - **Action**: Add `lib/logic/migrations/firestore_backfill.dart`. Read all documents in `users/{uid}/words`; for each document whose `attributes` is a legacy string or whose `attributes`/`audioId`/`id` fields are missing, write the normalized document. The scan is **shape-driven** (inspect the actual documents) rather than trusting the container version marker, because an old app build may have written legacy documents after the marker advanced. Commit updates in `WriteBatch` chunks of at most 500 operations. Skip documents that are already in the target shape (idempotent). Partial progress is detectable because a partially-normalized collection is simply "some documents still legacy" - the next run continues exactly where the last stopped, so no separate resume cursor is required. Advance the container version marker only after the last batch commits successfully **and** the cloud integrity check (Step 3.3) confirms the document id set is unchanged.
 - **Files**: `lib/logic/migrations/firestore_backfill.dart`, `lib/logic/migrations/firestore_word_migration_context.dart`
 - **Test**: `flutter test test/logic/migrations/firestore_backfill_test.dart`
 - **Success**: given 1200 legacy documents, the backfill completes in three batches, each document ends with a map `attributes`, and a second run performs zero writes.
 
-### Step 3.5: Detect the orphan top-level `words` collection (report only)
+### Step 3.5: Detect the orphan top-level `words` collection (report only) - DONE
 
 - **Action**: The legacy app stored some words in a top-level `words` collection; `WordController.deleteWord` still targets it while all reads now use `users/{uid}/words`. Because that collection is not user-scoped, ownership is ambiguous. Implement a **detection-only** step that reports how many orphan documents exist and which ones plausibly belong to the signed-in user (by matching `native`/`translation` against the user's own words). Do **not** copy or delete anything; a later release may promote the matches after manual review.
 - **Files**: `lib/logic/migrations/firestore_backfill.dart`, `lib/controllers/word_controller.dart` (fix `deleteWord` to target `users/{uid}/words`)
 - **Test**: `flutter test test/logic/migrations/firestore_backfill_test.dart`
 - **Success**: `deleteWord` removes the document from `users/{uid}/words` (verified against a fake Firestore), and the detection step reports orphan counts without mutating data.
 
-### Step 3.6: Run the backfill automatically after sign-in
+### Step 3.6: Run the backfill automatically after sign-in - DONE
 
 - **Action**: In `AppController._init(User)`, after the per-user local migration and before `WordController.create()`, launch the Firestore backfill as a **non-blocking background task** (unawaited future with error handling). It must not delay first paint and must not block the UI on network latency. On failure, log the error type, leave the version marker unchanged, and retry on the next sign-in. The user's own newly created words must never be overwritten by a backfill write - the backfill only updates documents it read as legacy.
 - **Files**: `lib/controllers/app_controller.dart`
 - **Test**: `flutter test test/logic/migrations/firestore_backfill_test.dart`, `flutter analyze`
 - **Success**: after sign-in with legacy cloud data, the app renders immediately, the backfill completes afterwards, and a subsequent sign-in performs no writes.
 
-### Step 3.7: Add the manual recovery path ("Repair data")
+### Step 3.7: Add the manual recovery path ("Repair data") - DONE
 
 - **Action**: Add a "Repair data" action in the settings/drawer area that re-runs the local and remote migrations (forcing the runner to re-evaluate every step). Use it for users whose backfill was interrupted or who want to apply the mapping after manually fixing a legacy string. The action reports the version before and after, and the steps it re-ran (grouped by `family`), without clearing the user's words.
 - **Files**: `lib/widgets/main_drawer.dart`, `lib/controllers/app_controller.dart`, `lib/logic/migrations/migration_runner.dart`

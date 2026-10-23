@@ -1,3 +1,30 @@
+## 0.23.0
+
+### Enh
+
+- Implement Firestore backfill and migration logic
+
+
+## [0.22.0] - 2026-10-23
+  
+### Enhancement
+  
+- Implement Firestore backfill and migration logic
+
+- Added FirestoreBackfill class for shape-driven normalization of legacy documents in the user's cloud word collection.
+- Integrated Firestore backfill into AppController to run as a background task on user sign-in.
+- Updated WordController to reference user-specific word collections in Firestore.
+- Introduced repairData method in AppController to re-run migrations and backfill on user request.
+- Enhanced migration logging to include step IDs and force re-run capability.
+- Added tests for FirestoreBackfill and MigrationRunner to ensure correct functionality and edge case handling.
+- Removed deprecated Firestore backfill service from the codebase.
+
+## 0.22.1
+
+### Refactor
+
+- complete Phase 1 of word attributes migration with legacy support and tests
+
 ## 0.21.0
 
 ### Feat

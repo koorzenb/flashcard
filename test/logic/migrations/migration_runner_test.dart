@@ -272,6 +272,60 @@ void main() {
       expect(ctx.writtenWords, isEmpty);
     });
 
+    test('force re-runs already-applied steps', () async {
+      final step1 = FakeMigration(fromVersion: 0, toVersion: 1, id: 's1');
+      final runner = MigrationRunner(
+        steps: [step1],
+        targetVersion: 1,
+        force: true,
+      );
+      final ctx = FakeMigrationContext(words: words(3), version: 1);
+
+      final result = await runner.run(ctx);
+
+      expect(result.isSuccess, isTrue);
+      expect(result.stepsRun, 1);
+      expect(step1.executionOrder, ['s1']);
+      expect(result.stepIds, ['s1']);
+      expect(ctx.writtenVersions, [1]);
+    });
+
+    test('force re-runs all steps in ascending order', () async {
+      final step2 = FakeMigration(fromVersion: 1, toVersion: 2, id: 's2');
+      final step1 = FakeMigration(fromVersion: 0, toVersion: 1, id: 's1');
+      final runner = MigrationRunner(
+        steps: [step2, step1],
+        targetVersion: 2,
+        force: true,
+      );
+      final ctx = FakeMigrationContext(words: words(3), version: 2);
+
+      final result = await runner.run(ctx);
+
+      expect(result.isSuccess, isTrue);
+      expect(result.stepsRun, 2);
+      expect(step1.executionOrder, ['s1']);
+      expect(step2.executionOrder, ['s2']);
+      expect(result.stepIds, ['s1', 's2']);
+      expect(ctx.writtenVersions, [1, 2]);
+    });
+
+    test('force on a fresh container runs the same steps as normal', () async {
+      final step1 = FakeMigration(fromVersion: 0, toVersion: 1, id: 's1');
+      final runner = MigrationRunner(
+        steps: [step1],
+        targetVersion: 1,
+        force: true,
+      );
+      final ctx = FakeMigrationContext(words: words(3));
+
+      final result = await runner.run(ctx);
+
+      expect(result.isSuccess, isTrue);
+      expect(result.stepsRun, 1);
+      expect(step1.executionOrder, ['s1']);
+    });
+
     test('is idempotent: a second run performs no writes', () async {
       final step1 = FakeMigration(
         fromVersion: 0,

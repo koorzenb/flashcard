@@ -25,6 +25,9 @@ class FirestoreWordMigrationContext implements MigrationContext {
   /// The name of the words subcollection.
   static const String wordsCollection = 'words';
 
+  /// Firestore's hard limit on operations per WriteBatch.
+  static const int maxBatchSize = 500;
+
   final FirebaseFirestore _firestore;
   final String _userId;
 
@@ -55,23 +58,33 @@ class FirestoreWordMigrationContext implements MigrationContext {
       // Only the documents that already exist are updated. A word without an
       // id cannot be matched to a document, so it is skipped rather than
       // creating a new document.
-      final batch = _firestore.batch();
-      var updated = 0;
+      //
+      // Writes are chunked to stay within Firestore's 500-operation limit.
+      for (var chunkStart = 0;
+          chunkStart < words.length;
+          chunkStart += maxBatchSize) {
+        final chunkEnd = (chunkStart + maxBatchSize > words.length)
+            ? words.length
+            : chunkStart + maxBatchSize;
+        final batch = _firestore.batch();
+        var updated = 0;
 
-      for (final word in words) {
-        if (word.id.isEmpty) {
-          continue;
+        for (var i = chunkStart; i < chunkEnd; i++) {
+          final word = words[i];
+          if (word.id.isEmpty) {
+            continue;
+          }
+          batch.set(
+            _wordsRef().doc(word.id),
+            wordToDocument(word),
+            SetOptions(merge: true),
+          );
+          updated++;
         }
-        batch.set(
-          _wordsRef().doc(word.id),
-          wordToDocument(word),
-          SetOptions(merge: true),
-        );
-        updated++;
-      }
 
-      if (updated > 0) {
-        await batch.commit();
+        if (updated > 0) {
+          await batch.commit();
+        }
       }
     } catch (e, s) {
       throw MigrationFailure(
