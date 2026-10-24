@@ -1,3 +1,11 @@
+## 0.27.0
+
+### Other
+
+- refactor: hoist constants, extract button builders, add test reasons
+
+Address code-review findings #1,#2,#3,#5: replace magic numbers with named consts and extract _genderButton()/_numberButton() in WordAttributesInput (build stays under 50 lines); add reason: to every expect() in word_attributes_test; hoist 'Plural'/'·' literals to consts in FlashCardWidget; add PLAN.md with tech-debt notes. (#4 widget tests deferred per request.)
+
 ## 0.26.0
 
 ### Refactor
