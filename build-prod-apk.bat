@@ -41,7 +41,8 @@ exit /b
     call flutter pub outdated >> flutter-doctor-win.txt
 
     @REM for /F "usebackq delims=" %%A in (`define_env -f .env.prod --no-generate ^| sed -r "s/--dart-define=/--dart-define /g"`) do call flutter build apk --release -v -t lib/main_prod.dart --obfuscate --split-debug-info=./debug-info %%A
-    call flutter build apk --release -v -t lib/main_prod.dart --obfuscate --split-debug-info=./debug-info
+    @REM  call flutter build apk --release -v -t lib/main_prod.dart --obfuscate --split-debug-info=./debug-info //-v = verbose and -t = target lib/main_prod.dart instead of default lib/main.dart
+    call flutter build apk --release -t lib/main_prod.dart --obfuscate --split-debug-info=./debug-info
 
     echo.
 

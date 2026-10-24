@@ -1,3 +1,9 @@
+## 0.29.0
+
+### Fix(android)
+
+- bump Kotlin 2.1.0 + AGP 8.7.0 to resolve firebase-auth 23.x metadata mismatch
+
 ## 0.28.0
 
 ### Other
