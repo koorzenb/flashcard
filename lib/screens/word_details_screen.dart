@@ -191,6 +191,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                         onChanged: (value) =>
                             setState(() => _attributes = value),
                       ),
+                      const SizedBox(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

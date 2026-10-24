@@ -41,6 +41,12 @@ class FirebaseService {
     // save to local storage
   }
 
+  // Not used in the current app flow, but useful for exporting the user's words to a local JSON file.
+  // Method for accessing the exported words file:
+  // - adb shell
+  // - run-as <package_name>, e.g. run-as com.example.flashcards
+  // - cat /data/data/<package_name>/files/flashcards.json
+  // This will print the contents of the exported flashcards.json file to the console.
   Future<void> exportWords() async {
     List<Word> words = [];
 
