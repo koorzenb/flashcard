@@ -22,6 +22,8 @@ class _FlashCardWidgetState extends State<FlashCardWidget>
   AnimationStatus animationStatus = AnimationStatus.dismissed;
   static const progressIndicatorDuration = 4;
   static const opacityAnimationDuration = 2;
+  static const String _pluralLabel = 'Plural';
+  static const String _attributeSeparator = ' · ';
   bool showTranslation = false;
   bool enabledOnTap = true;
   bool startedOpacityAnimation = false;
@@ -142,9 +144,9 @@ class _FlashCardWidgetState extends State<FlashCardWidget>
   String _attributesLabel(WordAttributes attributes) {
     final parts = [attributes.gender.label];
     if (attributes.isPlural) {
-      parts.add('Plural');
+      parts.add(_pluralLabel);
     }
-    return parts.join(' · ');
+    return parts.join(_attributeSeparator);
   }
 
   void _initAnimationController() {

@@ -1,3 +1,9 @@
+## 0.26.0
+
+### Refactor
+
+- Improve layout and padding in WordAttributesInput widget
+
 ## 0.25.0
 
 ### Other
