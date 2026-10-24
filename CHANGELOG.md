@@ -1,3 +1,11 @@
+## 0.28.0
+
+### Other
+
+- fix: pin flutter_sound_platform_interface to ^9.28.0 for CI (Dart 3.6.0)
+
+CI (flutter-ci.yml) installs Dart 3.6.0 via a pinned dart-lang/setup-dart action that overrides Flutter 3.27.1's bundled Dart. ^9.30.0 requires Dart SDK >=3.7.2, so pub resolution failed. ^9.28.0 is the highest version line compatible with flutter_sound ^9.23.1 under Dart 3.6.0; on local (Dart 3.10.7) it still resolves to 9.30.0, so no local behavior change.
+
 ## 0.27.0
 
 ### Other
