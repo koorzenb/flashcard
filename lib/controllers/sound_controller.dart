@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import '../services/firestore_service.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart' show Level;
@@ -10,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../app_constants.dart';
+import '../services/firestore_service.dart';
 import '../widgets/flashcard_snackbar.dart';
 
 class SoundController extends GetxController {
@@ -37,7 +37,8 @@ class SoundController extends GetxController {
   Future<void> _init() async {
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted'); // TODO: Handle this error
+      throw RecordingPermissionException(
+          'Microphone permission not granted'); // TODO: Handle this error
     }
 
     _recorder = FlutterSoundRecorder(logLevel: Level.off);
@@ -77,7 +78,8 @@ class SoundController extends GetxController {
       // - ls -lh
 
       await _recorder.startRecorder(
-        toFile: path.join(_directoryPath, '$id.${AppConstants.audioFileExtension}'),
+        toFile:
+            path.join(_directoryPath, '$id.${AppConstants.audioFileExtension}'),
         codec: codec,
         bitRate: 16000, // Low quality bitrate
         sampleRate: 16000, // Low quality sample rate
@@ -110,21 +112,25 @@ class SoundController extends GetxController {
     print('Playing sound');
   }
 
-  Future<void> updateStorageAudioFilename(String currentAudioId, String newAudioId) async {
+  Future<void> updateStorageAudioFilename(
+      String currentAudioId, String newAudioId) async {
     if (currentAudioId == newAudioId) {
       return;
     }
 
-    final tempFilepath = File(path.join(_directoryPath, '${currentAudioId}.${AppConstants.audioFileExtension}'));
+    final tempFilepath = File(path.join(_directoryPath,
+        '${currentAudioId}.${AppConstants.audioFileExtension}'));
 
     if (await tempFilepath.exists()) {
-      await tempFilepath.rename(path.join(_directoryPath, '$newAudioId.${AppConstants.audioFileExtension}'));
+      await tempFilepath.rename(path.join(
+          _directoryPath, '$newAudioId.${AppConstants.audioFileExtension}'));
     }
   }
 
   Future<void> uploadAudioFile(String audioId) async {
     try {
-      final filePath = path.join(_directoryPath, '$audioId.${AppConstants.audioFileExtension}');
+      final filePath = path.join(
+          _directoryPath, '$audioId.${AppConstants.audioFileExtension}');
       final file = File(filePath);
 
       if (!await file.exists()) {

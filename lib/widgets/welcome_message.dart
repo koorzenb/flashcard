@@ -12,14 +12,19 @@ class WelcomeMessageContent extends StatelessWidget {
         Hero(
           tag: 'image',
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16.0), // Adjust the value as needed
+            borderRadius:
+                BorderRadius.circular(16.0), // Adjust the value as needed
             child: Image.asset('assets/images/hero_welcome.jpeg'),
           ),
         ),
         SizedBox(height: dividerHeight),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text('Welcome to Kards!', style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Theme.of(context).colorScheme.secondary)),
+          child: Text('Welcome to Kards!',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium!
+                  .copyWith(color: Theme.of(context).colorScheme.secondary)),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../models/word.dart';
+import '../models/word_attributes.dart';
 import '../widgets/flashcard_snackbar.dart';
 
 class FirebaseService {
@@ -15,25 +17,47 @@ class FirebaseService {
     _userId = userId;
   }
 
+  /// Builds a [Word] from a Firestore document, tolerating any legacy shape.
+  ///
+  /// The document id is the authoritative identity of a word, so it is always
+  /// applied to the `id` field (a document may not even carry an `id` field).
+  /// Every other field goes through the tolerant [Word.fromJson], so a
+  /// missing field, a `null` value or a legacy free-text `attributes` string
+  /// degrades gracefully instead of throwing and aborting the whole fetch.
+  ///
+  /// Exposed as a static helper so it can be unit-tested without a live
+  /// Firestore instance.
+  static Word wordFromDocument(Map<String, dynamic>? data, String docId) {
+    final Map<String, dynamic> fields = Map<String, dynamic>.from(
+      data ?? const <String, dynamic>{},
+    );
+    fields['id'] = docId;
+    return Word.fromJson(fields);
+  }
+
   static void importWords() {
     // fetch words from firebase
 
     // save to local storage
   }
 
+  // Not used in the current app flow, but useful for exporting the user's words to a local JSON file.
+  // Method for accessing the exported words file:
+  // - adb shell
+  // - run-as <package_name>, e.g. run-as com.example.flashcards
+  // - cat /data/data/<package_name>/files/flashcards.json
+  // This will print the contents of the exported flashcards.json file to the console.
   Future<void> exportWords() async {
     List<Word> words = [];
 
-    final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .collection('words')
+        .get();
 
     snapshot.docs.forEach((doc) {
-      words.add(Word(
-        id: doc.id,
-        native: doc['native'],
-        pronunciation: doc['pronunciation'],
-        translation: doc['translation'],
-        attributes: doc['attributes'],
-      ));
+      words.add(wordFromDocument(doc.data(), doc.id));
     });
 
     final json = words.map((word) => word.toJson()).toList();
@@ -65,14 +89,32 @@ class FirebaseService {
       final file = File(filePath);
 
       final jsonString = await file.readAsString();
-      final json = jsonDecode(jsonString);
+      final json = jsonDecode(jsonString) as List<dynamic>;
 
       for (var word in json) {
-        await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').add({
-          'native': word['hebrew'], // T
-          'pronunciation': word['pronunciation'],
-          'translation': word['translation'],
-          'attributes': word['attributes'],
+        // Normalize the 'native' field: prefer 'native', fall back to 'hebrew'
+        // for older exported flashcards.json files.
+        final native = word['native'] ?? word['hebrew'] ?? '';
+
+        // Normalize 'attributes' through the tolerant parser so that a legacy
+        // free-text string is converted to the structured map shape before
+        // writing to Firestore.
+        final attributesRaw = word['attributes'];
+        final attributes = attributesRaw is String
+            ? WordAttributes.fromLegacy(attributesRaw)
+            : (attributesRaw is Map
+                ? WordAttributes.fromJson(attributesRaw)
+                : WordAttributes.blank());
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_userId)
+            .collection('words')
+            .add({
+          'native': native,
+          'pronunciation': word['pronunciation'] ?? '',
+          'translation': word['translation'] ?? '',
+          'attributes': attributes.toJson(),
         });
       }
 
@@ -84,11 +126,15 @@ class FirebaseService {
 
   Future<Word?> addWord(Word word) async {
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').add({
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userId)
+          .collection('words')
+          .add({
         'native': word.native,
         'pronunciation': word.pronunciation,
         'translation': word.translation,
-        'attributes': word.attributes,
+        'attributes': word.attributes.toJson(),
       });
 
       return Word(
@@ -107,17 +153,26 @@ class FirebaseService {
     List<Word> words = [];
 
     try {
-      final snapshot = await FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get();
-      // need to wrap in try-catch block to handle errors
-      snapshot.docs.forEach((doc) {
-        words.add(Word(
-          id: doc.id,
-          native: doc['native'],
-          pronunciation: doc['pronunciation'],
-          translation: doc['translation'],
-          attributes: doc['attributes'],
-        ));
-      });
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userId)
+          .collection('words')
+          .get();
+      // Each document is parsed independently through the tolerant parser, so
+      // one legacy-shaped or incomplete document cannot abort the whole
+      // fetch.
+      for (final doc in snapshot.docs) {
+        try {
+          words.add(wordFromDocument(doc.data(), doc.id));
+        } catch (e) {
+          // Counts only - never the word content.
+          developer.log(
+            'firebase.getWords.skippedDocument error=${e.runtimeType}',
+            name: 'WORD_PARSE',
+            level: 900,
+          );
+        }
+      }
     } catch (e) {
       FlashcardSnackbar.showSnackBar('Error fetching words');
     }
@@ -126,17 +181,27 @@ class FirebaseService {
   }
 
   void updateWord(Word word) {
-    FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').doc(word.id).update({
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .collection('words')
+        .doc(word.id)
+        .update({
       'native': word.native,
       'pronunciation': word.pronunciation,
       'translation': word.translation,
-      'attributes': word.attributes,
+      'attributes': word.attributes.toJson(),
     });
   }
 
   // leave here. Not used in the app, but useful
   void clearDatabase() {
-    FirebaseFirestore.instance.collection('users').doc(_userId).collection('words').get().then((snapshot) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(_userId)
+        .collection('words')
+        .get()
+        .then((snapshot) {
       for (DocumentSnapshot doc in snapshot.docs) {
         doc.reference.delete();
       }

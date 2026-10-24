@@ -1,4 +1,127 @@
-## 0.14.0
+## 0.27.0
+
+### Other
+
+- refactor: hoist constants, extract button builders, add test reasons
+
+Address code-review findings #1,#2,#3,#5: replace magic numbers with named consts and extract _genderButton()/_numberButton() in WordAttributesInput (build stays under 50 lines); add reason: to every expect() in word_attributes_test; hoist 'Plural'/'·' literals to consts in FlashCardWidget; add PLAN.md with tech-debt notes. (#4 widget tests deferred per request.)
+
+## 0.26.0
+
+### Refactor
+
+- Improve layout and padding in WordAttributesInput widget
+
+## 0.25.0
+
+### Other
+
+- feat: Implement Firestore backfill and migration logic
+
+- Added FirestoreBackfill class for shape-driven normalization of legacy documents in the user's cloud word collection.
+- Integrated Firestore backfill into AppController to run as a background task on user sign-in.
+- Updated WordController to reference user-specific word collections in Firestore.
+- Introduced repairData method in AppController to re-run migrations and backfill on user request.
+- Enhanced migration logging to include step IDs and force re-run capability.
+- Added tests for FirestoreBackfill and MigrationRunner to ensure correct functionality and edge case handling.
+- Removed deprecated Firestore backfill service from the codebase.
+
+## [0.24.0] - 2026-10-24
+  
+### Refactor
+  
+- Improve layout and padding in WordAttributesInput widget
+
+## 0.23.0
+
+### Enh
+
+- Implement Firestore backfill and migration logic
+
+
+## [0.22.0] - 2026-10-23
+  
+### Enhancement
+  
+- Implement Firestore backfill and migration logic
+
+- Added FirestoreBackfill class for shape-driven normalization of legacy documents in the user's cloud word collection.
+- Integrated Firestore backfill into AppController to run as a background task on user sign-in.
+- Updated WordController to reference user-specific word collections in Firestore.
+- Introduced repairData method in AppController to re-run migrations and backfill on user request.
+- Enhanced migration logging to include step IDs and force re-run capability.
+- Added tests for FirestoreBackfill and MigrationRunner to ensure correct functionality and edge case handling.
+- Removed deprecated Firestore backfill service from the codebase.
+
+## 0.22.1
+
+### Refactor
+
+- complete Phase 1 of word attributes migration with legacy support and tests
+
+## 0.21.0
+
+### Feat
+
+- Created a tolerant reader pending new word migration
+
+## [0.20.2] - 2026-10-23
+  
+### Refactor
+  
+- complete Phase 1 of word attributes migration with legacy support and tests
+
+## 0.20.1
+
+### Refactor
+
+- enhance WordAttributes with legacy support and improved JSON handling
+
+## [0.20.0] - 2026-10-22
+  
+### Feature
+  
+- Created a tolerant reader pending new word migration
+
+## 0.19.0
+
+### Docs
+
+- add migration plan for word attribute schema from String to WordAttributes
+
+## [0.18.1] - 2026-10-22
+  
+### Refactor
+  
+- enhance WordAttributes with legacy support and improved JSON handling
+
+## 0.18.0
+
+### Other
+
+- Refactor word attributes handling and improve code formatting
+
+## 0.17.0
+
+### Other
+
+- Refactor word attributes handling and improve code formatting
+
+## [0.15.0] - 2026-10-22
+  
+### Enhancement
+  
+Refactor word attributes handling and improve code formatting
+
+- Introduced a new `Gender` enum and `WordAttributes` model to manage grammatical attributes of words.
+- Updated `Word` model to use `WordAttributes` instead of a string for attributes.
+- Refactored `SoundController`, `WritingController`, and `WordLogic` to accommodate changes in word attributes.
+- Enhanced UI components to include `WordAttributesInput` for selecting gender and plurality.
+- Improved code formatting for better readability across multiple files.
+- Removed deprecated `pubspec.template.yaml` file.
+- Added tests to ensure proper functionality of word logic with new attributes.
+
+## [0.14.0]
 
 ### Refactor
 

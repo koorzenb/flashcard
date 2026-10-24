@@ -1,3 +1,4 @@
+import '../models/word_attributes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,7 +37,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 native: '',
                 pronunciation: '',
                 translation: '',
-                attributes: '',
+                attributes: WordAttributes.blank(),
                 isNew: true,
               ),
             )),

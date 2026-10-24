@@ -4,7 +4,8 @@ import '../models/word.dart';
 import 'check_word_result.dart';
 
 class WritingLogic {
-  static CheckWordResult checkWord(String enteredText, Word currentWord, int attemptsRemaining, int score) {
+  static CheckWordResult checkWord(
+      String enteredText, Word currentWord, int attemptsRemaining, int score) {
     final isCorrect = enteredText == currentWord.native;
 
     if (!isCorrect) {

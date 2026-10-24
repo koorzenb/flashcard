@@ -5,7 +5,8 @@ class DrawerItem extends StatelessWidget {
   final void Function() onTap;
   final IconData? icon;
 
-  const DrawerItem({required this.title, required this.onTap, this.icon, super.key});
+  const DrawerItem(
+      {required this.title, required this.onTap, this.icon, super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -121,7 +121,7 @@ lib/
 - **Authentication:** email/password sign-in and sign-up via `firebase_ui_auth`; auth state persisted by Firebase; per-user data isolation (Firestore subcollection + per-user Hive box + per-user Storage folder).
 - **Home / Reading (flashcards):** tap card → new random word → 4 s `CircularProgressIndicator` → pronunciation + translation + attributes fade in over 2 s. Long-press card → edit word.
 - **Word list:** searchable list (searches both native and translation fields); tap to view/edit details.
-- **Add / edit word:** form with native word, pronunciation, English translation, attributes; optional hold-to-record audio; delete from app bar.
+- **Add / edit word:** form with native word, pronunciation, English translation; grammatical attributes (gender + singular/plural) picked via icon-led segmented controls (`WordAttributesInput`, defaults: neutral + singular); optional hold-to-record audio; delete from app bar.
 - **Writing / dictation:** plays the word's audio; user types the native word; exact-match check; 2 attempts (correct answer revealed after 0 attempts); score increments only on first-attempt correct; next word after a 2 s delay.
 - **Welcome message** shown once on first launch (flag in `MainAppStorage`).
 - **Sign out:** clears local data, returns to sign-in.
@@ -172,7 +172,6 @@ build-prod-apk.bat
 - **Audio download & offline sync:** implement `downloadAudioFile` so clips recorded on another device can be fetched from Storage.
 - **Word-list audio indicator:** show an audio icon on list items that have recordings.
 - **Reversed practice direction:** toggle showing translation → native (currently always native-first).
-- **Richer attributes UI:** checkboxes for gender/plural with color-coded display.
 
 ---
 
@@ -180,6 +179,7 @@ build-prod-apk.bat
 
 - `test/logic/word_logic_test.dart` — WordLogic queue behavior (uses `@visibleForTesting` hooks like `WordLogic.removeInstance()`, `unreadWords`).
 - `test/logic/writing_logic_test.dart` — WritingLogic.checkWord scoring/attempts.
+- `test/models/word_test.dart` — Word/WordAttributes JSON round trip (nested attributes map, blank defaults).
 - `test/test_helper.dart` — shared helpers.
 - Convention: new logic classes should be pure enough to unit-test without Firebase or widgets. UI/controller tests are currently absent.
 

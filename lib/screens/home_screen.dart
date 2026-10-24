@@ -1,4 +1,5 @@
-import 'package:flashcard/widgets/word_list.dart';
+import '../models/word_attributes.dart';
+import '../widgets/word_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 native: '',
                 pronunciation: '',
                 translation: '',
-                attributes: '',
+                attributes: WordAttributes.blank(),
                 isNew: true,
               ),
             )),

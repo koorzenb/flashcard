@@ -55,8 +55,11 @@ class WordController extends GetxController {
     update();
 
     try {
-      final collectionReference =
-          FirebaseFirestore.instance.collection('words');
+      final userId = FlashcardAuthService.getOrPut.userId.value;
+      final collectionReference = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('words');
       QuerySnapshot querySnapshot = await collectionReference
           .where('native', isEqualTo: word.native)
           .get();

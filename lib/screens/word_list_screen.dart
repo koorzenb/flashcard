@@ -1,4 +1,4 @@
-import 'package:flashcard/widgets/word_list.dart';
+import '../widgets/word_list.dart';
 import 'package:flutter/material.dart';
 
 class WordListScreen extends StatelessWidget {
