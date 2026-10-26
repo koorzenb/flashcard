@@ -20,7 +20,7 @@ class WelcomeMessageContent extends StatelessWidget {
         SizedBox(height: dividerHeight),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text('Welcome to Kards!',
+          child: Text('Welcome to FlashCard!',
               style: Theme.of(context)
                   .textTheme
                   .headlineMedium!

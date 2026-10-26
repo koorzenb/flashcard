@@ -9,7 +9,7 @@ void main() async {
   try {
     await commonInit(
         DefaultFirebaseOptions.currentPlatform, ServerEnvironment.prod);
-    final displayName = 'Kards';
+    final displayName = 'FlashCard';
 
     final configuredApp = AppConfig(
       appDisplayName: displayName,
