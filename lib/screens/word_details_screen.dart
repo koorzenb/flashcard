@@ -1,6 +1,7 @@
 import '../models/word_attributes.dart';
 
 import '../widgets/flashcard_snackbar.dart';
+import '../widgets/niqqud_reference_card.dart';
 import '../widgets/word_attributes_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,8 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
   final _translationTextController = TextEditingController();
   bool _isLoading = false;
   bool _hasAudio = false;
+  bool _showNiqqudCard = false;
+  String _nativeTextAtCardOpen = '';
   late final String _tempAudioId;
   late WordAttributes _attributes;
 
@@ -37,12 +40,14 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
     _nativeTextController.text = widget.word.native;
     _pronunciationTextController.text = widget.word.pronunciation;
     _translationTextController.text = widget.word.translation;
+    _nativeTextController.addListener(_handleNativeTextChange);
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+    _nativeTextController.removeListener(_handleNativeTextChange);
     _nativeTextController.dispose();
     _pronunciationTextController.dispose();
     _translationTextController.dispose();
@@ -52,6 +57,7 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isUpdating = !widget.word.isNew;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -92,10 +98,19 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                           icon: const Icon(Icons.translate),
                           hintText: 'What is the native word?',
                           labelText: 'Native word',
-                          filled: _nativeTextController.text.isNotEmpty,
-                          fillColor: _nativeTextController.text.isNotEmpty
-                              ? Colors.grey[300]
-                              : null,
+                          filled: isUpdating,
+                          fillColor: isUpdating ? Colors.grey[300] : null,
+                          suffixIcon: IconButton(
+                            tooltip: 'Show niqqud reference',
+                            visualDensity: VisualDensity.compact,
+                            padding: EdgeInsets.zero,
+                            icon: const Icon(Icons.keyboard_outlined, size: 21),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withValues(alpha: 0.6),
+                            onPressed: _toggleNiqqudCard,
+                          ),
                         ),
                         keyboardType: TextInputType.name,
                         textInputAction: TextInputAction.next,
@@ -104,12 +119,20 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
                               ? 'Please enter valid word'
                               : null;
                         },
-                        enabled: _nativeTextController.text.isEmpty,
+                        enabled: !isUpdating,
                         style: TextStyle(
-                          color: _nativeTextController.text.isNotEmpty
-                              ? Colors.grey
-                              : Colors.black,
+                          color: isUpdating ? Colors.grey : Colors.black,
                         ),
+                      ),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        child: _showNiqqudCard
+                            ? NiqqudReferenceCard(
+                                key: const ValueKey('niqqudCard'),
+                                onClose: () =>
+                                    setState(() => _showNiqqudCard = false),
+                              )
+                            : const SizedBox.shrink(key: ValueKey('empty')),
                       ),
                       Row(
                         children: [
@@ -210,6 +233,24 @@ class _WordDetailsScreenState extends State<WordDetailsScreen> {
         ),
       )),
     );
+  }
+
+  void _handleNativeTextChange() {
+    if (!_showNiqqudCard) return;
+    if (_nativeTextController.text != _nativeTextAtCardOpen) {
+      setState(() => _showNiqqudCard = false);
+    }
+  }
+
+  void _toggleNiqqudCard() {
+    setState(() {
+      if (_showNiqqudCard) {
+        _showNiqqudCard = false;
+      } else {
+        _nativeTextAtCardOpen = _nativeTextController.text;
+        _showNiqqudCard = true;
+      }
+    });
   }
 
   Future<void> _saveWord() async {

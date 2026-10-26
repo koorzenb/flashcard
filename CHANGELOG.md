@@ -1,3 +1,15 @@
+## 0.31.1
+
+### Fix
+
+- update branding from "Kards" to "FlashCard" in documentation and spell check
+
+## [0.31.0] - 2026-10-26
+  
+### Feature
+  
+- add niqqud reference card and integrate with word details screen
+
 ## 0.30.0
 
 ### Other
