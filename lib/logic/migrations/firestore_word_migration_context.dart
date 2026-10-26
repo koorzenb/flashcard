@@ -16,8 +16,8 @@ class FirestoreWordMigrationContext implements MigrationContext {
   FirestoreWordMigrationContext({
     required FirebaseFirestore firestore,
     required String userId,
-  })  : _firestore = firestore,
-        _userId = userId;
+  }) : _firestore = firestore,
+       _userId = userId;
 
   /// The field on the user document that holds the container's schema version.
   static const String versionField = 'wordSchemaVersion';
@@ -60,12 +60,15 @@ class FirestoreWordMigrationContext implements MigrationContext {
       // creating a new document.
       //
       // Writes are chunked to stay within Firestore's 500-operation limit.
-      for (var chunkStart = 0;
-          chunkStart < words.length;
-          chunkStart += maxBatchSize) {
-        final chunkEnd = (chunkStart + maxBatchSize > words.length)
-            ? words.length
-            : chunkStart + maxBatchSize;
+      for (
+        var chunkStart = 0;
+        chunkStart < words.length;
+        chunkStart += maxBatchSize
+      ) {
+        final chunkEnd =
+            (chunkStart + maxBatchSize > words.length)
+                ? words.length
+                : chunkStart + maxBatchSize;
         final batch = _firestore.batch();
         var updated = 0;
 
@@ -144,8 +147,9 @@ class FirestoreWordMigrationContext implements MigrationContext {
   /// [Word.fromJson], so a legacy string `attributes` field or a missing
   /// field degrades gracefully instead of throwing.
   static Word wordFromDocument(String docId, Map<String, dynamic>? data) {
-    final Map<String, dynamic> fields =
-        Map<String, dynamic>.from(data ?? const <String, dynamic>{});
+    final Map<String, dynamic> fields = Map<String, dynamic>.from(
+      data ?? const <String, dynamic>{},
+    );
     fields['id'] = docId;
     return Word.fromJson(fields);
   }
@@ -155,11 +159,11 @@ class FirestoreWordMigrationContext implements MigrationContext {
   /// The `id` is deliberately **not** part of the body: it is the document
   /// id, and duplicating it in the body would let the two drift apart.
   static Map<String, dynamic> wordToDocument(Word word) => {
-        'native': word.native,
-        'pronunciation': word.pronunciation,
-        'translation': word.translation,
-        'attributes': word.attributes.toJson(),
-        'audioId': word.audioId,
-        'isNew': word.isNew,
-      };
+    'native': word.native,
+    'pronunciation': word.pronunciation,
+    'translation': word.translation,
+    'attributes': word.attributes.toJson(),
+    'audioId': word.audioId,
+    'isNew': word.isNew,
+  };
 }

@@ -28,10 +28,9 @@ class WordController extends GetxController {
 
   WordController._() {
     WordLogic.initializeWords(
-            WordStorage.box.words,
-            FirebaseService(FlashcardAuthService.getOrPut.userId.value)
-                .getWords)
-        .then((words) {
+      WordStorage.box.words,
+      FirebaseService(FlashcardAuthService.getOrPut.userId.value).getWords,
+    ).then((words) {
       if (words.isNotEmpty) {
         // TODO: do search for audioFiles (will return a list of audio files) and update the words with their audioIds
         // TODO:  ListTiles in WordList widget should then have an audio icon if the word has an audio file
@@ -48,9 +47,11 @@ class WordController extends GetxController {
   Word get currentWord => _currentWord;
 
   Future<void> deleteWord(Word word) async {
-    _words.removeWhere((element) =>
-        element.native == word.native &&
-        element.translation == word.translation);
+    _words.removeWhere(
+      (element) =>
+          element.native == word.native &&
+          element.translation == word.translation,
+    );
     WordStorage.box.words = _words.toList();
     update();
 
@@ -60,9 +61,10 @@ class WordController extends GetxController {
           .collection('users')
           .doc(userId)
           .collection('words');
-      QuerySnapshot querySnapshot = await collectionReference
-          .where('native', isEqualTo: word.native)
-          .get();
+      QuerySnapshot querySnapshot =
+          await collectionReference
+              .where('native', isEqualTo: word.native)
+              .get();
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
         await doc.reference.delete();
@@ -82,8 +84,9 @@ class WordController extends GetxController {
 
   Future<void> onLongPress() async {
     if (_currentWord.native.isNotEmpty) {
-      final updatedWord = await Get.to(() => WordDetailsScreen(
-          title: 'Update Word', word: _currentWord)); //TODO: show updated word
+      final updatedWord = await Get.to(
+        () => WordDetailsScreen(title: 'Update Word', word: _currentWord),
+      ); //TODO: show updated word
       if (updatedWord != null) {
         _currentWord = updatedWord;
         update();
@@ -92,13 +95,16 @@ class WordController extends GetxController {
   }
 
   void onSearchChange(String text) {
-    _filteredWords = _words
-        .where((word) =>
-            word.translation.contains(text) ||
-            word.translation.startsWith(text) ||
-            word.native.contains(text) ||
-            word.native.startsWith(text))
-        .toList();
+    _filteredWords =
+        _words
+            .where(
+              (word) =>
+                  word.translation.contains(text) ||
+                  word.translation.startsWith(text) ||
+                  word.native.contains(text) ||
+                  word.native.startsWith(text),
+            )
+            .toList();
     update();
   }
 
@@ -121,16 +127,18 @@ class WordController extends GetxController {
   }
 
   Future<void> updateAudioFileName(Word currentWord, Word updatedWord) async {
-    await SoundController.getOrPut
-        .updateStorageAudioFilename(currentWord.audioId, updatedWord.id);
+    await SoundController.getOrPut.updateStorageAudioFilename(
+      currentWord.audioId,
+      updatedWord.id,
+    );
     updatedWord.audioId = updatedWord.id;
     await _updateWord(updatedWord); //  updated the Firebase audioId
   }
 
   Future<Word?>? _addWord(Word word) async {
-    final updatedWord =
-        await FirebaseService(FlashcardAuthService.getOrPut.userId.value)
-            .addWord(word);
+    final updatedWord = await FirebaseService(
+      FlashcardAuthService.getOrPut.userId.value,
+    ).addWord(word);
     if (updatedWord != null) {
       WordLogic.instance.addWord(updatedWord, _words);
       update();
@@ -140,8 +148,9 @@ class WordController extends GetxController {
   }
 
   Future<bool> _updateWord(Word word) async {
-    FirebaseService(FlashcardAuthService.getOrPut.userId.value)
-        .updateWord(word);
+    FirebaseService(
+      FlashcardAuthService.getOrPut.userId.value,
+    ).updateWord(word);
     final index = _words.indexWhere((element) => element.id == word.id);
 
     if (index == -1) {

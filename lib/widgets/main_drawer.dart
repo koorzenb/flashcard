@@ -27,18 +27,14 @@ class MainDrawer extends StatelessWidget {
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
                         'Menu',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge!
+                        style: Theme.of(context).textTheme.headlineLarge!
                             .copyWith(color: Colors.black),
                       ),
                     ),
                   ),
                   padding: EdgeInsets.all(0),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 DrawerItem(
                   icon: Icons.list,
                   title: 'Word List',
@@ -59,14 +55,15 @@ class MainDrawer extends StatelessWidget {
             children: [
               Divider(),
               DrawerItem(
-                  title: 'Sign Out',
-                  onTap: () {
-                    FlashcardAuthService.getOrPut.signOut();
-                    clearAppData();
-                  },
-                  icon: Icons.logout),
+                title: 'Sign Out',
+                onTap: () {
+                  FlashcardAuthService.getOrPut.signOut();
+                  clearAppData();
+                },
+                icon: Icons.logout,
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

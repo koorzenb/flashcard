@@ -38,7 +38,8 @@ class SoundController extends GetxController {
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
       throw RecordingPermissionException(
-          'Microphone permission not granted'); // TODO: Handle this error
+        'Microphone permission not granted',
+      ); // TODO: Handle this error
     }
 
     _recorder = FlutterSoundRecorder(logLevel: Level.off);
@@ -78,8 +79,10 @@ class SoundController extends GetxController {
       // - ls -lh
 
       await _recorder.startRecorder(
-        toFile:
-            path.join(_directoryPath, '$id.${AppConstants.audioFileExtension}'),
+        toFile: path.join(
+          _directoryPath,
+          '$id.${AppConstants.audioFileExtension}',
+        ),
         codec: codec,
         bitRate: 16000, // Low quality bitrate
         sampleRate: 16000, // Low quality sample rate
@@ -113,24 +116,36 @@ class SoundController extends GetxController {
   }
 
   Future<void> updateStorageAudioFilename(
-      String currentAudioId, String newAudioId) async {
+    String currentAudioId,
+    String newAudioId,
+  ) async {
     if (currentAudioId == newAudioId) {
       return;
     }
 
-    final tempFilepath = File(path.join(_directoryPath,
-        '${currentAudioId}.${AppConstants.audioFileExtension}'));
+    final tempFilepath = File(
+      path.join(
+        _directoryPath,
+        '${currentAudioId}.${AppConstants.audioFileExtension}',
+      ),
+    );
 
     if (await tempFilepath.exists()) {
-      await tempFilepath.rename(path.join(
-          _directoryPath, '$newAudioId.${AppConstants.audioFileExtension}'));
+      await tempFilepath.rename(
+        path.join(
+          _directoryPath,
+          '$newAudioId.${AppConstants.audioFileExtension}',
+        ),
+      );
     }
   }
 
   Future<void> uploadAudioFile(String audioId) async {
     try {
       final filePath = path.join(
-          _directoryPath, '$audioId.${AppConstants.audioFileExtension}');
+        _directoryPath,
+        '$audioId.${AppConstants.audioFileExtension}',
+      );
       final file = File(filePath);
 
       if (!await file.exists()) {

@@ -31,47 +31,49 @@ void main() {
       expect(words.first.attributes.attributesRaw, 'masculine');
     });
 
-    test('a legacy list of three words (mixed shapes) is fully converted',
-        () async {
-      final ctx = FakeMigrationContext(
-        words: [
-          Word(
-            id: 'a',
-            native: 'der Hund',
-            pronunciation: '',
-            translation: 'dog',
-            attributes: WordAttributes.fromLegacy('masculine'),
-          ),
-          Word(
-            id: 'b',
-            native: 'die Katze',
-            pronunciation: '',
-            translation: 'cat',
-            attributes: const WordAttributes(
-              gender: Gender.female,
-              isPlural: false,
+    test(
+      'a legacy list of three words (mixed shapes) is fully converted',
+      () async {
+        final ctx = FakeMigrationContext(
+          words: [
+            Word(
+              id: 'a',
+              native: 'der Hund',
+              pronunciation: '',
+              translation: 'dog',
+              attributes: WordAttributes.fromLegacy('masculine'),
             ),
-          ),
-          Word(
-            id: 'c',
-            native: 'das Haus',
-            pronunciation: '',
-            translation: 'house',
-            attributes: const WordAttributes.blank(),
-          ),
-        ],
-      );
+            Word(
+              id: 'b',
+              native: 'die Katze',
+              pronunciation: '',
+              translation: 'cat',
+              attributes: const WordAttributes(
+                gender: Gender.female,
+                isPlural: false,
+              ),
+            ),
+            Word(
+              id: 'c',
+              native: 'das Haus',
+              pronunciation: '',
+              translation: 'house',
+              attributes: const WordAttributes.blank(),
+            ),
+          ],
+        );
 
-      await const AttributesMigration().run(ctx);
+        await const AttributesMigration().run(ctx);
 
-      final words = await ctx.readWords();
-      expect(words.length, 3);
-      expect(words[0].attributes.gender, Gender.male);
-      expect(words[0].attributes.attributesRaw, 'masculine');
-      expect(words[1].attributes.gender, Gender.female);
-      expect(words[2].attributes.gender, Gender.neutral);
-      expect(words.map((w) => w.id), ['a', 'b', 'c']);
-    });
+        final words = await ctx.readWords();
+        expect(words.length, 3);
+        expect(words[0].attributes.gender, Gender.male);
+        expect(words[0].attributes.attributesRaw, 'masculine');
+        expect(words[1].attributes.gender, Gender.female);
+        expect(words[2].attributes.gender, Gender.neutral);
+        expect(words.map((w) => w.id), ['a', 'b', 'c']);
+      },
+    );
 
     test('running the step twice produces byte-identical output', () async {
       final ctx = FakeMigrationContext(

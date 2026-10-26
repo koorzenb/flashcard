@@ -78,12 +78,11 @@ class FirestoreBackfill {
     List<Map<String, dynamic>?> orphanData,
     List<Map<String, dynamic>?> userData,
   ) {
-    final userKeys = userData
-        .whereType<Map<String, dynamic>>()
-        .map(
-          (d) => '${d['native'] ?? ''}\u0000${d['translation'] ?? ''}',
-        )
-        .toSet();
+    final userKeys =
+        userData
+            .whereType<Map<String, dynamic>>()
+            .map((d) => '${d['native'] ?? ''}\u0000${d['translation'] ?? ''}')
+            .toSet();
 
     var matched = 0;
     for (final data in orphanData) {
@@ -127,10 +126,15 @@ class FirestoreBackfill {
       );
     }
 
-    final before = docs
-        .map((d) =>
-            FirestoreWordMigrationContext.wordFromDocument(d.id, d.data()))
-        .toList();
+    final before =
+        docs
+            .map(
+              (d) => FirestoreWordMigrationContext.wordFromDocument(
+                d.id,
+                d.data(),
+              ),
+            )
+            .toList();
     var written = 0;
 
     try {
@@ -146,10 +150,15 @@ class FirestoreBackfill {
 
       // Integrity check: compare the pre- and post-migration Word lists.
       final afterSnapshot = await _wordsRef.get();
-      final after = afterSnapshot.docs
-          .map((d) =>
-              FirestoreWordMigrationContext.wordFromDocument(d.id, d.data()))
-          .toList();
+      final after =
+          afterSnapshot.docs
+              .map(
+                (d) => FirestoreWordMigrationContext.wordFromDocument(
+                  d.id,
+                  d.data(),
+                ),
+              )
+              .toList();
       final report = MigrationIntegrityCheck.compare(before, after);
 
       MigrationLog.integrity(
@@ -225,10 +234,9 @@ class FirestoreBackfill {
   }
 
   Future<void> _writeVersion(int version) async {
-    await _userRef.set(
-      {FirestoreWordMigrationContext.versionField: version},
-      SetOptions(merge: true),
-    );
+    await _userRef.set({
+      FirestoreWordMigrationContext.versionField: version,
+    }, SetOptions(merge: true));
   }
 }
 
@@ -250,11 +258,7 @@ class BackfillReport {
 }
 
 /// The kind of action a backfill reported.
-enum BackfillAction {
-  none,
-  success,
-  failure,
-}
+enum BackfillAction { none, success, failure }
 
 /// Result of matching orphan documents against the user's own words.
 class OrphanMatchResult {

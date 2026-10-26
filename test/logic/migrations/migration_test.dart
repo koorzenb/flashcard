@@ -127,8 +127,10 @@ void main() {
 
     test('registers steps whose toVersion does not exceed the app version', () {
       for (final step in MigrationRegistry.steps) {
-        expect(step.toVersion,
-            lessThanOrEqualTo(AppConstants.currentWordSchemaVersion));
+        expect(
+          step.toVersion,
+          lessThanOrEqualTo(AppConstants.currentWordSchemaVersion),
+        );
       }
     });
 

@@ -31,7 +31,8 @@ class AppController {
   static AppController get instance {
     if (_instance == null) {
       throw StateError(
-          'AppController not initialized. Call AppController.initialize() first.');
+        'AppController not initialized. Call AppController.initialize() first.',
+      );
     }
     return _instance!;
   }
@@ -55,8 +56,10 @@ class AppController {
     controller._currentUser = FirebaseAuth.instance.currentUser;
 
     // Listen to auth state changes to handle sign-in and sign-out events
-    controller._authSubscription =
-        FirebaseAuth.instance.authStateChanges().listen((user) {
+    controller
+        ._authSubscription = FirebaseAuth.instance.authStateChanges().listen((
+      user,
+    ) {
       controller._currentUser = user;
       if (user != null &&
           !WordStorage.isInitialized &&
@@ -135,10 +138,8 @@ class AppController {
   /// never thrown — a failed backfill retries on the next sign-in.
   Future<void> _runCloudBackfill(String userId) async {
     try {
-      final report = await FirestoreBackfill(
-        FirebaseFirestore.instance,
-        userId,
-      ).run();
+      final report =
+          await FirestoreBackfill(FirebaseFirestore.instance, userId).run();
       developer.log(
         'FirestoreBackfill action=${report.action.name} '
         'written=${report.writtenCount} total=${report.localCount}',
@@ -168,10 +169,7 @@ class AppController {
       box: WordStorage.box.rawBox,
       scopeLabel: 'local-words-force',
     );
-    final runner = MigrationRunner(
-      steps: MigrationRegistry.steps,
-      force: true,
-    );
+    final runner = MigrationRunner(steps: MigrationRegistry.steps, force: true);
     final localResult = await runner.run(context);
 
     developer.log(

@@ -19,7 +19,5 @@ class MigrationRegistry {
   const MigrationRegistry._();
 
   /// The known steps.
-  static const List<Migration> steps = <Migration>[
-    AttributesMigration(),
-  ];
+  static const List<Migration> steps = <Migration>[AttributesMigration()];
 }

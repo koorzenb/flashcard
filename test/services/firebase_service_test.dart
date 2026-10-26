@@ -32,9 +32,7 @@ void main() {
     });
 
     test('tolerates a missing attributes field', () {
-      final word = FirebaseService.wordFromDocument({
-        'native': 'x',
-      }, 'doc3');
+      final word = FirebaseService.wordFromDocument({'native': 'x'}, 'doc3');
 
       expect(word.attributes.gender, Gender.neutral);
       expect(word.attributes.isPlural, isFalse);

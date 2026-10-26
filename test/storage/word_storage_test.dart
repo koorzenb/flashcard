@@ -66,10 +66,9 @@ void main() {
     });
 
     test('reads a legacy attributes string from the persisted payload', () {
-      Hive.box(kBoxName).put(
-        'wordListJson',
-        '[{"native":"der Hund","attributes":"masculine"}]',
-      );
+      Hive.box(
+        kBoxName,
+      ).put('wordListJson', '[{"native":"der Hund","attributes":"masculine"}]');
 
       final words = WordStorage.box.words;
 

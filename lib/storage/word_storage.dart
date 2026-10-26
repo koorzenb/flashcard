@@ -21,7 +21,8 @@ class WordStorage {
 
   static Future<void> init(String storageName) async =>
       _staticBox = await Hive.openBox(
-          storageName.isEmpty ? 'WordStorage' : '${storageName}_WordStorage');
+        storageName.isEmpty ? 'WordStorage' : '${storageName}_WordStorage',
+      );
 
   static Future<void> close() async => await _staticBox?.close();
 

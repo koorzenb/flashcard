@@ -12,31 +12,30 @@ class Word {
   String audioId;
   final bool isNew;
 
-  Word(
-      {this.id = '',
-      required this.native,
-      required this.pronunciation,
-      required this.translation,
-      this.attributes = const WordAttributes.blank(),
-      this.attributesRaw,
-      this.audioId = '',
-      this.isNew = false});
+  Word({
+    this.id = '',
+    required this.native,
+    required this.pronunciation,
+    required this.translation,
+    this.attributes = const WordAttributes.blank(),
+    this.attributesRaw,
+    this.audioId = '',
+    this.isNew = false,
+  });
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'native': native,
-        'pronunciation': pronunciation,
-        'translation': translation,
-        'attributes': attributes.toJson(),
-        'audioId': audioId,
-        'isNew': isNew,
-        'attributesRaw': attributesRaw,
-      };
+    'id': id,
+    'native': native,
+    'pronunciation': pronunciation,
+    'translation': translation,
+    'attributes': attributes.toJson(),
+    'audioId': audioId,
+    'isNew': isNew,
+    'attributesRaw': attributesRaw,
+  };
 
   static List<dynamic> arrayToJsonList(List<Word> words) {
-    return List<dynamic>.from(
-      words.map((x) => x.toJson()),
-    );
+    return List<dynamic>.from(words.map((x) => x.toJson()));
   }
 
   /// Builds a [Word] from any persisted shape.
@@ -49,15 +48,15 @@ class Word {
   /// map format and the legacy free-text string). Unknown fields are ignored,
   /// so a record written by a newer app build still loads.
   factory Word.fromJson(Map<String, dynamic> json) => Word(
-        id: _readString(json['id']),
-        native: _readString(json['native']),
-        pronunciation: _readString(json['pronunciation']),
-        translation: _readString(json['translation']),
-        attributes: WordAttributes.fromJson(json['attributes']),
-        audioId: _readString(json['audioId']),
-        isNew: json['isNew'] == true,
-        attributesRaw: json['attributesRaw'] as String?,
-      );
+    id: _readString(json['id']),
+    native: _readString(json['native']),
+    pronunciation: _readString(json['pronunciation']),
+    translation: _readString(json['translation']),
+    attributes: WordAttributes.fromJson(json['attributes']),
+    audioId: _readString(json['audioId']),
+    isNew: json['isNew'] == true,
+    attributesRaw: json['attributesRaw'] as String?,
+  );
 
   /// Reads a persisted string field, tolerating a missing, null or
   /// non-string value by falling back to an empty string.
@@ -123,13 +122,13 @@ class Word {
 
   @override
   int get hashCode => Object.hash(
-        id,
-        native,
-        pronunciation,
-        translation,
-        attributes,
-        attributesRaw,
-        audioId,
-        isNew,
-      );
+    id,
+    native,
+    pronunciation,
+    translation,
+    attributes,
+    attributesRaw,
+    audioId,
+    isNew,
+  );
 }

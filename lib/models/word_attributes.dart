@@ -16,9 +16,9 @@ class WordAttributes {
   });
 
   const WordAttributes.blank()
-      : gender = Gender.neutral,
-        isPlural = false,
-        attributesRaw = null;
+    : gender = Gender.neutral,
+      isPlural = false,
+      attributesRaw = null;
 
   /// Legacy free-text tokens mapped to a gender.
   static const Map<String, Gender> _legacyGenders = {
@@ -36,10 +36,10 @@ class WordAttributes {
   static const Set<String> _legacyPluralTokens = {'pl', 'plural'};
 
   Map<String, dynamic> toJson() => {
-        'gender': gender.name,
-        'isPlural': isPlural,
-        if (attributesRaw != null) 'attributesRaw': attributesRaw,
-      };
+    'gender': gender.name,
+    'isPlural': isPlural,
+    if (attributesRaw != null) 'attributesRaw': attributesRaw,
+  };
 
   /// Builds attributes from any persisted shape.
   ///

@@ -6,14 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   List<Word> words(int count) => List<Word>.generate(
-        count,
-        (i) => Word(
-          id: 'id$i',
-          native: 'native$i',
-          pronunciation: 'pron$i',
-          translation: 'trans$i',
-        ),
-      );
+    count,
+    (i) => Word(
+      id: 'id$i',
+      native: 'native$i',
+      pronunciation: 'pron$i',
+      translation: 'trans$i',
+    ),
+  );
 
   group('MigrationIntegrityCheck.compare', () {
     test('reports an identical payload as fully unchanged', () {
@@ -86,20 +86,10 @@ void main() {
 
     test('falls back to native + translation for records without an id', () {
       final before = [
-        Word(
-          id: '',
-          native: 'der Hund',
-          pronunciation: '',
-          translation: 'dog',
-        ),
+        Word(id: '', native: 'der Hund', pronunciation: '', translation: 'dog'),
       ];
       final after = [
-        Word(
-          id: '',
-          native: 'der Hund',
-          pronunciation: '',
-          translation: 'dog',
-        ),
+        Word(id: '', native: 'der Hund', pronunciation: '', translation: 'dog'),
       ];
 
       final report = MigrationIntegrityCheck.compare(before, after);
@@ -124,8 +114,10 @@ void main() {
           native: 'der Hund',
           pronunciation: '',
           translation: 'dog',
-          attributes:
-              const WordAttributes(gender: Gender.male, isPlural: false),
+          attributes: const WordAttributes(
+            gender: Gender.male,
+            isPlural: false,
+          ),
         ),
       ];
 
@@ -142,8 +134,10 @@ void main() {
           native: 'der Hund',
           pronunciation: '',
           translation: 'dog',
-          attributes:
-              const WordAttributes(gender: Gender.male, isPlural: false),
+          attributes: const WordAttributes(
+            gender: Gender.male,
+            isPlural: false,
+          ),
         ),
       ];
       final after = [
@@ -152,8 +146,10 @@ void main() {
           native: 'der Hund',
           pronunciation: '',
           translation: 'dog',
-          attributes:
-              const WordAttributes(gender: Gender.female, isPlural: false),
+          attributes: const WordAttributes(
+            gender: Gender.female,
+            isPlural: false,
+          ),
         ),
       ];
 

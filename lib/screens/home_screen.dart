@@ -36,31 +36,25 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: MainDrawer(),
       body: Stack(
         children: [
-          Center(
-            child: WordList(),
-          ),
-          Positioned(
-            bottom: 16,
-            left: 16,
-            child: VersionCodeText(),
-          ),
+          Center(child: WordList()),
+          Positioned(bottom: 16, left: 16, child: VersionCodeText()),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Get.to(() => WordDetailsScreen(
-              title: 'Add Word',
-              word: Word(
-                native: '',
-                pronunciation: '',
-                translation: '',
-                attributes: WordAttributes.blank(),
-                isNew: true,
+        onPressed:
+            () async => await Get.to(
+              () => WordDetailsScreen(
+                title: 'Add Word',
+                word: Word(
+                  native: '',
+                  pronunciation: '',
+                  translation: '',
+                  attributes: WordAttributes.blank(),
+                  isNew: true,
+                ),
               ),
-            )),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+            ),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       //   bottomNavigationBar: NavigationBar(destinations: [
       //   NavBarDestination(
@@ -91,10 +85,6 @@ class NavBarDestination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      onTap: onTap,
-    );
+    return ListTile(leading: Icon(icon), title: Text(title), onTap: onTap);
   }
 }

@@ -19,49 +19,65 @@ class WordList extends StatelessWidget {
           hintText: 'Search...',
         ),
         Expanded(
-          child: GetBuilder<WordController>(builder: (wordController) {
-            return ListView.builder(
-              itemCount: wordController.filteredWords.length,
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () async => await Get.to(() => WordDetailsScreen(
-                      title: 'Update Word',
-                      word: wordController.filteredWords[index],
-                    )),
-                child: wordController.filteredWords.isEmpty
-                    ? Center(
-                        child: const Text(
-                            'No words here. Add some words!')) // FIXME: this is not working
-                    : Column(
-                        children: [
-                          ListTile(
-                            title: Text(wordController
-                                .filteredWords[index].translation),
-                            subtitle: Wrap(
-                              spacing: 8,
-                              children: [
-                                Text(
-                                    wordController.filteredWords[index].native),
-                                const SizedBox(width: 8),
-                                Text(
-                                  wordController
-                                      .filteredWords[index].pronunciation,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                              ],
+          child: GetBuilder<WordController>(
+            builder: (wordController) {
+              return ListView.builder(
+                itemCount: wordController.filteredWords.length,
+                itemBuilder:
+                    (context, index) => GestureDetector(
+                      onTap:
+                          () async => await Get.to(
+                            () => WordDetailsScreen(
+                              title: 'Update Word',
+                              word: wordController.filteredWords[index],
                             ),
                           ),
-                          const Divider(
-                            thickness: 1,
-                            color: Colors.grey,
-                          ),
-                        ],
-                      ),
-              ),
-            );
-          }),
+                      child:
+                          wordController.filteredWords.isEmpty
+                              ? Center(
+                                child: const Text(
+                                  'No words here. Add some words!',
+                                ),
+                              ) // FIXME: this is not working
+                              : Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      wordController
+                                          .filteredWords[index]
+                                          .translation,
+                                    ),
+                                    subtitle: Wrap(
+                                      spacing: 8,
+                                      children: [
+                                        Text(
+                                          wordController
+                                              .filteredWords[index]
+                                              .native,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          wordController
+                                              .filteredWords[index]
+                                              .pronunciation,
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Divider(
+                                    thickness: 1,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                    ),
+              );
+            },
+          ),
         ),
       ],
     );

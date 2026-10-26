@@ -44,19 +44,19 @@ void main() {
             'id': 'a',
             'native': 'der Hund',
             'translation': 'dog',
-            'attributes': 'masculine'
+            'attributes': 'masculine',
           },
           {
             'id': 'b',
             'native': 'die Katze',
             'translation': 'cat',
-            'attributes': 'feminine'
+            'attributes': 'feminine',
           },
           {
             'id': 'c',
             'native': 'das Haus',
             'translation': 'house',
-            'attributes': 'neuter'
+            'attributes': 'neuter',
           },
         ]),
       );
@@ -96,10 +96,7 @@ void main() {
       final ctx = HiveWordMigrationContext(box: _box());
       await MigrationRunner(steps: MigrationRegistry.steps).run(ctx);
 
-      expect(
-        _box().get(HiveWordMigrationContext.backupKey),
-        legacy,
-      );
+      expect(_box().get(HiveWordMigrationContext.backupKey), legacy);
     });
 
     test('a second run performs no writes', () async {
@@ -131,40 +128,46 @@ void main() {
           native: 'דָּבָר',
           pronunciation: '',
           translation: 'thing',
-          attributes:
-              const WordAttributes(gender: Gender.male, isPlural: false),
+          attributes: const WordAttributes(
+            gender: Gender.male,
+            isPlural: false,
+          ),
         ),
       ]);
       await ctx.writeVersion(1);
 
       final payloadBefore = _box().get(HiveWordMigrationContext.wordsKey);
-      final result =
-          await MigrationRunner(steps: MigrationRegistry.steps).run(ctx);
+      final result = await MigrationRunner(
+        steps: MigrationRegistry.steps,
+      ).run(ctx);
 
       expect(result.isSuccess, isTrue);
       expect(result.stepsRun, 0);
       expect(_box().get(HiveWordMigrationContext.wordsKey), payloadBefore);
     });
 
-    test('does not lose a record when the payload holds a malformed one',
-        () async {
-      await _box().put(
-        HiveWordMigrationContext.wordsKey,
-        jsonEncode([
-          {'id': 'a', 'native': 'der Hund', 'attributes': 'masculine'},
-          'not a map',
-          {'id': 'b', 'native': 'die Katze', 'attributes': 'feminine'},
-        ]),
-      );
+    test(
+      'does not lose a record when the payload holds a malformed one',
+      () async {
+        await _box().put(
+          HiveWordMigrationContext.wordsKey,
+          jsonEncode([
+            {'id': 'a', 'native': 'der Hund', 'attributes': 'masculine'},
+            'not a map',
+            {'id': 'b', 'native': 'die Katze', 'attributes': 'feminine'},
+          ]),
+        );
 
-      final ctx = HiveWordMigrationContext(box: _box());
-      final result =
-          await MigrationRunner(steps: MigrationRegistry.steps).run(ctx);
+        final ctx = HiveWordMigrationContext(box: _box());
+        final result = await MigrationRunner(
+          steps: MigrationRegistry.steps,
+        ).run(ctx);
 
-      expect(result.isSuccess, isTrue);
-      final words = await ctx.readWords();
-      expect(words.length, 2);
-      expect(words.map((w) => w.id), ['a', 'b']);
-    });
+        expect(result.isSuccess, isTrue);
+        final words = await ctx.readWords();
+        expect(words.length, 2);
+        expect(words.map((w) => w.id), ['a', 'b']);
+      },
+    );
   });
 }

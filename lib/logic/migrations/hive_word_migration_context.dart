@@ -20,11 +20,9 @@ import 'word_payload.dart';
 /// then swapped into place. A crash can therefore never leave the box
 /// without a readable word list.
 class HiveWordMigrationContext implements MigrationContext {
-  HiveWordMigrationContext({
-    required Box box,
-    String scopeLabel = 'hive',
-  })  : _box = box,
-        _scopeLabel = scopeLabel;
+  HiveWordMigrationContext({required Box box, String scopeLabel = 'hive'})
+    : _box = box,
+      _scopeLabel = scopeLabel;
 
   /// The key holding the word payload.
   static const String wordsKey = 'wordListJson';
@@ -117,8 +115,10 @@ class HiveWordMigrationContext implements MigrationContext {
           decoded = null;
         }
         if (decoded is Map) {
-          updated =
-              jsonEncode({...decoded, WordPayloadCodec.versionKey: version});
+          updated = jsonEncode({
+            ...decoded,
+            WordPayloadCodec.versionKey: version,
+          });
         } else if (decoded is List) {
           // A legacy bare list becomes an envelope, keeping every record.
           updated = jsonEncode({

@@ -13,6 +13,23 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
+// Compile every JavaCompile task -- the :app module and the Flutter plugin
+// subprojects (e.g. :jni, :flutter_sound, :permission_handler_android) that the
+// Flutter Gradle Plugin wires in as local Gradle modules -- with -source/-target
+// 17. They ship with the Java-8 default, and compiling Java-8 sources under JDK
+// 21 (used by Gradle 8.12 / AGP 8.7) prints "source value 8 is obsolete" and
+// "deprecated support for compiling with source/target version 8". Setting the
+// task-level source/target to 17 (which javac honors directly) removes those
+// advisories. -Xlint:-options is added too, as javac's prescribed remedy in case
+// a Java source set is configured elsewhere.
+subprojects {
+    tasks.withType(JavaCompile).configureEach {
+        sourceCompatibility = '17'
+        targetCompatibility = '17'
+        options.compilerArgs.addAll(['-Xlint:-options'])
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

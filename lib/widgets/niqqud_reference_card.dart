@@ -33,8 +33,10 @@ class NiqqudReferenceCard extends StatelessWidget {
     fontWeight: FontWeight.w600,
   );
 
-  static const EdgeInsets _chipPadding =
-      EdgeInsets.symmetric(horizontal: 10, vertical: 6);
+  static const EdgeInsets _chipPadding = EdgeInsets.symmetric(
+    horizontal: 10,
+    vertical: 6,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +65,9 @@ class NiqqudReferenceCard extends StatelessWidget {
         Text(
           'Hebrew Letters & Niqqud',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontFamily: 'Segeo UI',
-                fontWeight: FontWeight.bold,
-              ),
+            fontFamily: 'Segeo UI',
+            fontWeight: FontWeight.bold,
+          ),
         ),
         IconButton(
           tooltip: 'Close',
@@ -92,12 +94,7 @@ class NiqqudReferenceCard extends StatelessWidget {
 
   /// A clear, subtle divider drawn between keyboard rows.
   Widget _rowSeparator() {
-    return const Divider(
-      height: 16,
-      thickness: 0.5,
-      indent: 12,
-      endIndent: 12,
-    );
+    return const Divider(height: 16, thickness: 0.5, indent: 12, endIndent: 12);
   }
 
   /// Builds a single keyboard row as a horizontally-scrollable RTL line of

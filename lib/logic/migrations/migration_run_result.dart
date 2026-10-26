@@ -22,12 +22,12 @@ final class MigrationRunResult {
     required int stepsRun,
     List<String> stepIds = const [],
   }) : this._(
-          status: MigrationRunStatus.success,
-          fromVersion: fromVersion,
-          toVersion: toVersion,
-          stepsRun: stepsRun,
-          stepIds: stepIds,
-        );
+         status: MigrationRunStatus.success,
+         fromVersion: fromVersion,
+         toVersion: toVersion,
+         stepsRun: stepsRun,
+         stepIds: stepIds,
+       );
 
   /// The run was aborted at the first failing step.
   ///
@@ -49,13 +49,13 @@ final class MigrationRunResult {
     required int stepsRun,
     List<String> stepIds = const [],
   }) : this._(
-          status: MigrationRunStatus.aborted,
-          fromVersion: fromVersion,
-          toVersion: toVersion,
-          stepsRun: stepsRun,
-          failure: failure,
-          stepIds: stepIds,
-        );
+         status: MigrationRunStatus.aborted,
+         fromVersion: fromVersion,
+         toVersion: toVersion,
+         stepsRun: stepsRun,
+         failure: failure,
+         stepIds: stepIds,
+       );
 
   /// Whether the run completed or was aborted.
   final MigrationRunStatus status;
@@ -90,7 +90,8 @@ final class MigrationRunResult {
   bool get isAborted => status == MigrationRunStatus.aborted;
 
   @override
-  String toString() => 'MigrationRunResult(${status.name}, '
+  String toString() =>
+      'MigrationRunResult(${status.name}, '
       'from: $fromVersion, to: $toVersion, steps: $stepsRun'
       '${failure == null ? '' : ', failure: $failure'})';
 }

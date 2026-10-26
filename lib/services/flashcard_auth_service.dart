@@ -30,7 +30,6 @@ class FlashcardAuthService extends GetxController {
       // see documentation for more info
       // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/providers/email.md
       // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/README.md
-
       actions: [
         AuthStateChangeAction<SignedIn>((context, state) async {
           print('Signed in');
@@ -72,10 +71,6 @@ class FlashcardAuthService extends GetxController {
           AuthStorage.box.username = extractUsername(currentUser.email!);
 
           await Get.to(() => HomeScreen());
-        }),
-        AuthStateChangeAction<FetchingProvidersForEmail>(
-            (context, state) async {
-          print('Fetching providers for email');
         }),
       ],
     );
