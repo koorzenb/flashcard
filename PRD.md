@@ -1,4 +1,4 @@
-# PRD — Kards (FlashCard App)
+# PRD — FlashCard (FlashCard App)
 
 > Purpose: single source of truth for humans and AI agents to understand this project quickly when starting a new session. Keep it concise, factual, and up to date with the code.
 
@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-**Kards** (package name `flashcard`) is a mobile Flutter app for practicing foreign-language vocabulary with flashcards. The primary language pair is **Hebrew → English** (the app bundles the *Noto Sans Hebrew* font and models grammatical gender), but the app is language-agnostic — any native language can be entered per word.
+**FlashCard** (package name `flashcard`) is a mobile Flutter app for practicing foreign-language vocabulary with flashcards. The primary language pair is **Hebrew → English** (the app bundles the *Noto Sans Hebrew* font and models grammatical gender), but the app is language-agnostic — any native language can be entered per word.
 
 **Goal:** strengthen language learning through three practice modes:
 
@@ -16,7 +16,7 @@
 
 Users maintain their own vocabulary list (add / edit / delete / search), record audio per word, and their data is isolated per Firebase-authenticated user.
 
-- **App display name:** Kards
+- **App display name:** FlashCard
 - **Version:** `0.10.0+1002` (see `pubspec.yaml`)
 - **Repo:** https://github.com/koorzenb/flashcard.git
 - **Platform:** Android-first (APK builds via `build-prod-apk.bat`); `android/` folder present, no iOS folder.
@@ -147,7 +147,6 @@ lib/
 - **Navigation:** `Get.to(() => Screen())`.
 - **Linting:** `analysis_options.yaml` with `flutter_lints ^5.0.0`; CI fails on `flutter analyze` errors and test failures.
 - **Changelog:** add an entry to `CHANGELOG.md` for user-facing changes.
-- **Naming caution:** the product is branded "Kards" but package/repo are `flashcard`; `FirestoreService` handles audio, `FirebaseService` handles words. Preserve existing names unless doing a dedicated refactor.
 
 ### Build & test commands
 
