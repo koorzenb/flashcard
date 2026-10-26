@@ -17,7 +17,11 @@ void main() {
 
     test('wrong word', () {
       var res = WritingLogic.checkWord(
-          'example', wrongWord, initialAttemptsRemaining, startingScore);
+        'example',
+        wrongWord,
+        initialAttemptsRemaining,
+        startingScore,
+      );
 
       expect(res.isCorrect, isFalse);
       expect(res.icon.icon, Icons.close);
@@ -27,7 +31,11 @@ void main() {
       expect(res.score, 0);
 
       res = WritingLogic.checkWord(
-          'example', wrongWord, res.attemptsRemaining, res.score);
+        'example',
+        wrongWord,
+        res.attemptsRemaining,
+        res.score,
+      );
 
       expect(res.isCorrect, isFalse);
       expect(res.icon.icon, Icons.close);
@@ -39,7 +47,11 @@ void main() {
 
     test('first wrong, then right', () {
       var res = WritingLogic.checkWord(
-          'example', wrongWord, initialAttemptsRemaining, startingScore);
+        'example',
+        wrongWord,
+        initialAttemptsRemaining,
+        startingScore,
+      );
 
       expect(res.isCorrect, isFalse);
       expect(res.icon.icon, Icons.close);
@@ -49,10 +61,11 @@ void main() {
       expect(res.score, 0);
 
       res = WritingLogic.checkWord(
-          'example',
-          Word(native: 'example', pronunciation: '', translation: 'tExample'),
-          res.attemptsRemaining,
-          res.score);
+        'example',
+        Word(native: 'example', pronunciation: '', translation: 'tExample'),
+        res.attemptsRemaining,
+        res.score,
+      );
 
       expect(res.isCorrect, isTrue);
       expect(res.icon.icon, Icons.check);
@@ -64,10 +77,11 @@ void main() {
 
     test('right word', () {
       var res = WritingLogic.checkWord(
-          'example',
-          Word(native: 'example', pronunciation: '', translation: 'tExample'),
-          initialAttemptsRemaining,
-          startingScore);
+        'example',
+        Word(native: 'example', pronunciation: '', translation: 'tExample'),
+        initialAttemptsRemaining,
+        startingScore,
+      );
 
       expect(res.isCorrect, isTrue);
       expect(res.icon.icon, Icons.check);

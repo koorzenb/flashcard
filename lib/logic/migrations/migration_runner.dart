@@ -212,11 +212,12 @@ class MigrationRunner {
   /// build understands, which is a downgrade hazard. Such a step is skipped
   /// and reported through the log.
   List<Migration> selectSteps(int currentVersion) {
-    final selected = steps
-        .where((step) => force || step.toVersion > currentVersion)
-        .where((step) => step.toVersion <= targetVersion)
-        .toList()
-      ..sort((a, b) => a.fromVersion.compareTo(b.fromVersion));
+    final selected =
+        steps
+            .where((step) => force || step.toVersion > currentVersion)
+            .where((step) => step.toVersion <= targetVersion)
+            .toList()
+          ..sort((a, b) => a.fromVersion.compareTo(b.fromVersion));
 
     for (final step in steps) {
       if (step.toVersion > targetVersion) {

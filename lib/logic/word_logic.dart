@@ -33,8 +33,10 @@ class WordLogic {
 
   void addWord(Word word, List<Word> words) {
     words.add(word);
-    words.sort((firstWords, secondWord) =>
-        firstWords.translation.compareTo(secondWord.translation));
+    words.sort(
+      (firstWords, secondWord) =>
+          firstWords.translation.compareTo(secondWord.translation),
+    );
     WordStorage.box.words = words.toList();
   }
 
@@ -50,7 +52,8 @@ class WordLogic {
     if (_unReadWords.isEmpty) {
       reset(words);
       FlashcardSnackbar.showSnackBar(
-          'All words have been read. Starting over.');
+        'All words have been read. Starting over.',
+      );
     }
 
     print('Word = ${word.translation}');
@@ -97,10 +100,11 @@ class WordLogic {
       } else {
         return [
           Word(
-              native: '',
-              pronunciation: '',
-              translation: '',
-              attributes: WordAttributes.blank())
+            native: '',
+            pronunciation: '',
+            translation: '',
+            attributes: WordAttributes.blank(),
+          ),
         ];
       }
     }

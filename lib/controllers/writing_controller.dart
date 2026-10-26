@@ -32,10 +32,9 @@ class WritingController extends GetxController {
 
   WritingController._() {
     WordLogic.initializeWords(
-            WordStorage.box.words,
-            FirebaseService(FlashcardAuthService.getOrPut.userId.value)
-                .getWords)
-        .then((words) {
+      WordStorage.box.words,
+      FirebaseService(FlashcardAuthService.getOrPut.userId.value).getWords,
+    ).then((words) {
       if (words.isNotEmpty) {
         updateCurrentWord(words);
       }
@@ -44,7 +43,11 @@ class WritingController extends GetxController {
 
   Future<bool> onCheckWord(String enteredText) async {
     final result = WritingLogic.checkWord(
-        enteredText, _currentWord, _attemptsRemaining, _score);
+      enteredText,
+      _currentWord,
+      _attemptsRemaining,
+      _score,
+    );
 
     _resultsIcon = result.icon;
     _attemptsRemaining = result.attemptsRemaining;

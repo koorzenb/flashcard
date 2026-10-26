@@ -10,16 +10,20 @@ import 'storage/auth_storage.dart';
 import 'storage/main_app_storage.dart';
 import 'styles/themes.dart';
 
-Future<void> commonInit(FirebaseOptions currentPlatform,
-    ServerEnvironment serverEnvironment) async {
+Future<void> commonInit(
+  FirebaseOptions currentPlatform,
+  ServerEnvironment serverEnvironment,
+) async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initializeStorage();
   await _initializeFirebase(currentPlatform, serverEnvironment);
   await AppController.initialize();
 }
 
-Future<void> _initializeFirebase(FirebaseOptions currentPlatform,
-    ServerEnvironment serverEnvironment) async {
+Future<void> _initializeFirebase(
+  FirebaseOptions currentPlatform,
+  ServerEnvironment serverEnvironment,
+) async {
   await Firebase.initializeApp(options: currentPlatform);
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 }
@@ -39,7 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // debugShowCheckedModeBanner: false,
-      title: 'Kards',
+      title: 'FlashCard',
       theme: Themes.primary,
       home: AppController.instance.home,
     );

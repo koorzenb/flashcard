@@ -8,15 +8,15 @@ import 'models/server_environment.dart';
 void main() async {
   try {
     await commonInit(
-        DefaultFirebaseOptions.currentPlatform, ServerEnvironment.prod);
-    final displayName = 'Kards';
+      DefaultFirebaseOptions.currentPlatform,
+      ServerEnvironment.prod,
+    );
+    final displayName = 'FlashCard';
 
     final configuredApp = AppConfig(
       appDisplayName: displayName,
       appInternalId: 1,
-      child: MyApp(
-        displayName: displayName,
-      ),
+      child: MyApp(displayName: displayName),
     );
 
     runApp(configuredApp);

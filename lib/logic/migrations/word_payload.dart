@@ -62,10 +62,7 @@ class WordPayloadCodec {
 
     if (decoded is List) {
       // Legacy bare list: version 0.
-      return WordPayload(
-        version: 0,
-        words: Word.listFromJsonList(decoded),
-      );
+      return WordPayload(version: 0, words: Word.listFromJsonList(decoded));
     }
 
     if (decoded is Map) {
@@ -82,7 +79,7 @@ class WordPayloadCodec {
 
   /// Encodes a payload into the envelope format.
   static String encode(WordPayload payload) => jsonEncode({
-        versionKey: payload.version,
-        wordsKey: payload.words.map((word) => word.toJson()).toList(),
-      });
+    versionKey: payload.version,
+    wordsKey: payload.words.map((word) => word.toJson()).toList(),
+  });
 }

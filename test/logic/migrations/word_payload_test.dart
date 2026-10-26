@@ -64,8 +64,7 @@ void main() {
       expect(WordPayloadCodec.decode(42).words, isEmpty);
     });
 
-    test(
-        'returns an empty payload for a JSON value that is neither a list '
+    test('returns an empty payload for a JSON value that is neither a list '
         'nor a map', () {
       expect(WordPayloadCodec.decode('"hello"').words, isEmpty);
     });
@@ -103,14 +102,17 @@ void main() {
             native: 'x',
             pronunciation: 'p',
             translation: 'y',
-            attributes:
-                const WordAttributes(gender: Gender.female, isPlural: true),
+            attributes: const WordAttributes(
+              gender: Gender.female,
+              isPlural: true,
+            ),
           ),
         ],
       );
 
-      final decoded =
-          WordPayloadCodec.decode(WordPayloadCodec.encode(original));
+      final decoded = WordPayloadCodec.decode(
+        WordPayloadCodec.encode(original),
+      );
 
       expect(decoded.version, 4);
       expect(decoded.words.length, 1);

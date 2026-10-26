@@ -63,9 +63,7 @@ class _RecordAudioPageState extends State<RecordAudioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Record Audio'),
-      ),
+      appBar: AppBar(title: Text('Record Audio')),
       //     body: Center(
       //       child: _isRecording
       //           ? Text('Recording...')

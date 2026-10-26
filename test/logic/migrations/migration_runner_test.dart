@@ -7,14 +7,14 @@ import 'migration_test_helpers.dart';
 
 void main() {
   List<Word> words(int count) => List<Word>.generate(
-        count,
-        (i) => Word(
-          id: 'id$i',
-          native: 'native$i',
-          pronunciation: 'pron$i',
-          translation: 'trans$i',
-        ),
-      );
+    count,
+    (i) => Word(
+      id: 'id$i',
+      native: 'native$i',
+      pronunciation: 'pron$i',
+      translation: 'trans$i',
+    ),
+  );
 
   group('MigrationRunner.selectSteps', () {
     test('selects the steps whose toVersion is above the current version', () {
@@ -60,8 +60,10 @@ void main() {
         error: StateError('boom'),
       );
       final step3 = FakeMigration(fromVersion: 2, toVersion: 3, id: 's3');
-      final runner =
-          MigrationRunner(steps: [step1, step2, step3], targetVersion: 2);
+      final runner = MigrationRunner(
+        steps: [step1, step2, step3],
+        targetVersion: 2,
+      );
       final ctx = FakeMigrationContext(words: words(3));
 
       final result = await runner.run(ctx);
@@ -133,24 +135,26 @@ void main() {
       expect(result.failure!.stepId, 's1');
     });
 
-    test('wraps a non-MigrationFailure error into a MigrationFailure',
-        () async {
-      final step1 = FakeMigration(
-        fromVersion: 0,
-        toVersion: 1,
-        id: 's1',
-        error: StateError('boom'),
-      );
-      final runner = MigrationRunner(steps: [step1], targetVersion: 2);
-      final ctx = FakeMigrationContext(words: words(3));
+    test(
+      'wraps a non-MigrationFailure error into a MigrationFailure',
+      () async {
+        final step1 = FakeMigration(
+          fromVersion: 0,
+          toVersion: 1,
+          id: 's1',
+          error: StateError('boom'),
+        );
+        final runner = MigrationRunner(steps: [step1], targetVersion: 2);
+        final ctx = FakeMigrationContext(words: words(3));
 
-      final result = await runner.run(ctx);
+        final result = await runner.run(ctx);
 
-      expect(result.isAborted, isTrue);
-      expect(result.failure!.code, MigrationFailureCode.unknown);
-      expect(result.failure!.stepId, 's1');
-      expect(result.failure!.cause, isA<StateError>());
-    });
+        expect(result.isAborted, isTrue);
+        expect(result.failure!.code, MigrationFailureCode.unknown);
+        expect(result.failure!.stepId, 's1');
+        expect(result.failure!.cause, isA<StateError>());
+      },
+    );
 
     test('resumes at the failing step on the next run', () async {
       final step1 = FakeMigration(fromVersion: 0, toVersion: 1, id: 's1');
@@ -168,9 +172,10 @@ void main() {
 
       // The step is fixed and the runner is run again.
       final fixed = FakeMigration(fromVersion: 1, toVersion: 2, id: 's2');
-      final second =
-          await MigrationRunner(steps: [step1, fixed], targetVersion: 2)
-              .run(ctx);
+      final second = await MigrationRunner(
+        steps: [step1, fixed],
+        targetVersion: 2,
+      ).run(ctx);
 
       expect(second.isSuccess, isTrue);
       expect(fixed.executionOrder, ['s2']);

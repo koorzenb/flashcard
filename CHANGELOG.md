@@ -1,3 +1,39 @@
+## [0.34.0] - 2026-10-26
+  
+### Feature
+  
+- Upgraded SDK
+
+## [0.33.1] - 2026-10-26
+  
+### Refactor
+  
+- removed unused files
+
+## 0.33.0
+
+### Feat
+
+- add niqqud reference card and integrate with word details screen
+
+## [0.32.0] - 2026-10-26
+  
+### Feature
+  
+- update branding from 'Kards' to 'FlashCard' in main files
+
+## 0.31.1
+
+### Fix
+
+- update branding from "Kards" to "FlashCard" in documentation and spell check
+
+## [0.31.0] - 2026-10-26
+  
+### Feature
+  
+- add niqqud reference card and integrate with word details screen
+
 ## 0.30.0
 
 ### Other

@@ -33,27 +33,26 @@ class _WritingScreenState extends State<WritingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Writing Screen'),
-      ),
+      appBar: AppBar(title: const Text('Writing Screen')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: GetBuilder<WritingController>(builder: (writingController) {
-          if (writingController.attemptsRemaining == 0) {
-            _textController.text = writingController.currentWord.native;
-          }
+        child: GetBuilder<WritingController>(
+          builder: (writingController) {
+            if (writingController.attemptsRemaining == 0) {
+              _textController.text = writingController.currentWord.native;
+            }
 
-          return writingController.currentWord.native.isEmpty
-              ? Center(child: Text('No words available'))
-              : Column(
+            return writingController.currentWord.native.isEmpty
+                ? Center(child: Text('No words available'))
+                : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Score: ${writingController.score}',
-                    ),
+                    Text('Score: ${writingController.score}'),
                     IconButton(
-                      onPressed: () => SoundController.getOrPut
-                          .playAudio(writingController.currentWord.id),
+                      onPressed:
+                          () => SoundController.getOrPut.playAudio(
+                            writingController.currentWord.id,
+                          ),
                       icon: Icon(Icons.play_arrow),
                     ),
                     const SizedBox(height: 20),
@@ -61,16 +60,18 @@ class _WritingScreenState extends State<WritingScreen> {
                       controller: _textController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: writingController.attemptsRemaining < 2
-                            ? writingController.currentWord.native
-                            : 'Enter the word',
+                        hintText:
+                            writingController.attemptsRemaining < 2
+                                ? writingController.currentWord.native
+                                : 'Enter the word',
                       ),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
-                        await writingController
-                            .onCheckWord(_textController.text);
+                        await writingController.onCheckWord(
+                          _textController.text,
+                        );
                         setState(_textController.clear);
                       },
                       child: const Text('Check Word'),
@@ -81,19 +82,23 @@ class _WritingScreenState extends State<WritingScreen> {
                     Text(writingController.resultTranslation),
                   ],
                 );
-        }),
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Get.to(() => WordDetailsScreen(
-              title: 'Add Word',
-              word: Word(
-                native: '',
-                pronunciation: '',
-                translation: '',
-                attributes: WordAttributes.blank(),
-                isNew: true,
+        onPressed:
+            () async => await Get.to(
+              () => WordDetailsScreen(
+                title: 'Add Word',
+                word: Word(
+                  native: '',
+                  pronunciation: '',
+                  translation: '',
+                  attributes: WordAttributes.blank(),
+                  isNew: true,
+                ),
               ),
-            )),
+            ),
         child: const Icon(Icons.add),
       ),
     );

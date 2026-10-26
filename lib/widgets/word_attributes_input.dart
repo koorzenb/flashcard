@@ -48,10 +48,7 @@ class WordAttributesInput extends StatelessWidget {
         runSpacing: _wrapRunSpacing,
         alignment: WrapAlignment.start,
         crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          _genderButton(),
-          _numberButton(),
-        ],
+        children: [_genderButton(), _numberButton()],
       ),
     );
   }
@@ -71,10 +68,13 @@ class WordAttributesInput extends StatelessWidget {
           ),
       ],
       selected: {attributes.gender},
-      onSelectionChanged: (selection) => onChanged(WordAttributes(
-        gender: selection.first,
-        isPlural: attributes.isPlural,
-      )),
+      onSelectionChanged:
+          (selection) => onChanged(
+            WordAttributes(
+              gender: selection.first,
+              isPlural: attributes.isPlural,
+            ),
+          ),
     );
   }
 
@@ -94,10 +94,13 @@ class WordAttributesInput extends StatelessWidget {
         ),
       ],
       selected: {attributes.isPlural},
-      onSelectionChanged: (selection) => onChanged(WordAttributes(
-        gender: attributes.gender,
-        isPlural: selection.first,
-      )),
+      onSelectionChanged:
+          (selection) => onChanged(
+            WordAttributes(
+              gender: attributes.gender,
+              isPlural: selection.first,
+            ),
+          ),
     );
   }
 }

@@ -18,11 +18,9 @@ void main() {
 
     test('a map attributes does not need normalization', () {
       expect(
-        FirestoreBackfill.documentNeedsNormalization(
-          {
-            'attributes': {'gender': 'male'}
-          },
-        ),
+        FirestoreBackfill.documentNeedsNormalization({
+          'attributes': {'gender': 'male'},
+        }),
         isFalse,
       );
     });

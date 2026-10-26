@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Gender {
-  male,
-  female,
-  neutral,
-}
+enum Gender { male, female, neutral }
 
 extension GenderDisplay on Gender {
   String get label {

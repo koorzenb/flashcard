@@ -18,33 +18,34 @@ class _ReadingScreenState extends State<ReadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Reading'),
+      appBar: AppBar(title: Text('Reading')),
+      body: GetBuilder<WordController>(
+        builder: (wordController) {
+          return Center(
+            child:
+                wordController.currentWord.native.isEmpty
+                    ? Text('No words to display')
+                    : FlashCardWidget(
+                      displayedWord: wordController.currentWord,
+                    ),
+          );
+        },
       ),
-      body: GetBuilder<WordController>(builder: (wordController) {
-        return Center(
-          child: wordController.currentWord.native.isEmpty
-              ? Text('No words to display')
-              : FlashCardWidget(
-                  displayedWord: wordController.currentWord,
-                ),
-        );
-      }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async => await Get.to(() => WordDetailsScreen(
-              title: 'Add Word',
-              word: Word(
-                native: '',
-                pronunciation: '',
-                translation: '',
-                attributes: WordAttributes.blank(),
-                isNew: true,
+        onPressed:
+            () async => await Get.to(
+              () => WordDetailsScreen(
+                title: 'Add Word',
+                word: Word(
+                  native: '',
+                  pronunciation: '',
+                  translation: '',
+                  attributes: WordAttributes.blank(),
+                  isNew: true,
+                ),
               ),
-            )),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+            ),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

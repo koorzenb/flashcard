@@ -158,8 +158,9 @@ void main() {
         Word(id: 'a', native: 'x', pronunciation: 'p', translation: 'y'),
       ]);
 
-      final decoded =
-          jsonDecode(_box().get(HiveWordMigrationContext.wordsKey) as String);
+      final decoded = jsonDecode(
+        _box().get(HiveWordMigrationContext.wordsKey) as String,
+      );
       expect(decoded, isA<Map<String, dynamic>>());
       expect(decoded.containsKey('schemaVersion'), isTrue);
     });

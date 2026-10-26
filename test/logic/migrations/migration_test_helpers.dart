@@ -5,12 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// A migration context backed by an in-memory list.
 class FakeMigrationContext implements MigrationContext {
-  FakeMigrationContext({
-    List<Word>? words,
-    int version = 0,
-    this.onWrite,
-  })  : _words = List<Word>.from(words ?? const <Word>[]),
-        _version = version;
+  FakeMigrationContext({List<Word>? words, int version = 0, this.onWrite})
+    : _words = List<Word>.from(words ?? const <Word>[]),
+      _version = version;
 
   List<Word> _words;
   int _version;
@@ -97,7 +94,7 @@ class FakeMigration implements Migration {
 /// A step that drops a record, used to test the integrity check.
 class DroppingMigration extends FakeMigration {
   DroppingMigration({required super.fromVersion, required super.toVersion})
-      : super(id: 'dropping');
+    : super(id: 'dropping');
 
   @override
   Future<void> run(MigrationContext ctx) async {
@@ -110,7 +107,7 @@ class DroppingMigration extends FakeMigration {
 /// A step that changes a record's content without losing it.
 class ChangingMigration extends FakeMigration {
   ChangingMigration({required super.fromVersion, required super.toVersion})
-      : super(id: 'changing');
+    : super(id: 'changing');
 
   @override
   Future<void> run(MigrationContext ctx) async {
