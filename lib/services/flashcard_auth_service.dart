@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../screens/home_screen.dart';
@@ -32,7 +33,7 @@ class FlashcardAuthService extends GetxController {
       // https://github.com/firebase/FirebaseUI-Flutter/blob/main/docs/firebase-ui-auth/README.md
       actions: [
         AuthStateChangeAction<SignedIn>((context, state) async {
-          print('Signed in');
+          debugPrint('Signed in');
           final currentUser = FirebaseAuth.instance.currentUser!;
           userId.value = currentUser.uid;
 
@@ -40,29 +41,29 @@ class FlashcardAuthService extends GetxController {
           AuthStorage.box.userId = currentUser.uid;
           AuthStorage.box.username = extractUsername(currentUser.email!);
 
-          print('User ID: ${userId.value}');
+          debugPrint('User ID: ${userId.value}');
           await Get.to(() => HomeScreen());
         }),
         AuthStateChangeAction<Uninitialized>((context, state) async {
-          print('Uninitialized');
+          debugPrint('Uninitialized');
         }),
         AuthStateChangeAction<AuthFailed>((context, state) async {
-          print('Auth failed');
+          debugPrint('Auth failed');
         }),
         AuthStateChangeAction<AuthState>((context, state) async {
-          print('Auth state');
+          debugPrint('Auth state');
         }),
         AuthStateChangeAction<SigningIn>((context, state) async {
-          print('Signing in');
+          debugPrint('Signing in');
         }),
         AuthStateChangeAction<CredentialReceived>((context, state) async {
-          print('Credential received');
+          debugPrint('Credential received');
         }),
         AuthStateChangeAction<CredentialLinked>((context, state) async {
-          print('Credential linked');
+          debugPrint('Credential linked');
         }),
         AuthStateChangeAction<UserCreated>((context, state) async {
-          print('User created');
+          debugPrint('User created');
           final currentUser = FirebaseAuth.instance.currentUser!;
           userId.value = currentUser.uid;
 
@@ -79,6 +80,6 @@ class FlashcardAuthService extends GetxController {
   void signOut() {
     FirebaseAuth.instance.signOut();
     userId.value = '';
-    print('Signed out');
+    debugPrint('Signed out');
   }
 }

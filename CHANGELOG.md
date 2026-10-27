@@ -1,3 +1,9 @@
+## [0.34.1] - 2026-10-26
+  
+### Refactor
+  
+- refactor word details screen and input fields for better modularity
+
 ## [0.34.0] - 2026-10-26
   
 ### Feature
